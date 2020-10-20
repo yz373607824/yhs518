@@ -7964,17 +7964,22 @@ html {
         font-size: 14px;
         color: #666; }
       .recipe-wrap .recipe-tap-box .filter-list dd {
-        margin-left: 80px; }
-        .recipe-wrap .recipe-tap-box .filter-list dd a {
-          display: inline-block;
-          margin-bottom: 5px;
-          padding-right: 24px;
+        margin-left: 80px; 
+        
+      }
+      .recipe-wrap .recipe-tap-box .filter-list dd div{
+        display: inline-block;
+        margin-bottom: 5px;
+        padding-right: 24px;
+      }
+        .recipe-wrap .recipe-tap-box .filter-list dd div a {
           font-size: 14px;
           color: #555;
           vertical-align: top;
           -webkit-transition: 0.2s ease all;
           -moz-transition: 0.2s ease all;
-          transition: 0.2s ease all; }
+          transition: 0.2s ease all; 
+        }
           .recipe-wrap .recipe-tap-box .filter-list dd a:hover, .recipe-wrap .recipe-tap-box .filter-list dd a.on {
             color: #5387e2; }
       .recipe-wrap .recipe-tap-box .filter-list .select-box {
@@ -8627,17 +8632,19 @@ html {
         color: #666; }
       .industry-list-wrap .industry-tap-box .filter-list dd {
         margin-left: 80px; }
-        .industry-list-wrap .industry-tap-box .filter-list dd a {
+        .industry-list-wrap .industry-tap-box .filter-list dd div{
           display: inline-block;
           margin-bottom: 5px;
           padding-right: 24px;
+        }
+        .industry-list-wrap .industry-tap-box .filter-list dd div a {
           font-size: 14px;
           color: #555;
           vertical-align: top;
           -webkit-transition: 0.2s ease all;
           -moz-transition: 0.2s ease all;
           transition: 0.2s ease all; }
-          .industry-list-wrap .industry-tap-box .filter-list dd a:hover, .industry-list-wrap .industry-tap-box .filter-list dd a.on {
+          .industry-list-wrap .industry-tap-box .filter-list dd div a:hover, .industry-list-wrap .industry-tap-box .filter-list dd a.on {
             color: #5387e2; }
       .industry-list-wrap .industry-tap-box .filter-list .select-box {
         position: relative;
