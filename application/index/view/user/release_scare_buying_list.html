@@ -1,0 +1,49 @@
+
+{include file="public/head" isMember="1" /}
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+            {include file="public/member_left_nav" /}
+            <div class="c--member-right-wrap">
+                <div class="c--inner release-scare-buying-wrap">
+                    <h2 class="title rsbl-hd clearfloat">
+                        <p class="tt">{$channel.name}列表</p>
+                    </h2>
+                    <div class="table-hd">
+                        <div class="td-01 w408" style="width: 390px;">标题</div>
+                        <div class="td-01 w126">时间</div>
+                        <div class="td-01 w50">状态</div>
+                        <div class="td-01 w30" style="width: 60px;">操作</div>
+                    </div>
+                    <ul class="list-block">
+                        {volist name="list" id="vo"}
+                        <li class="js-list">
+                            <div class="td-02 w408" style="width: 390px;">{$vo.title}</div>
+                            <div class="td-02 w126">{$vo.createtime|date='Y-m-d H:i',###}</div>
+                            <div class="td-02 w50">{if $vo.status == 'unreleased'}待发布{elseif $vo.status == 'hidden'}审核中{else}已审核{/if}</div>
+                            <div class="td-02 w30" style="width: 63px;"><a href="{:url('index/user/release_' . $action, ['id' => $vo['id']])}">{if $vo.status == 'unreleased'}发布{else}修改{/if}</a></div>
+                        </li>
+                        {/volist}
+                    </ul>
+                    <div class="paged">
+                        {$list->render()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        memberCenterEvent();
+    })
+
+    function del(id) {
+        if (confirm('删除后不可恢复，确定要删除吗？')) {
+            location.href = "/index/user/release_del/id/" + id;
+        }
+    }
+</script>
+{include file="public/footer"  /}

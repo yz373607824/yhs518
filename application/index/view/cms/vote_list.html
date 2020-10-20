@@ -1,0 +1,126 @@
+{include file="public/head" isMember="0" /}
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <?php $banner = get_banner(52, 1);?>
+        <a href="{$banner.0.url}" target="_blank" class="article-banner-wrap">
+            <img src="{$banner.0.pic}" alt="">
+        </a>
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:getLink(0, $__CHANNEL__.diyname)}" class="bread-hover">我要投票</a>
+            <div class="countdown">距离投票结束时间：
+                <?php $times = timediff($__CHANNEL__['vote_end_time']);?>
+                {if !$times}
+                已结束
+                {else}
+                <span class="countdate" id="days"></span> 天
+                <span class="countdate" id="hrs"></span> 小时
+                <span class="countdate" id="mins"></span> 分
+                <span class="countdate" id="secs"></span> 秒
+                {/if}
+            </div>
+        </div>
+        <div class="vote-list-wrap">
+            <ul class="clearfloat">
+                {cms:pagelist id="item" channel="$__CHANNEL__.id" model="$__CHANNEL__.model_id" orderby="id" orderway="desc" addon="true"}
+                <li class="list">
+                    <div class="item">
+                        <a href="{:url($item.url)}" class="img-box"><img src="{$item.image|default=$__CHANNEL__.image}" alt="{$item.title}"></a>
+                        <div class="info-box">
+                            <a href="{:url($item.url)}" class="title">{$item.title}</a>
+                            <div class="vote-btn-box">
+                                <div class="vote-num">
+                                    <span class="img-icon-01"><img src="/assets/static/images/vote_icon_01.png" alt=""></span>
+                                    <span class="word">总票数</span>
+                                    <span class="num">{$item.invent_vote + $item.real_vote}</span>
+                                </div>
+                                <a href="javascript:vote({$item.id})" class="vote-btn">
+                                    <span class="img-icon-02"><img src="/assets/static/images/vote_icon_02.png" alt=""></span>
+                                    <span class="word">{$__CHANNEL__.vote_button|default='我要投票'}</span>
+                                </a>
+                            </div>
+                        </div>
+                        {if $key < 3}
+                        <div class="rank-box-01"><img src="/assets/static/images/rank/rank_0{$key+1}.png" alt=""></div>
+                        {else}
+                        <div class="rank-box-02" style="background-image: url(/assets/static/images/rank/rank_04.png)"><span class="num">{$key+1}</span></div>
+                        {/if}
+                    </div>
+                </li>
+                {/cms:pagelist}
+            </ul>
+            {if $__CHANNEL__.vote_signup_url}
+            <div class="sign-up-box"><a href="{$__CHANNEL__.vote_signup_url}" target="_blank" class="sign-up-btn">我要报名</a></div>
+            {/if}
+            <div class="paged">
+                {cms:pageinfo type="full" /}
+            </div>
+        </div>
+    </div>
+    <div class="modal-wrap tips-wrap" id="votemsg">
+        <div class="tips-content">
+            <h2>提示</h2>
+            <div class="p">订单已存在，请前往我的订单完成支付！</div>
+            <div class="img-box"><img src="/assets/static/images/vote.png" alt=""></div>
+            <div class="btn-box">
+                <button type="button">确 定</button>
+            </div>
+        </div>
+    </div>
+    <div class="bg" id="overlay"></div>
+</div>
+
+<script>
+    function vote(id) {
+        $.ajax({
+            url : '/index/ajax/vote',
+            type : 'POST',
+            data : {id:id},
+            dataType : 'json',
+            success : function(data) {
+                if (data.code == 1) {
+                    votemsg(data.msg, data.url)
+                } else {
+                    votemsg(data.msg, data.data.url);
+                }
+            }
+        });
+    }
+
+    var votemsg = function (msg, url) {
+        $('#votemsg .p').text(msg);
+        if (url == undefined) {
+            $('#votemsg button').click(function(){
+                $('#votemsg').removeClass('md-show')
+            })
+        } else {
+            $('#votemsg button').click(function(){
+                if(url == 'refresh') {
+                    location.reload()  //刷新当前页
+                } else {
+                    location.href = url
+                }
+            })
+        }
+        $('#votemsg').addClass('md-show')
+        // alert(msg)
+    }
+
+    $(function () {
+        countdown({$__CHANNEL__.vote_end_time - time()});
+        $('#overlay,.modal-close').on('click', function() {
+            $('.tips-wrap').removeClass('md-show')
+            $(':input', '.formId')
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .removeAttr('checked')
+                .removeAttr('selected');
+        })
+    })
+</script>
+
+{include file="public/footer"  /}

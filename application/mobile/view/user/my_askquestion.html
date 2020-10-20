@@ -1,0 +1,114 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="article">
+        <ul class="reservation-service-wrap">
+            {volist name='list' id='item'}
+            <li class="list">
+                <div class="p icon-btn">
+                    {if !empty($item.online_file)}
+                    <a href="{$item.online_file}" class="icon-box">
+                        <div class="img"><img src="/assets/static_mobile/images/download_icon.png" alt=""></div>
+                    </a>
+                    {/if}
+                    <a href="javascript:;" onclick="cancel({$item.id});" class="icon-box">
+                        <div class="img"><img src="/assets/static_mobile/images/delete_icon.png" alt=""></div>
+                    </a>
+                </div>
+                <div class="p"><span class="title">专家姓名：</span>
+                    {if empty($item.shop_id)}
+                    <span class="name">等待专家接单</span>
+                    {else}
+                    <span class="name"><?php $expert = unserialize($item['online_expert_info']); echo $expert['nickname']; ?></span>
+                    <a href="{:url('/mobile/expert/detail', ['id' => $expert['id']])}" class="again">再次咨询</a>
+                    {/if}
+                </div>
+                <div class="p"><span class="title">标题：</span><span class="name">{$item.online_title}</span></div>
+                <div class="p">
+                    <span class="title">问题描述：</span>
+                    <p class="info">{$item.online_question_description}</p>
+                </div>
+                <div class="btn-box">
+                    {if $item.confirm_finish == 1 && empty($item.appraise)}
+                    <a href="{:url('/mobile/user/appraise', ['id' => $item['id']])}" class="btn">我要评价</a>
+                    {elseif $item.confirm_finish == 1 && !empty($item.appraise)}
+                    <a href="{:url('/mobile/user/appraise', ['id' => $item['id']])}" class="btn">查看评价</a>
+                    {/if}
+                    {if $item.status == 1 && $item.confirm_finish == 0 && $item.online_is_reply == 1}
+                    <a href="javascript:confirmServer({$item.id});" style="width: 100px;" class="btn">确定完成服务</a>
+                    {elseif $item.status == 1 && $item.confirm_finish == 1 && $item.online_is_reply == 1}
+                    <a href="javascript:;" style="width: 100px;" class="btn">已确认完成服务</a>
+                    {/if}
+                    {if $item.status == 1 && $item.online_is_reply == 1}
+                    <a href="{:url('/mobile/user/viewReply', ['id' => $item['online_id']])}" class="btn">查看回复</a>
+                    {elseif $item.status == 1 && ($item.online_is_rollback != 1 || $item.online_is_commit == 1)}
+                    <a href="javascript:;" class="btn">待回复</a>
+                    {/if}
+                    {if $item.online_is_rollback == 1 && $item.online_is_commit == 0}
+                    <a href="{:url('/mobile/user/resumitOnline', ['id' => $item['online_id']])}" class="btn">重写提交</a>
+                    {/if}
+                    {if $item.status == 0 && time() < strtotime('+1 hour', $item.createtime)}
+                    <a href="{:url('/mobile/user/pay', ['trade_sn' => $item['trade_sn']])}" style="width: 150px;" class="btn">剩余<?php echo ceil((strtotime('+1 hour', $item['createtime']) - time())/60); ?>分钟，请尽快支付</a>
+                    {/if}
+                    {if $item.status == 2 || ($item.status == 0 && time() > strtotime('+1 hour', $item.createtime))}
+                    <a href="javascript:;" class="btn">已过期</a>
+                    {/if}
+                    <a href="https://wpa.qq.com/msgrd?v=3&uin=779088800&site=qq&menu=yes" class="btn">联系客服</a>
+                </div>
+            </li>
+            {/volist}
+        </ul>
+        {:token()}
+    </div>
+    <script>
+        $(function() {
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+
+        let page = 1;
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let param = {page:page};
+            $.get("{:url('/mobile/user/myAskquestion')}", param, function(res){
+                $(".reservation-service-wrap").append(res.data);
+            });
+        }
+
+        function cancel(id) {
+            if (confirm('确定要该订单吗？')) {
+                $.post('/mobile/user/deleteOL', {id:id}, function (data) {
+                    if (data.code == 1) {
+                        showmsg(data.msg, 'refresh');
+                    } else {
+                        showmsg(data.msg);
+                    }
+                })
+            }
+        }
+
+        function confirmServer(id) {
+            if (confirm('确定要完成服务吗？')) {
+                let token = $('input[name=__token__]').val();
+                $.post('/mobile/user/confirm_finish', {id:id, __token__:token}, function (data) {
+                    if (data.code == 1) {
+                        showmsg(data.msg, 'refresh');
+                    } else {
+                        showmsg(data.msg);
+                        $('input[name=__token__]').val(data.data.token);
+                    }
+                })
+            }
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

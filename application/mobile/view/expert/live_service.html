@@ -1,0 +1,172 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="member">
+        <div class="live-service-wrap">
+            <form id="form1" action="{:url('/mobile/expert/locale')}" method="post">
+                {:token('locale_token')}
+                <input type="hidden" name="expert_id" value="{$id}">
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">联系人<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" name="row[linkman]" datatype="*" nullmsg="请填写联系人" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">企业名称<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" name="row[enterprise]" datatype="*" nullmsg="请填写企业名称" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">手机号码<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" name="row[mobile]" datatype="*,/^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/" nullmsg="请填写手机" errormsg="手机格式错误" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">预约时间<span class="red-star">*</span></div>
+                        <div class="input-box posr">
+                            <input type="text" name="row[reservation_time]" datatype="*" nullmsg="请选择预约时间" readonly class="input" id="date_01">
+                        </div>
+                        <div class="date-img"><img src="/assets/static_mobile/images/date.png" alt=""></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">预约地址<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" name="row[reservation_address]" datatype="*" nullmsg="请填写预约地址" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">标题<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" name="row[title]" datatype="*" nullmsg="请填写标题" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="text-area">
+                    <div class="textarea-word">问题描述<span class="red-star">*</span></div>
+                    <textarea rows="8" class="textarea" name="row[question_description]" datatype="*" nullmsg="请填写问题描述"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">附件上传</div>
+                        <div class="input-box">
+                            <input type="text" readonly name="row[file]" class="file-input-val online-file">
+                        </div>
+                    </div>
+                    <div class="row-right">
+                        <div class="file-box">
+                            <input type="file" class="file">点击上传
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">验证码<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" datatype="*" nullmsg="请填写验证码" name="captcha" class="file-input-val">
+                        </div>
+                    </div>
+                    <div class="row-right">
+                        <div class="yzm-box">
+                            <img src="{:captcha_src()}" onclick="this.src = '{:captcha_src()}?r=' + Math.random();" alt="验证码没能获取到，请刷新重试">
+                        </div>
+                    </div>
+                </div>
+                <div class="annotation">备注：需要支付 <span class="money-red">{$localePrice}</span> 元</div>
+                <div class="agree-box">
+                    <input type="checkbox" id="checkbox_01" class="checkbox" value="agree" name="ifAgree2" datatype="*" nullmsg="请阅读并接受协议内容">
+                    <label for="checkbox_01" class="label-checkbox"><span class="checkbox-txt">我已了解并同意</span><a href="{:url('/mobile/archives/174')}" target="_blank">支付须知</a></label>
+                </div>
+                <a href="javascript:;" class="btn">确认提交及支付</a>
+            </form>
+        </div>
+    </div>
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+<script>
+    $(function() {
+        $('.file').on('change', function() {
+            var file = $(this).get(0).files[0]
+            var uploading = false;
+            var formData = new FormData();
+            formData.append("file", file);
+            if(uploading){
+                return false;
+            }
+            $.ajax({
+                url : '/index/ajax/upload',
+                type : 'POST',
+                data : formData,
+                contentType: false,
+                processData: false,
+                dataType : 'json',
+                beforeSend: function(){
+                    uploading = true;
+                },
+                success : function(data){
+                    if (data.code == 1) {
+                        $('.online-file').val(data.data.url)
+                    } else {
+                        showmsg(data.msg)
+                    }
+                    uploading = false;
+                }
+            });
+        })
+
+        var date_01 = new rolldate.Date({
+            el: '#date_01',
+            format: 'YYYY-MM-DD hh:mm',
+            beginYear: 1975,
+            endYear: 2200,
+            theme: '#db3733'
+        })
+
+        $.Tipmsg.r = null;
+        $('#form1').Validform({
+            btnSubmit:".btn",
+            tipSweep: true,
+            ajaxPost: true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            callback: function (data) {
+                if (data.code == 1) {
+                    if (data.data.price == 0 ) {
+                        showmsg('支付成功', 'jump', "{:url('/mobile/user/myReservation')}");
+                    } else {
+                        window.location.href = data.data.url;
+                    }
+                } else {
+                    if (data.url) {
+                        showmsg(data.msg, 'jump', data.url);
+                    } else {
+                        showmsg(data.msg);
+                    }
+                    $('input[name=locale_token]').val(data.data.token);
+                    $('.yzm-box img').trigger('click');
+                }
+            }
+        });
+    })
+</script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

@@ -1,0 +1,565 @@
+{include file="public/head" isMember="0" /}
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <?php $banner = get_banner(1,1);?>
+        {volist name='banner' id='item'}
+        <a href="{$item.url}" class="article-banner-wrap">
+            <img src="{$item.pic}" alt="{$item.name}">
+        </a>
+        {/volist}
+        <div class="breadcrumb" id="scroll_position">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('/expert/index')}" class="bread-hover">专家在线</a>
+        </div>
+        <div class="expert-online-list-wrap clearfloat">
+            <div class="common-left-block">
+                <div class="classify-wrap">
+                    <div class="classify-list clearfloat">
+                        <div class="span">服务类型：</div>
+                        <div class="item-box">
+                            <a href="javascript:search('service', '');" class="item {if empty($service)}on{/if}">全部</a>
+                            <a href="javascript:search('service', 'online');" class="item {if $service == 'online'}on{/if}">在线咨询</a>
+                            <a href="javascript:search('service', 'locale');" class="item {if $service == 'locale'}on{/if}">现场服务</a>
+                        </div>
+                    </div>
+                    <div class="classify-list clearfloat">
+                        <div class="span">职称等级：</div>
+                        <div class="item-box">
+                            <a href="javascript:search('grade', '');" class="item {if empty($grade)}on{/if}">全部</a>
+                            <a href="javascript:search('grade', '1');" class="item {if $grade == '1'}on{/if}">工程师</a>
+                            <a href="javascript:search('grade', '2');" class="item {if $grade == '2'}on{/if}">高级工程师</a>
+                            <a href="javascript:search('grade', '3');" class="item {if $grade == '3'}on{/if}">专家</a>
+                        </div>
+                    </div>
+                    <div class="classify-list clearfloat">
+                        <div class="span">专业擅长：</div>
+                        <div class="filter-box">
+                            <div class="js-item-box">
+                                <a href="javascript:search('adept', '');" class="item {if empty($adept)}on{/if}">全部</a>
+                                {volist name='tagsList' id='tags'}
+                                <a href="javascript:search('adept', '{$tags.name}');" class="item {if $adept == $tags.name}on{/if}">{$tags.name}</a>
+                                {/volist}
+                            </div>
+                        </div>
+                        <div class="js-more-btn" id="js-more-btn">查看更多</div>
+                    </div>
+                    <div class="classify-list clearfloat">
+                        <div class="span">所在区域：</div>
+                        <div class="select-block">
+                            <div class="select-box">
+                                <select class="inner-select" id="province"></select>
+                            </div>
+                            <div class="select-box">
+                                <select class="inner-select" id="city"></select>
+                            </div>
+                            <div class="select-box">
+                                <select class="inner-select" id="area"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="classify-list clearfloat">
+                        <div class="span">分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类：</div>
+                        <div class="select-block">
+                            <div class="select-box w200" style="width: 300px;">
+                                <select class="inner-select category—type">
+                                    <option value="">请选择分类</option>
+                                    <option {if $category_type == 'industrial_cleaning_agent'}selected{/if} value="industrial_cleaning_agent">[前处理]工业清洗剂</option>
+                                    <option {if $category_type == 'the_surface_film'}selected{/if} value="the_surface_film">[前处理]表面成膜</option>
+                                    <option {if $category_type == 'post_processing'}selected{/if} value="post_processing">后处理</option>
+                                </select>
+                            </div>
+                            <div class="select-box w200 category-industrial_cleaning_agent" style="width: 300px;{if $category_type != 'industrial_cleaning_agent'}display: none;{/if}">
+                                <select class="inner-select category-value">
+                                    <option value="">请选择</option>
+                                    {volist name='industrial_cleaning_agent' id='item'}
+                                    <option {if $category_value == $item}selected{/if} value="{$item}">{$item}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+
+                            <div class="select-box w200 category-the_surface_film" style="width: 300px;{if $category_type != 'the_surface_film'}display: none;{/if}">
+                                <select class="inner-select category-value">
+                                    <option value="">请选择</option>
+                                    {volist name='the_surface_film' id='item'}
+                                    <option {if $category_value == $item}selected{/if} value="{$item}">{$item}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+
+                            <div class="select-box w200 category-post_processing" style="width: 300px;{if $category_type != 'post_processing'}display: none;{/if}">
+                                <select class="inner-select category-value">
+                                    <option value="">请选择</option>
+                                    {volist name='post_processing' id='item'}
+                                    <option {if $category_value == $item}selected{/if} value="{$item}">{$item}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+
+                            <div class="select-box w200 category-" style="width: 300px;{if isset($category_type) && $category_type != ''}display: none;{/if}">
+                                <select class="inner-select">
+                                    <option value="">请选择</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="search-banner-wrap clearfloat">
+                    <div class="img-box">
+                        <?php $banner = get_banner(30, 1);?>
+                        {volist name="banner" id="v"}
+                        <img src="{$v.pic}" alt="{$v.name}">
+                        {/volist}
+                    </div>
+                    <div class="search-region">
+                        <div class="common-search-box w300">
+                            <div class="common-search-input-box w70">
+                                <input type="text" value="{$keywords}" class="search--input" placeholder="请输入相关关键字">
+                                <i class="iconfont icon-sousuo1 search--icon"></i>
+                            </div>
+                            <a href="javascript:search('keywords', $('.search--input').val());" class="search--btn w70">搜索</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-banner-wrap clearfloat">
+                    <div class="left-sum-box">
+                        <h3 class="left-sum-tt">全网提问</h3>
+                        {$site.all_question_text|html_entity_decode}
+                        <div class="bfc">
+                            <a href="#" id="ask_question" class="ask-question-btn">我要提问</a>
+                        </div>
+                    </div>
+                    <div class="right-sum-box">
+                        <div class="swiper-container right-sum-swiper">
+                            <div class="swiper-wrapper">
+                                {volist name='grabList' id='item' key='i'}
+                                <a href="{:url('/user/grabOnlineService')}" class="swiper-slide">
+                                    <div class="h2">{$i}.{$item.title}</div>
+                                    <div class="p">问题描述：{$item.question_description}</div>
+                                    <div class="btn {if $item.is_grab == 1}gray{/if}">{if $item.is_grab == 1}已解答{else}我要解答{/if}</div>
+<!--                                    <div class="money-tip">金额：¥{$item.totalprice}</div>-->
+                                </a>
+                                {/volist}
+                            </div>
+                        </div>
+                        <div class="prev-btn"><i class="iconfont icon-jiantouzuo"></i></div>
+                        <div class="next-btn"><i class="iconfont icon-jiantouyou"></i></div>
+                    </div>
+                </div>
+                <div class="expert-list-wrap">
+                    {volist name='list' id='expert'}
+                    <div class="expert-list-block clearfloat">
+                        <a href="{:url('/expert/detail', ['id'=>$expert.id])}" class="avatar">
+                            <img src="{$expert.avatar}" alt="">
+                        </a>
+                        <div class="expert-info">
+                            <a href="{:url('/expert/detail', ['id'=>$expert.id])}" class="expert-name">
+                                <span class="b-txt">{$expert.nickname}</span>
+                                <span class="s-txt">{:__('Level ' . $expert.level)}</span>
+                                {if $expert.online == 1}
+                                <span class="expert-status green">在线</span>
+                                {else}
+                                <span class="expert-status red">休息中</span>
+                                {/if}
+                            </a>
+                            <div class="expert-id">
+                                <span class="id-num">编号：{$expert.job_number}</span>
+                                <div class="great"><i class="iconfont icon-cai"></i><span class="great-num">{$expert.likes}</span></div>
+                            </div>
+                            <div class="expert-msg">
+                                <span>学历：{$expert.education}</span>
+                                <span>工作年限：{$expert.workage}年</span>
+                            </div>
+                            <p class="expert-skill">精通行业/领域：{$expert.technosphere}</p>
+                            <p class="expert-company">服务企业：{$expert.company}</p>
+                            <div class="consult-box">
+                                {if strpos($expert.service,'online') !== false}
+                                <a href="{:url('/expert/detail', ['id'=>$expert.id])}" class="btn y-btn">我要提问</a>
+                                {/if}
+                                {if strpos($expert.service,'locale') !== false}
+                                <a href="{:url('/expert/detail', ['id'=>$expert.id])}" class="btn g-btn">我要现场服务</a>
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
+                    {/volist}
+                </div>
+                <div class="paged">
+                    {$list->render()}
+                </div>
+            </div>
+            {include file="public/expert_adv_sidebar" /}
+        </div>
+    </div>
+    <div class="modal-wrap service-modal" id="service_scroll">
+        <div class="service-modal-inner">
+            <div class="service-modal-content">
+                <div class="service-close"><i class="iconfont icon-fork"></i></div>
+                <h2>服务协议</h2>
+                {:get_agreement(125)}
+                <div class="checkbox-block">
+                    <input type="checkbox" class="ifAgree" id="ifAgree1" value="agree" name="">
+                    <label class="mark" for="ifAgree1">我已阅读，并同意本协议内容</label>
+                </div>
+                <div class="next-btn">
+                    <a href="#" id="nextBtn">下一步</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-wrap ask-question">
+        <div class="ask-question-content">
+            <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+            <h2>我要提问</h2>
+            <form id="form1" action="/expert/online" class="formId" method="post">
+                {:token()}
+                <div class="input-box">
+                    <div class="fixed-left">
+                        <span class="red-star">*</span>
+                        <span class="input-span">标题：</span>
+                    </div>
+                    <div class="auto-right">
+                        <input type="text" name="row[title]" datatype="*" nullmsg="请填写标题" class="inp">
+                    </div>
+                </div>
+                <div class="ask-row">
+                    <span class="red-star">*</span><span class="txt">问题描述：</span>
+                </div>
+                <div class="text-area">
+                    <textarea class="textwrap" name="row[question_description]" datatype="*" nullmsg="请填写问题描述" rows="7" placeholder=""></textarea>
+                </div>
+                <div class="input-wrap">
+                    <div class="select-box">
+                        <select class="select level-price" name="row[level]" datatype="*" nullmsg="请选择工程师级别">
+                            <option value="">请选择工程师级别</option>
+                            <option value="1">工程师</option>
+                            <option value="2">高级工程师</option>
+                            <option value="3">专家</option>
+                        </select>
+                        <i class="iconfont icon-jiantouxia"></i>
+                    </div>
+                    <div class="yzm-block clearfloat">
+                        <span class="red-star">*</span>
+                        <span class="input-span">支付金额（￥）：</span>
+                        <input type="text" id="question-pirce" name="row[price]" datatype="*,/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/" nullmsg="请填写支付金额" errormsg="格式错误，不能为负数，保留两位小数" class="input-yzm">
+                    </div>
+                </div>
+                <div class="input-wrap">
+                    <div class="import-block clearfloat">
+                        <span class="input-span">附件上传：</span>
+                        <input type="text" name="row[file]" class="input-fileName1" readonly>
+                        <a href="#" class="a-upload">
+                            <input type="file" id="js_upload1">点击上传
+                        </a>
+                    </div>
+                    <div class="yzm-block clearfloat">
+                        <span class="red-star">*</span>
+                        <span class="input-span">验证码：</span>
+                        <input type="text" datatype="*" nullmsg="请填写验证码" name="captcha" class="input-yzm">
+                        <img style="margin-top: 0px;width: 130px;height: 50px;" src="{:captcha_src()}" onclick="this.src = '{:captcha_src()}?r=' + Math.random();" alt="验证码没能获取到，请刷新重试" class="yzm-img">
+                    </div>
+                </div>
+                <div class="checkbox-block mt0">
+                    <input type="checkbox" class="ifAgree" id="ifAgree2" value="agree" name="ifAgree2" datatype="*" nullmsg="请阅读并接受协议内容">
+                    <label class="mark" for="ifAgree2">我已了解并同意</label>
+                    <a href="{:url('/archives/174')}" class="a--href">提问须知</a>
+                </div>
+                <div class="submit-btn-wrap">
+                    <button type="button" disabled class="js-btn" id="js_sub">确认提交及支付</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-wrap pay-wrap">
+        <div class="pay-content">
+            <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+            <h2>支付信息</h2>
+            <div class="pay-msg-box">
+                <div class="row"><span>订单提交成功，请尽快付款！</span></div>
+                <div class="row"><span>订单号：</span><span id="trade_sn">82515009626</span></div>
+                <div class="row"><span>支付内容：</span><span class="txt-r" id="title">咨询费</span></div>
+                <div class="row"><span>需支付金额：￥</span><span class="txt-r txt-b" id="price">50</span><span>元</span></div>
+            </div>
+            <div class="pay-methods-box">
+                <p>选择支付方式</p>
+                <div class="pay-methods-inner">
+                    <div class="block">
+                        <input type="radio" id="Alipay" class="input-radio" name="pay">
+                        <label for="Alipay" class="radio-label Alipay"></label>
+                    </div>
+                    <div class="block">
+                        <input type="radio" id="Wxpay" class="input-radio" name="pay">
+                        <label for="Wxpay" class="radio-label Wxpay"></label>
+                    </div>
+                </div>
+            </div>
+            <a href="javascript:showmsg('请选择支付方式');" class="pay-btn">立即支付</a>
+        </div>
+    </div>
+    <div class="bg" id="overlay"></div>
+</div>
+
+<script src="/assets/static/script/pca.js" ></script>
+<script>
+    var user = '{$user}';
+    var urlJson = {:json_encode($Request.param)};
+
+    $(function () {
+        $('.right-sum-swiper').on('mouseover mouseout mousemove', '.h2, .p', function(event) {
+            var left = event.pageX,
+                top = event.pageY,
+                title = $(this).text(),
+                type = event.originalEvent.type;
+            if (type === 'mouseover') {
+                if (title !== null) {
+                    var ele = $('<div></div>', {
+                        text: title,
+                        class: 'titleClass'
+                    })
+                    ele.appendTo('body')
+                }
+            } else if (type === 'mouseout') {
+                $('.titleClass').remove();
+            } else if (type === 'mousemove') {
+                $('.titleClass').css({
+                    top: top,
+                    left: left
+                })
+            }
+        })
+
+        swiperArticleEvent()
+
+        var scroller01 = new IScroll('#service_scroll', {
+            scrollX: false,
+            scrollY: true,
+            scrollbars: true,
+            interactiveScrollbars: true,
+            preventDefault: false,
+            mouseWheel: true
+        })
+
+        var price = ['0', '{$site.1_online_price}', '{$site.2_online_price}', '{$site.3_online_price}'];
+        $('.level-price').change(function () {
+            if ($(this).val() == '') {
+                $('#question-pirce').val($(this).val());
+            } else {
+                $('#question-pirce').val(price[$(this).val()]);
+            }
+        });
+
+        $('.filter-box').css('height', '49')
+        $('#js-more-btn').on('click', function () {
+            if($(this).hasClass('more')) {
+                $(this).html('查看更多')
+                $(this).removeClass('more')
+                $(".filter-box").animate({height: '49'}, "normal")
+            }else {
+                $(this).html('收起')
+                $(this).addClass('more')
+                $(".filter-box").animate({height: $('.js-item-box').height() + 15}, "normal")
+            }
+        })
+
+        $('.close').on('click', function() {
+            $('.service-modal').removeClass('md-show')
+            $(':input', '.formId')
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .removeAttr('checked')
+                .removeAttr('selected');
+        })
+
+        $('input[name=pay]').prop('checked', false);
+
+        $("#Alipay").click(function () {
+            $('.pay-btn').attr('href', '/user/aliPay?trade_sn=' + $('#trade_sn').text());
+        })
+
+        $("#Wxpay").click(function () {
+            $('.pay-btn').attr('href', '/user/wechatPay?trade_sn=' + $('#trade_sn').text());
+        })
+
+        $('#ask_question').on('click', function() {
+            if (user == '') {
+                showmsg('请先登录，再操作', "{:url('/user/login')}");
+                return false;
+            }
+            show($(".ask-question"));
+            // $('#nextBtn').attr('href', 'javascript:show($(".ask-question"));')
+            // $('.service-modal').addClass('md-show')
+            // scroller01.refresh()
+        })
+        $('.modal-close, .service-close').on('click', function() {
+            $('.service-modal').removeClass('md-show')
+            $('.ask-question').removeClass('md-show')
+            $('.pay-wrap').removeClass('md-show')
+            $('.js-btn').removeClass('isClick')
+            $('.ifAgree').prop('checked', false)
+            $(':input', '.formId')
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .removeAttr('checked')
+                .removeAttr('selected');
+        })
+        $('#nextBtn').on('click', function() {
+            if ($(this).parent().prev().find('.ifAgree').is(':checked')) {
+                return true;
+            } else {
+                return false;
+            }
+        })
+        $('.ifAgree').prop('checked', false)
+        $('#ifAgree1').on('click', function() {
+            if ($(this).is(':checked')) {
+                $('#nextBtn').addClass('isClick')
+            } else {
+                $('#nextBtn').removeClass('isClick')
+            }
+        })
+        $('.ifAgree').prop('checked', false)
+        $('#ifAgree2').on('click', function() {
+            if ($(this).is(':checked')) {
+                $('#js_sub').addClass('isClick')
+                $('#js_sub').attr('disabled', false)
+            } else {
+                $('#js_sub').removeClass('isClick')
+                $('#js_sub').attr('disabled', true)
+            }
+        })
+
+        $('#js_upload1').on('change', function(e) {
+            var file = e.currentTarget.files[0];
+            upload(file, $('.input-fileName1'))
+        })
+
+        $.Tipmsg.r = null;
+        $('#form1').Validform({
+            btnSubmit:"#js_sub",
+            tipSweep: true,
+            ajaxPost: true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            beforeSubmit:function(){
+                //验证金额
+                if ($('#question-pirce').val() < price[$('.level-price').val()]) {
+                    showmsg('支付金额小于指定的金额，请修改后在提交（可以在当前指定金额上追加）');
+                    return false;
+                }
+
+                return true;
+            },
+            callback:function(data){
+                if (data.code == 1) {
+                    if (data.data.price == 0 ) {
+                        //消息推送
+                        $.post("{:url('/expert/asynchronousMessage')}", {trade_sn:data.data.trade_sn}, function () {});
+                        showmsg('支付成功', "{:url('/user/myAskquestion')}");
+                        return;
+                    }
+
+                    $('#trade_sn').text(data.data.trade_sn);
+                    $('#title').text(data.data.title);
+                    $('#price').text(data.data.price);
+                    $('.js-btn').closest('.modal-wrap').removeClass('md-show')
+                    $('.pay-wrap').addClass('md-show')
+                } else {
+                    $("#form1 input[name=__token__]").val(data.data.token)
+                    showmsg(data.msg);
+                }
+            }
+        });
+
+        newPCA("{if !empty($province)}{$province}{/if}", "{if !empty($city)}{$city}{/if}", "{if !empty($county)}{$county}{/if}");
+
+        $("#province").change(function () {
+            urlJson['city'] = $("#city").val();
+            urlJson['county'] = $("#area").val();
+            search('province', $(this).val());
+        })
+        $("#city").change(function () {
+            urlJson['county'] = $("#area").val();
+            search('city', $(this).val());
+        })
+        $("#area").change(function () {
+            search('county', $(this).val());
+        })
+
+        $('.category—type').change(function () {
+            $('.category-industrial_cleaning_agent').css('display', 'none');
+            $('.category-the_surface_film').css('display', 'none');
+            $('.category-post_processing').css('display', 'none');
+            $('.category-').css('display', 'none');
+            $('.category-' + $(this).val()).css('display', '');
+
+            if ($(this).val() == '') {
+                urlJson['category_type'] = $('.category—type').val();
+                search('category_value', '');
+            }
+        })
+
+        $('.category-value').change(function () {
+            urlJson['category_type'] = $('.category—type').val();
+            search('category_value', $(this).val());
+        })
+    })
+
+    function search(type, val) {
+        urlJson[type] = val;
+        var i = 0;
+        var url = "{:url('/expert/index')}";
+        for (var key in urlJson) {
+            url += i == 0 ? '?' : '&';
+            url += key + '=' + urlJson[key];
+            i++;
+        }
+        window.location.href = url + '#scroll_position';
+    }
+
+    function show(obj)
+    {
+        $('.service-modal').removeClass('md-show')
+        obj.addClass('md-show')
+    }
+
+    var uploading = false;
+    function upload(file, obj) {
+        var formData = new FormData();
+        formData.append("file", file);
+        if(uploading){
+            return false;
+        }
+        $.ajax({
+            url : '/index/ajax/upload',
+            type : 'POST',
+            data : formData,
+            contentType: false,
+            processData: false,
+            dataType : 'json',
+            beforeSend: function(){
+                uploading = true;
+            },
+            success : function(data){
+                if (data.code == 1) {
+                    obj.val(data.data.url);
+                } else {
+                    showmsg(data.msg)
+                }
+                uploading = false;
+            }
+        });
+    }
+</script>
+
+{include file="public/footer"  /}

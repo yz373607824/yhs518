@@ -1,0 +1,211 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="page">
+        <div class="recipe-list-wrap">
+            <div class="recipe-filter-box">
+                <div class="submit-recipe">
+                    <div class="p">没有找到你需要的知识吗？</div>
+                    <a href="{:url('/mobile/handleArchives/konwledge_demand')}" class="btn">提交你的需求</a>
+                </div>
+                <div class="recipe-search-box">
+                    <form action="" class="common-search-block">
+                        <div class="common-search-icon"><i class="iconfont icon-sousuo1"></i></div>
+                        <div class="input-box"><input type="text" class="input" id="keywords" placeholder="输入相关关键词"></div>
+                        <a href="javascript:search();" class="common-serach-btn">搜索</a>
+                    </form>
+                </div>
+                <form action="">
+                    <div class="common-filter-block">
+                        <dl class="filter-txt">
+                            <dt>知识类别：</dt>
+                            <dd>
+                                <select class="select-box" id="category">
+                                    {cms:pagefilter id="filter" exclude=""}
+                                    {volist name="$filter.content" id="item"}
+                                    <option value="{if $item.title != '全部'}{$item.title}{/if}">{$item.title}</option>
+                                    {/volist}
+                                    {/cms:pagefilter}
+                                </select>
+                                <div class="filter-btn">选择类别 <i class="iconfont icon-jiantouyou"></i></div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="common-filter-block">
+                        <dl class="filter-txt">
+                            <dt>标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签：</dt>
+                            <dd>
+                                <select class="select-box" id="tags">
+                                    {volist name='tags' id='item'}
+                                    <option value="{if $item.title != '全部'}{$item.title}{/if}">{$item.title}</option>
+                                    {/volist}
+                                </select>
+                                <div class="filter-btn">选择标签 <i class="iconfont icon-jiantouyou"></i></div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="common-filter-block">
+                        <dl class="filter-txt">
+                            <dt>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类：</dt>
+                            <dd>
+                                <div class="select-item">
+                                    <select class="select-box" id="category—type">
+                                        <option value="">全部</option>
+                                        <option value="industrial_cleaning_agent">[前处理]工业清洗剂</option>
+                                        <option value="the_surface_film">[前处理]表面成膜</option>
+                                        <option value="post_processing">后处理</option>
+                                    </select>
+                                    <div class="filter-btn">选择分类 <i class="iconfont icon-jiantouyou"></i></div>
+                                </div>
+
+                                <input type="hidden" id="category-value">
+
+                                <div class="select-item category-industrial_cleaning_agent" style="display: none;">
+                                    <select class="select-box" onchange="change(this)">
+                                        <option value="">全部</option>
+                                        {volist name='industrial_cleaning_agent' id='item'}
+                                        <option value="{$item}">{$item}</option>
+                                        {/volist}
+                                    </select>
+                                    <div class="filter-btn">选择分类 <i class="iconfont icon-jiantouyou"></i></div>
+                                </div>
+
+                                <div class="select-item category-the_surface_film" style="display: none;">
+                                    <select class="select-box" onchange="change(this)">
+                                        <option value="">全部</option>
+                                        {volist name='the_surface_film' id='item'}
+                                        <option value="{$item}">{$item}</option>
+                                        {/volist}
+                                    </select>
+                                    <div class="filter-btn">选择分类 <i class="iconfont icon-jiantouyou"></i></div>
+                                </div>
+
+                                <div class="select-item category-post_processing" style="display: none;">
+                                    <select class="select-box" onchange="change(this)">
+                                        <option value="">全部</option>
+                                        {volist name='post_processing' id='item'}
+                                        <option value="{$item}">{$item}</option>
+                                        {/volist}
+                                    </select>
+                                    <div class="filter-btn">选择分类 <i class="iconfont icon-jiantouyou"></i></div>
+                                </div>
+
+                                <div class="select-item category-">
+                                    <select class="select-box">
+                                        <option value="">全部</option>
+                                    </select>
+                                    <div class="filter-btn">选择分类 <i class="iconfont icon-jiantouyou"></i></div>
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="btn-box">
+                        <button type="button" class="sub-btn" onclick="search();">筛选</button>
+                    </div>
+                </form>
+                <div class="tip-box">
+                    <div class="p"><strong>温馨提示：</strong></div>
+                    <div class="p">知识库已通过平台工程师严格审核，如有疑问，请咨询在线工程师或者客服。</div>
+                </div>
+            </div>
+            <ul class="recipe-list-box">
+                {volist name='$__PAGELIST__' id='item'}
+                <li class="list">
+                    <a href="{:url('/mobile/archives/' . $item['id'])}" class="item">
+                        {if !empty($item.image) && $item.image != '/public'}
+                        <div class="img-box"><img src="{$item.image}" alt="{$item.title}"></div>
+                        {/if}
+                        <div class="info-box">
+                            <div class="title">
+                                {if $item.price != 0}<div class="img"><img src="/assets/static_mobile/images/industry_1.png" alt=""></div>{/if}
+                                <span class="txt">{$item.title}</span>
+                                {if $item.flag == 'hot'}<span class="hot">HOT~</span>{/if}
+                            </div>
+                            <div class="msg">知识简介：{$item.description}</div>
+                            <div class="region">来源：{$item.source}</div>
+                            <div class="btn">查看详情 >></div>
+                        </div>
+                    </a>
+                </li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+    <script>
+        let page = 1;
+        function search() {
+            $(".recipe-list-box").html('');
+            page = 0;
+            loadData();
+        }
+
+        function change(obj) {
+            $('#category-value').val($(obj).val());
+        }
+
+        $(function() {
+            $('#category—type').change(function () {
+                $('.category-industrial_cleaning_agent').css('display', 'none');
+                $('.category-the_surface_film').css('display', 'none');
+                $('.category-post_processing').css('display', 'none');
+                $('.category-').css('display', 'none');
+                $('.category-' + $(this).val()).css('display', '');
+                $('.category-industrial_cleaning_agent select').get(0).selectedIndex=0;
+                $('.category-the_surface_film select').get(0).selectedIndex=0;
+                $('.category-post_processing select').get(0).selectedIndex=0;
+                $('#category-value').val('');
+            })
+
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let keywords = $("#keywords").val();
+            let category = $("#category").val();
+            let tags = $("#tags").val();
+            let category_type = $("#category—type").val();
+            let category_value = $("#category-value").val();
+            let param = {page:page, keywords:keywords, 'filter[category]':category, tag:tags, category_type:category_type, category_value:category_value};
+            $.get("{:url('/mobile/channel/konwledge')}", param, function(res){
+                res.data = res.data.data;
+                let html = '';
+                for (let i = 0; i < res.data.length; i++) {
+                    html += '<li class="list">\n' +
+                        '                    <a href="/mobile/archives/'+res.data[i].id+'.html" class="item">\n';
+                    if (res.data[i].image != '' && res.data[i].image != '/public') {
+                        html += '<div class="img-box"><img src="'+res.data[i].image+'" alt="'+res.data[i].title+'"></div>\n';
+                    }
+                    html += '                        <div class="info-box">\n' +
+                        '                            <div class="title">\n';
+                    if (res.data[i].price != 0) {
+                        html += '<div class="img"><img src="/assets/static_mobile/images/industry_1.png" alt=""></div>';
+                    }
+                    html += '<span class="txt">'+res.data[i].title+'</span>\n';
+                    if (res.data[i].flag == 'hot') {
+                        html += '<span class="hot">HOT~</span>';
+                    }
+                    html += '                            </div>\n' +
+                        '                            <div class="msg">知识简介：'+res.data[i].description+'</div>\n' +
+                        '                            <div class="region">来源：'+res.data[i].source+'</div>\n' +
+                        '                            <div class="btn">查看详情 >></div>\n' +
+                        '                        </div>\n' +
+                        '                    </a>\n' +
+                        '                </li>';
+                }
+                $(".recipe-list-box").append(html);
+            });
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="1"/}

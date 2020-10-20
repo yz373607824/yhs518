@@ -1,0 +1,32 @@
+{include file="public/head" isMember="0" /}
+
+<div class="wxp level-1">
+    <div class="wp1200">
+        {include file="enterprise/banner" /}
+
+        <ul class="nav-wrap">
+            {include file="enterprise/nav" /}
+        </ul>
+        <div class="silver-wrap clearfloat">
+            <div class="common-left-block">
+                <div class="silver-con{if isset($list)} pb30{/if}">
+                    <div class="silver-title">
+                        <span class="circle-icon"></span>
+                        <span class="silver-t">{$column}</span>
+                    </div>
+                    {__CONTENT__}
+                </div>
+            </div>
+            <div class="common-adv-sidebar">
+                <div class="adv-banner-box">
+                    <?php $banner = get_banner(4, 5);?>
+                    {volist name="banner" id="v"}
+                    <a href="{$v.url}" target="_blank"><img src="{$v.pic}" alt="{$v.name}"></a>
+                    {/volist}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="public/footer" /}

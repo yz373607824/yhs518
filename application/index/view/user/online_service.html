@@ -1,0 +1,264 @@
+{include file="public/head" isMember="1" /}
+
+    <div class="common-member-wrap">
+        <div class="wp1200">
+            <div class="c--wrap clearfloat">
+
+                {include file="public/member_left_nav" /}
+
+                <div class="c--member-right-wrap">
+                    <div class="c--inner online-service-wrap">
+                        <h2 class="title">我的在线服务</h2>
+                        <ul class="online-service-list">
+                            {volist name='list' id='item'}
+                            <li>
+                                <div class="online-service-con">
+                                    <div class="ask-question-man">提问者：{$item.user}</div>
+                                    <div class="title-box clearfloat">
+                                        <h3>{$item.title}</h3>
+                                        <div class="date">时间：{$item.createtime|date='Y-m-d H:i', ###}</div>
+                                        {if !empty($item.file)}
+                                        <div class="download-btn">
+                                            <a href="{$item.file}" class="a-btn" target="_blank">下载附件</a>
+                                        </div>
+                                        {/if}
+                                    </div>
+                                    <div class="content-box">
+                                        <p>{$item.question_description}</p>
+                                    </div>
+                                </div>
+                                <div class="online-service-ft clearfloat">
+                                    <div class="ft-txt-box">
+                                    </div>
+                                    <div class="ft-btn-box">
+                                        {if $item.is_reply == 1}
+                                        <a href="javascript:;" data-replycontent="{$item.replycontent}" style="background-color: #ff900e;width: 120px;" class="a-btn m4 reply-view-btn">查看回复内容</a>
+                                        {elseif $item.is_rollback == 0 || $item.is_commit == 1}
+                                        <a href="javascript:;" data-id="{$item.id}" class="a-btn m4 reply-btn">回复留言</a>
+                                        {/if}
+                                        {if $item.is_reply == 0 && $item.is_commit == 0 && $item.is_rollback == 0 }
+                                        <a href="javascript:;" data-id="{$item.id}" class="a-btn m4 alter-btn">驳回重写</a>
+                                        {elseif $item.is_reply == 0 && $item.is_commit == 0 && $item.is_rollback == 1}
+                                        <a href="javascript:;" style="background-color: #ff900e;" class="a-btn m4">已驳回</a>
+                                        {/if}
+                                        {if empty($item.appraise) && $item.confirm_finish == 1}
+                                        <a href="javascript:;" class="a-btn m4">待评价</a>
+                                        {elseif empty($item.replyappraise) && $item.confirm_finish == 1}
+                                        <a href="#" style="background-color: #ff900e;width: 130px;" data-id="{$item.orderid}" data-star="{$item.star}" data-appraisetime="{$item.appraisetime|date='Y-m-d', ###}" data-appraise="{$item.appraise}" class="a-btn check-btn m4">查看并回复评价</a>
+                                        {elseif !empty($item.replyappraise) && $item.confirm_finish == 1}
+                                        <a href="javascript:;" style="background-color: #ff900e;" data-star="{$item.star}" data-appraisetime="{$item.appraisetime|date='Y-m-d', ###}" data-appraise="{$item.appraise}" data-replytime="{$item.replytime|date='Y-m-d', ###}" data-replyappraise="{$item.replyappraise}" class="a-btn check-view-btn m4">查看评价内容</a>
+                                        {/if}
+                                    </div>
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+                        <div class="paged">
+                            {$list->render()}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-wrap ask-question">
+            <div class="ask-question-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>回复留言</h2>
+                <form id="form1" method="post" action="/user/replyService" class="formId">
+                    <input type="hidden" name="id" id="form1-id">
+                    <div class="text-area">
+                        <div class="placeholder">
+                            <span class="red-star">*</span><span class="txt">留言：</span>
+                        </div>
+                        <textarea class="textwrap" name="replycontent" rows="7" placeholder=""></textarea>
+                    </div>
+                    <div class="submit-btn-wrap reply-submit-btn">
+                        <button type="button" class="js-btn isClick-reply">提 交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-wrap alter-wrap">
+            <div class="ask-question-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>驳回重写</h2>
+                <form id="form2" method="post" action="/user/rollbackService" class="formId">
+                    <input type="hidden" name="id" id="form2-id">
+                    <div class="text-area">
+                        <div class="placeholder">
+                            <span class="red-star">*</span><span class="txt">驳回理由：</span>
+                        </div>
+                        <textarea class="textwrap" name="rollbackcontent" rows="7" placeholder=""></textarea>
+                    </div>
+                    <div class="submit-btn-wrap">
+                        <button type="button" style="background-color: #db3733;" class="js-btn isClick-rollback">提 交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-wrap check-evaluation">
+            <div class="check-evaluation-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>查看评价</h2>
+                <ul class="comment-list-block" style="padding-left: 0px;">
+                    <li class="comment-item clearfloat">
+                        <div class="comment-inner">
+                            <div class="header clearfloat">
+                                <div class="star-rate">
+
+                                </div>
+                                <div class="date"></div>
+                            </div>
+                            <div class="content">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <form id="form3" action="" method="post">
+                    <input type="hidden" name="id" id="form3-id">
+                    <div class="text-area">
+                        <textarea rows="6" name="replyappraise" class="textarea" placeholder="填写回复评价"></textarea>
+                    </div>
+                    <div class="btn-box reply-submit-btn">
+                        <button type="button" class="sub-btn">确认提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="bg" id="overlay"></div>
+    </div>
+    <script>
+        $(function() {
+            $('.alter-btn').on('click', function() {
+                $('#form2-id').val($(this).attr('data-id'));
+                $('.alter-wrap').addClass('md-show')
+            })
+
+            $('.check-btn').on('click', function() {
+                var html = '<span>星级评价：</span>';
+                var star = $(this).attr('data-star');
+                for (var i = 0; i < star; i++) {
+                    html += '<img style="padding-right: 5px;" src="/assets/static/images/star.jpg" alt="">';
+                }
+
+                $('.star-rate').html(html);
+                $('.content').html('<p>' + $(this).attr('data-appraise') + '</p>');
+                $('.date').html($(this).attr('data-appraisetime'));
+                $('#form3-id').val($(this).attr('data-id'));;
+                $('textarea[name=replyappraise]').val('');
+                $('.reply-submit-btn').css('display', '');
+                $('.check-evaluation').addClass('md-show')
+            })
+
+            $('.check-view-btn').on('click', function() {
+                var html = '<span>星级评价：</span>';
+                var star = $(this).attr('data-star');
+                for (var i = 0; i < star; i++) {
+                    html += '<img style="padding-right: 5px;" src="/assets/static/images/star.jpg" alt="">';
+                }
+
+                $('.star-rate').html(html);
+                $('.content').html('<p>' + $(this).attr('data-appraise') + '</p>');
+                $('.date').html($(this).attr('data-appraisetime'));
+                $('textarea[name=replyappraise]').val($(this).attr('data-replyappraise'));
+                $('.reply-submit-btn').css('display', 'none');
+                $('.check-evaluation').addClass('md-show')
+            })
+
+            $('.isClick-rollback').on('click', function() {
+                if ($("textarea[name='rollbackcontent']").val() == "") {
+                    showmsg('驳回理由不能为空');
+                    return false;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    data: $('#form2').serialize(),
+                    url: '/user/rollbackService',
+                    cache:false,
+                    dataType:'json',
+                    success: function (data) {
+                        $('.alter-wrap').removeClass('md-show')
+                        showmsg(data.msg, 'refresh')
+                    },
+                    error: function () {
+                        showmsg('网络错误')
+                    }
+                })
+            })
+
+            $('.sub-btn').on('click', function() {
+                if ($("textarea[name='replyappraise']").val() == "") {
+                    showmsg('回复内容不能为空');
+                    return false;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    data: $('#form3').serialize(),
+                    url: '/user/replyAppraise',
+                    cache:false,
+                    dataType:'json',
+                    success: function (data) {
+                        $('.check-evaluation').removeClass('md-show')
+                        showmsg(data.msg, 'refresh')
+                    },
+                    error: function () {
+                        showmsg('网络错误')
+                    }
+                })
+            })
+
+            $('.isClick-reply').on('click', function() {
+                if ($("textarea[name='replycontent']").val() == "") {
+                    showmsg('回复内容不能为空');
+                    return false;
+                }
+
+                $('.ask-question').removeClass('md-show')
+                $.ajax({
+                    type: 'post',
+                    data: $('#form1').serialize(),
+                    url: '/user/replyService',
+                    cache:false,
+                    dataType:'json',
+                    success: function (data) {
+                        showmsg(data.msg, 'refresh')
+                    },
+                    error: function () {
+                        showmsg('网络错误')
+                    }
+                })
+            })
+
+            $('#cancel').on('click', function() {
+                $('.alter-wrap').removeClass('md-show')
+            })
+
+            $('.reply-btn').on('click', function() {
+                $('.reply-submit-btn').css('display', 'block');
+                $('#form1-id').val($(this).attr('data-id'));
+                $('textarea[name=replycontent]').val('');
+                $('.ask-question').addClass('md-show')
+            })
+
+            $('.reply-view-btn').on('click', function() {
+                $('.reply-submit-btn').css('display', 'none');
+                $('textarea[name=replycontent]').val($(this).attr('data-replycontent'));
+                $('.ask-question').addClass('md-show')
+            })
+
+            $('.modal-close').on('click', function() {
+                $('.alter-wrap').removeClass('md-show')
+                $('.check-evaluation').removeClass('md-show')
+                $('.ask-question').removeClass('md-show')
+                $(':input', '.formId')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+            })
+        })
+    </script>
+
+{include file="public/footer"  /}

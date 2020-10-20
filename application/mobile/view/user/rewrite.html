@@ -1,0 +1,90 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="member">
+        <div class="rewrite-wrap">
+            <div class="p">{$online.rollbackcontent}</div>
+            <form id="form1" action="{:url('/mobile/user/resumitOnline')}" method="post">
+                {:token()}
+                <input type="hidden" name="id" value="{$online.id}">
+                <div class="text-area">
+                    <div class="textarea-word">问题描述<span class="red-star">*</span>：</div>
+                    <textarea rows="8" class="textarea" name="question_description"  datatype="*" nullmsg="请填写问题描述"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">附件上传</div>
+                        <div class="input-box">
+                            <input type="text" readonly name="file" class="file-input-val">
+                        </div>
+                    </div>
+                    <div class="row-right">
+                        <div class="file-box">
+                            <input type="file" class="file">点击上传
+                        </div>
+                    </div>
+                </div>
+                <a href="javascript:;" class="btn">确认提交</a>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+    <script>
+        $(function() {
+            $('.file').on('change', function() {
+                var file = $(this).get(0).files[0]
+                var uploading = false;
+                var formData = new FormData();
+                formData.append("file", file);
+                if(uploading){
+                    return false;
+                }
+                $.ajax({
+                    url : '/index/ajax/upload',
+                    type : 'POST',
+                    data : formData,
+                    contentType: false,
+                    processData: false,
+                    dataType : 'json',
+                    beforeSend: function(){
+                        uploading = true;
+                    },
+                    success : function(data){
+                        if (data.code == 1) {
+                            $('.file-input-val').val(data.data.url)
+                        } else {
+                            showmsg(data.msg)
+                        }
+                        uploading = false;
+                    }
+                });
+            })
+
+            $.Tipmsg.r = null;
+            $('#form1').Validform({
+                btnSubmit:".btn",
+                tipSweep: true,
+                ajaxPost: true,
+                tiptype: function (msg, o, cssctl) {
+                    if (!o.obj.is("form")) {
+                        var objtip = o.obj.siblings(".checktip");
+                        cssctl(objtip, o.type);
+                        showmsg(msg);
+                        return false;
+                    }
+                },
+                callback: function (data) {
+                    showmsg(data.msg);
+                    if (data.code == 1) {
+                        window.history.back();
+                    } else {
+                        $('input[name=__token__]').val(data.data.token);
+                    }
+                }
+            });
+        })
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

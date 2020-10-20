@@ -1,0 +1,59 @@
+{include file="public/head" isMember="0" /}
+
+    <div class="common-page-content">
+        <div class="wp1200">
+            <?php $banner = get_banner(10,1);?>
+            {volist name='banner' id='item'}
+            <a href="{$item.url}" class="article-banner-wrap" target="_blank">
+                <img src="{$item.pic}" alt="{$item.name}">
+            </a>
+            {/volist}
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/channel/analysis')}" class="bread-hover">配方</a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/channel/analysis')}" class="bread-hover">技术分享</a>
+            </div>
+            <div class="recipe-analysis-wrap clearfloat">
+                <div class="common-left-block">
+                    <div class="tab-filter-wrap">
+                        <div class="tab-list">
+                            <div class="tab-item"><a href="{:url('/channel/formula')}">配方获取</a></div>
+                            <div class="tab-item"><a href="{:url('/channel/analysis')}" class="on">技术分享</a></div>
+                        </div>
+                        <div class="filter-block">
+                            <div class="supply-search-block clearfloat">
+                                <div class="input-box">
+                                    <i class="iconfont icon-sousuo1"></i>
+                                    <input type="text" id="keywords" value="{$keywords}" placeholder="请输入标题">
+                                </div>
+                                <div class="btn"><a href="javascript:location.href='{:url(\'/channel/analysis\')}' + '?keywords=' + $('#keywords').val();">搜索</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-analysis-row">
+                        <?php $alist = get_list(19, 73, 1, 1, 'is_recommend');?>
+                        <?php !empty($alist[0]['valid_time']) && $alist[0]['valid_time'] != '0000-00-00 00:00:00' && date('Y-m-d H:i:s') > $alist[0]['valid_time'] ? $alist = NULL : '';?>
+                        {volist name="alist" id="item"}
+                            <a href="{$item.link}" target="_blank" class="inner-recipe-analysis"><img src="{$item.pic}" alt="{$item.title}"></a>
+                        {/volist}
+                    </div>
+                    <ul class="recipe-analysis-list">
+                        {volist name='$__PAGELIST__' id='item'}
+                        <li><a href="{$item.link}" target="_blank" class="item"><img src="{$item.image}" alt="{$item.title}"></a></li>
+                        {/volist}
+                    </ul>
+
+                    <div class="paged">
+                        {$__PAGELIST__->render()}
+                    </div>
+                </div>
+                {include file="public/formula_adv_sidebar" /}
+            </div>
+        </div>
+    </div>
+
+{include file="public/footer"  /}

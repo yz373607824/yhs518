@@ -1,0 +1,113 @@
+{include file="public/head" isMember="1" /}
+
+    <div class="common-member-wrap">
+        <div class="wp1200">
+            <div class="c--wrap clearfloat">
+
+                {include file="public/member_left_nav" /}
+
+                <div class="c--member-right-wrap">
+                    <div class="c--inner online-service-wrap">
+                        <h2 class="title">在线服务抢单</h2>
+                        <ul class="online-service-list">
+                            {volist name='list' id='item'}
+                            <li>
+                                <div class="online-service-con">
+                                    <div class="title-box clearfloat">
+                                        <h3>{$item.title}<span style="color: #db3733;">(￥{$item.totalprice})</span></h3>
+                                        <div class="date">时间：{$item.createtime|date='Y-m-d', ###}</div>
+                                        {if !empty($item.file)}
+                                        <div class="download-btn">
+                                            <a href="{$item.file}" class="a-btn" target="_blank">下载附件</a>
+                                        </div>
+                                        {/if}
+                                    </div>
+                                    <div class="content-box">
+                                        <p>{$item.question_description}</p>
+                                    </div>
+                                </div>
+                                <div class="online-service-ft clearfloat">
+                                    <div class="ft-txt-box">
+                                        {if empty($item.expert_id) }
+                                        <span class="red">等待{if $item.level == 1}工程师{elseif $item.level == 2}高级工程师{elseif $item.level == 3}专家{/if}抢单，耐心等待...</span>
+                                        {/if}
+                                    </div>
+                                    <div class="ft-btn-box">
+                                        {if empty($item.expert_id) }
+                                        <a href="javascript:;" data-id="{$item.id}" class="a-btn m4 alter-btn rob-btn">抢单</a>
+                                        {else}
+                                        <a href="{if $item.expert_id == $user.expert_id }/index/user/onlineService.html{else}javascript:;{/if}" class="a-btn m4 {if $item.expert_id == $user.expert_id }robing-btn{else}robed-btn{/if}">已抢单</a>
+                                        {/if}
+                                    </div>
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+                        <div class="paged">
+                            {$list->render()}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-wrap alter-wrap">
+            <div class="alter-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>提示</h2>
+                <form id="form1" action="/user/experdGrabOrder" method="post" class="formId">
+                    {:token()}
+                    <input type="hidden" name="id" id="id">
+                    <p class="tip-t">请确认是否抢单？</p>
+                    <div class="btn-box clearfloat">
+                        <button type="button" id="confirm">是</button>
+                        <button type="button" id="cancel">否</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="bg" id="overlay"></div>
+    </div>
+    <script>
+        $(function() {
+            $('.alter-btn').on('click', function() {
+                $('#id').val($(this).attr('data-id'));
+                $('.alter-wrap').addClass('md-show')
+            })
+
+            $('#confirm').on('click', function() {
+                $('.alter-wrap').removeClass('md-show')
+                $.ajax({
+                    type: 'post',
+                    data: $('#form1').serialize(),
+                    url: '/user/experdGrabOrder',
+                    cache:false,
+                    dataType:'json',
+                    success: function (data) {
+                        if (data.code == 1) {
+                            showmsg(data.msg, "{:url('/user/onlineService')}")
+                        } else {
+                            showmsg(data.msg, "refresh")
+                        }
+                    },
+                    error: function () {
+                        showmsg('网络错误')
+                    }
+                })
+            })
+
+            $('#cancel').on('click', function() {
+                $('.alter-wrap').removeClass('md-show')
+            })
+
+            $('.modal-close').on('click', function() {
+                $('.alter-wrap').removeClass('md-show')
+                $(':input', '.formId')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+            })
+        })
+    </script>
+
+{include file="public/footer"  /}

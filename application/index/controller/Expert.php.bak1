@@ -1,0 +1,577 @@
+<?php
+
+namespace app\index\controller;
+
+use app\admin\model\expert\Locale;
+use app\admin\model\expert\Online as OnlineModel;
+use app\admin\model\expert\Online;
+use app\admin\model\Order;
+use app\admin\model\Tips;
+use app\admin\model\User;
+use app\common\controller\Frontend;
+use app\admin\model\user\Expert as ExpertModel;
+use fast\Random;
+use think\Loader;
+use think\Validate;
+
+class Expert extends Frontend
+{
+
+    protected $noNeedLogin = ['index', 'detail'];
+    protected $noNeedRight = '*';
+    protected $layout = '';
+
+    public function _initialize()
+    {
+        parent::_initialize();
+    }
+
+    /**
+     * 专家在线列表页
+     */
+    public function index()
+    {
+        $service = $this->request->get('service', null);
+        $level = $this->request->get('grade', null);
+        $adept = $this->request->get('adept', null);
+        $province = $this->request->get('province', null);
+        $city = $this->request->get('city', null);
+        $county = $this->request->get('county', null);
+        $keywords = $this->request->get('keywords', null);
+        $category_type = $this->request->param('category_type', null);
+        $category_value = $this->request->param('category_value', null);
+
+        $list = ExpertModel::alias('a')
+            ->where('a.status', '1')
+            ->where('a.deadline_starttime', '<', time())
+            ->where('a.deadline_endtime', '>', time());
+
+        if (!empty($service)) {
+            $list->where('FIND_IN_SET(:service, a.service)', ['service'=>$service]);
+        }
+        if (!empty($level)) {
+            $list->where('a.level', $level);
+        }
+        if (!empty($adept)) {
+            $list->where('FIND_IN_SET(:adept, a.relation_adept)', ['adept'=>$adept]);
+        }
+        if (!empty($province)) {
+            $list->where('a.province', $province);
+        }
+        if (!empty($city)) {
+            $list->where('a.city', $city);
+        }
+        if (!empty($county)) {
+            $list->where('a.county', $county);
+        }
+        if (!empty($keywords)) {
+            //增加精通行业/领域、专家擅长、问题、答案、描述、评论搜索条件
+            $expertOnline = db('expert_online')->whereLike('title', '%' . $keywords . '%', 'OR')
+                ->whereLike('question_description', '%' . $keywords . '%', 'OR')
+                ->whereLike('replycontent', '%' . $keywords . '%', 'OR')
+                ->column('expert_id');
+            $expertLocale = db('expert_locale')->whereLike('title', '%' . $keywords . '%', 'OR')
+                ->whereLike('question_description', '%' . $keywords . '%', 'OR')
+                ->column('expert_id');
+            $order = db('order')->where('type','in',[1,2])->whereLike('appraise|replyappraise', '%' . $keywords . '%')->column('shop_id');
+            $expertId = implode(',',array_unique(array_merge($expertOnline, $order, $expertLocale)));
+            if ($expertId) {
+                $list->where('a.nickname LIKE "%'.$keywords.'%" OR a.technosphere LIKE "%'.$keywords.'%" OR a.adept LIKE "%'.$keywords.'%" OR a.id IN ('.$expertId .')');
+            } else {
+                $list->whereLike('a.nickname|a.technosphere|a.adept', '%'.$keywords.'%');
+            }
+        }
+        //前后处理
+        if ($category_type && $category_value) {
+            $list->whereLike('a.' . $category_type, '%'.$category_value.'%');
+        }
+
+        $list = $list->join('user' . ' n', 'a.user_id=n.id', 'LEFT')
+            ->field('a.*')
+            ->field('online', false, config('database.prefix') . 'user', 'n')
+            ->order('n.online', 'desc')
+            ->order('n.loginnum', 'desc')
+            ->paginate(config('page_size.expert'), false, [
+                'query' => [
+                    'service' => $service,
+                    'level' => $level,
+                    'adept' => $adept,
+                    'province' => $province,
+                    'city' => $city,
+                    'county' => $county,
+                    'keywords' => $keywords
+                ],
+                'type' => '\\app\\common\\controller\\ExpertPage',
+            ]);
+
+        $grablist = Order::alias('a')
+            ->where('a.status', '1')
+            ->where('a.type', '1')
+            ->join('expert_online' . ' n', 'n.id=a.goods_id', 'LEFT')
+            ->whereNull('n.expert_id')
+            ->where('n.is_flag', '1')
+            ->field("n.title,n.question_description,a.totalprice")
+            ->order('n.createtime', 'desc')
+            ->limit(0, 5)
+            ->select();
+
+        $gradlist2 = Order::alias('a')
+            ->where('a.status', '1')
+            ->where('a.type', '1')
+            ->join('expert_online' . ' n', 'n.id=a.goods_id', 'LEFT')
+            ->whereNotNull('n.expert_id')
+            ->where('n.is_flag', '1')
+            ->field("n.title,n.question_description,a.totalprice")
+            ->order('n.createtime', 'desc')
+            ->limit(0, 5)
+            ->select();
+
+        foreach ($grablist as $item) {
+            $item['is_grab'] = '0';
+        }
+
+        foreach ($gradlist2 as $item) {
+            $item['is_grab'] = '1';
+            $grablist[] = $item;
+        }
+
+        $tags = model('app\admin\model\cms\Tags');
+        $tagsList = $tags->where('type', 0)->where('status', '1')->select();
+
+        $this->disposeCategory('expert');
+        $this->assign("category_type", $category_type);
+        $this->assign("category_value", $category_value);
+        $this->assign('tagsList', $tagsList);
+        $this->assign('grabList', $grablist);
+        $this->assign('list', $list);
+        $this->assign('service', $service);
+        $this->assign('grade', $level);
+        $this->assign('adept', $adept);
+        $this->assign('province', $province);
+        $this->assign('city', $city);
+        $this->assign('county', $county);
+        $this->assign('keywords', $keywords);
+        $this->assign('seo_title', '专家在线');
+        return $this->view->fetch('expert_online_list');
+    }
+
+    /**
+     * 专家在线详情页
+     */
+    public function detail()
+    {
+        $id = $this->request->param('id');
+        if (empty($id)) {
+            $this->error(__('Parameter error'));
+        }
+
+        $expert = ExpertModel::alias('a')
+            ->where('a.id', $id)
+            ->where('a.status', '1')
+            ->where('a.deadline_starttime', '<', time())
+            ->where('a.deadline_endtime', '>', time())
+            ->join('user' . ' n', 'a.user_id=n.id', 'LEFT')
+            ->field('a.*')
+            ->field('online', false, config('database.prefix') . 'user', 'n')
+            ->find();
+
+        if (empty($expert)) {
+            $this->error(__('The current record does not exist'));
+        }
+
+        $level = 'one';
+        switch ($expert['level']) {
+            case '1' :
+                $level = 'one';
+                break;
+            case '2' :
+                $level = 'two';
+                break;
+            case '3' :
+                $level = 'three';
+                break;
+        }
+
+        $this->assign('onlinePrice', config('site.online_' . $level . '_price'));
+        $this->assign('localePrice', config('site.locale_' . $level . '_price'));
+
+        //问题列表
+        $questionList = OnlineModel::where('expert_id', $expert['id'])
+            ->order('createtime', 'desc')
+            ->paginate(config('page_size.appraise'),false,[
+                'type' => '\\app\\common\\controller\\ExpertPage'
+            ]);
+        $this->assign('questionList', $questionList);
+
+        //等级的转换
+        $expert['leveltext'] = __('Level ' . $expert['level']);
+
+        //评价列表
+        /*$list = Order::alias('a')
+            ->where('a.shop_id', $id)
+            ->whereIn('type', '1,2')
+            ->whereNotNull('appraise')
+            ->where('appraise', '<>', '')
+            ->where('is_show', '1')
+            ->field('a.*')
+            ->join('user' . ' n', 'a.user_id=n.id', 'LEFT')
+            ->field('avatar,nickname', false, config('database.prefix') . 'user', 'n')
+            ->order('createtime', 'desc')
+            ->paginate(config('page_size.appraise'),false,[
+                'type' => '\\app\\common\\controller\\ExpertPage'
+            ]);
+
+        $this->assign('list', $list);*/
+        $this->assign('expert', $expert);
+        $this->assign('seo_title', $expert['nickname']);
+        return $this->view->fetch('expert_detail');
+    }
+
+    /**
+     * 专家在线提问
+     */
+    public function online()
+    {
+        $tokenName = 'online_token';
+        $row = $this->request->post('row/a');
+        $token = $this->request->post($tokenName);
+        $captcha = $this->request->post('captcha');
+
+        $rule = [
+            'title' => 'require',
+            'question_description' => 'require',
+            $tokenName => 'token:' . $tokenName,
+        ];
+
+        $msg = [
+            'title.require' => 'The title cannot be empty',
+            'question_description.require' => 'The problem description cannot be empty',
+        ];
+
+        $data = $row;
+        $data[$tokenName] = $token;
+
+        //验证图形验证码
+        $result = captcha_check($captcha);
+        if (!$result) {
+            $this->error(__('Graphic captcha error'), null, ['token' => $this->request->token($tokenName)]);
+        }
+
+        $validate = new Validate($rule, $msg);
+        $result = $validate->check($data);
+        if (!$result) {
+            $this->error(__($validate->getError()), null, ['token' => $this->request->token($tokenName)]);
+        }
+
+        $expert_id = $this->request->post('expert_id', null);
+        $onlineModel = model('app\admin\model\expert\Online');
+        if (empty($expert_id)) {
+            if (!isset($row['price'])
+                || !preg_match('/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/', $row['price'])
+                || $row['price'] < config('site.all_online_price')) {
+                $this->error(__('The current amount cannot be less than the default payment amount'), null, ['token' => $this->request->token($tokenName)]);
+            }
+            $row['is_flag'] = '1';
+            //保存表单并下单
+            $data = $this->_saveAndOrder($onlineModel, null, $row, config('order_type.online'),
+                '在线提问咨询费', 'uweb_expert_online');
+        }else{
+            $expert = ExpertModel::where('id', $expert_id)
+                ->where('deadline_starttime', '<', time())
+                ->where('deadline_endtime', '>', time())
+                ->find();
+
+            if (empty($expert)) {
+                $this->error(__('The current experts do not exist'), null, ['token' => $this->request->token($tokenName)]);
+            }
+
+            //保存表单并下单
+            $data = $this->_saveAndOrder($onlineModel, $expert, $row, config('order_type.online'),
+                '在线提问咨询费', 'uweb_expert_online');
+        }
+
+        if ($data === false) {
+            $this->error(__('Place the order failed'), null, ['token' => $this->request->token($tokenName)]);
+        }
+
+        $this->result($data, 1, __('Place an order successfully'));
+    }
+
+
+    /**
+     * 专家现场服务
+     */
+    public function locale()
+    {
+        $tokenName = 'locale_token';
+        $row = $this->request->post('row/a');
+        $token = $this->request->post($tokenName);
+        $captcha = $this->request->post('captcha');
+
+        $validate = Loader::validate('app\admin\validate\expert\Locale');
+        $data = $row;
+        $data[$tokenName] = $token;
+
+        //验证当前用户是否已经认证
+        if (!$this->auth->verify_id && !$this->auth->expert_id && !$this->auth->enterprise_id) {
+            $this->error(__('请先进行个人身份认证或专家认证或企业认证'), null, ['token' => $this->request->token($tokenName)]);
+        }
+
+        //验证图形验证码
+        $result = captcha_check($captcha);
+        if (!$result) {
+            $this->error(__('Graphic captcha error'), null, ['token' => $this->request->token($tokenName)]);
+        }
+
+        $result = $validate->check($data);
+        if (!$result) {
+            $this->error(__($validate->getError()), null, ['token' => $this->request->token($tokenName)]);
+        }
+
+        $expert_id = $this->request->post('expert_id', null);
+        $expert = ExpertModel::where('id', $expert_id)
+            ->where('deadline_starttime', '<', time())
+            ->where('deadline_endtime', '>', time())
+            ->find();
+
+        if (empty($expert)) {
+            $this->error(__('The current experts do not exist'), null, ['token' => $this->request->token($tokenName)]);
+        }
+
+        $localeModel = model('app\admin\model\expert\Locale');
+        //保存表单并下单
+        $data = $this->_saveAndOrder($localeModel, $expert, $row, config('order_type.locale'),
+            '现场服务预约费', 'uweb_expert_locale');
+
+        if ($data === false) {
+            $this->error(__('Place the order failed'), null, ['token' => $this->request->token($tokenName)]);
+        }
+
+        $this->result($data, 1, __('Place an order successfully'));
+    }
+
+    /**
+     * 异步消息推送
+     */
+    private function _asynchronousMessage($trade_sn)
+    {
+        $order = Order::get(['trade_sn' => $trade_sn]);
+
+        if ($order && $order['type'] == '1' && $order['status'] == '1') {
+            $online = OnlineModel::get($order['goods_id']);
+            $userList = ExpertModel::alias('e')
+                ->where('e.status', '1')
+                ->where('e.level', $online['level'])
+                ->join('user' . ' u', 'e.user_id=u.id', 'LEFT')
+                ->field('e.*,u.openid')
+                ->select();
+            $list = [];
+            foreach ($userList as $item) {
+                $tips = Tips::get(['user_id'=>$item->user_id, 'type'=>8]);
+                //存在则增加信息数量，否则新增
+                if ($tips) {
+                    $tips->num = $tips->num + 1;
+                    $tips->save();
+                } else {
+                    $list[] = ['user_id'=>$item->user_id, 'type' => 8];
+                }
+                $url = url('/mobile/user/grabOnlineService', '', true, true);
+                $data = ['type' => '全网提问', 'time' => date('Y-m-d H:i', $order['createtime']), 'title' => $online['title']];
+                //发送专家的微信信息
+                Frontend::sendTplMsg($item['openid'], '您好，有用户提交了全网提问，你可以抢单回答！', $url, $data);
+            }
+            if (count($list) > 0) {
+                $tips = model('app\admin\model\Tips');
+                $tips->saveAll($list);
+            }
+        }
+    }
+
+    /**
+     * 保存表单并下单
+     * @param $model 表单模型
+     * @param $expert 专家信息
+     * @param $row 表单数据
+     * @param $orderType 订单类型
+     * @param $title 标题
+     * @param $table 关联商品表
+     * @return array|bool 返回值
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    private function _saveAndOrder($model, $expert, $row, $orderType, $title, $table)
+    {
+        $orderModel = model('app\admin\model\Order');
+        $userModel = model('app\admin\model\User');
+
+        //开启事务
+        $model->startTrans();
+        $orderModel->startTrans();
+
+        $row['user_id'] = $this->auth->id;
+
+        //价格
+        $price = 0;
+
+        if (!empty($expert)) {
+            if ($this->auth->expert_id == $expert['id']) {
+                return false;
+            }
+
+            $row['expert_id'] = $expert['id'];
+            //序列化专家的基本信息和认证信息
+            $row['expert_basic'] = serialize($userModel::get($expert['user_id']));
+            $row['expert_info'] = serialize($expert);
+
+            //根据专家等级不同和订单类型设置不同的价格
+            $priceList = [
+                1=>[
+                    1=>'online_one_price',
+                    2=>'online_two_price',
+                    3=>'online_three_price',
+                ],
+                2=>[
+                    1=>'locale_one_price',
+                    2=>'locale_two_price',
+                    3=>'locale_three_price',
+                ],
+            ];
+
+            $price = config('site.' . $priceList[$orderType][$expert['level']]);
+        }else{
+            //验证金额
+            $currentPrice = config('site.' . $row['level'] . '_online_price');
+
+            if ($row['price'] < $currentPrice) {
+                return false;
+            }
+
+            $price = $row['price'];
+        }
+
+        $model->allowField(true)->save($row);
+        $goods_id = $model->getLastInsID();
+        if ($goods_id == 0) {
+            //事务回滚
+            $model->rollback();
+            return false;
+        }
+
+        //订单内容填充
+        $order['user_id'] = $this->auth->id;   //用户ID
+        if (!empty($expert)) {
+            $order['shop_id'] = $expert['id'];   //商家ID
+        }
+        $order['trade_sn'] = date('YmdHis') . Random::numeric();   //订单编号
+        $order['type'] = $orderType;   //订单类型
+        $order['title'] = $title;   //标题
+        $order['goods_table'] = $table;   //关联的商品表
+        $order['goods_id'] = $goods_id;    //关联商品表的ID
+        $order['goods_price'] = $price;    //商家价格
+        $order['totalprice'] = $price;     //订单总价格
+
+        //订单价格为0跳过支付
+        if ($price == 0) {
+            $order['paytime'] = time();
+            $order['status'] = '1';
+            //消息提醒
+            if (in_array($order['type'], ['1', '2'])) {
+
+                if ($order['type'] == 1) {
+                    $url = url('/mobile/user/onlineService', '', true, true);
+                    $user_url = url('/index/user/myAskquestion', '', true, true);
+                    $online = Online::get($order['goods_id']);
+                    $data = ['type' => '在线提问', 'time' => date('Y-m-d H:i', time()), 'title' => $online['title']];
+                } else {
+                    $url = url('/mobile/user/localeService', '', true, true);
+                    $user_url = url('/index/user/myReservation', '', true, true);
+                    $locale = Locale::get($order['goods_id']);
+                    $data = ['type' => '现场服务', 'time' => date('Y-m-d H:i', time()), 'title' => $locale['title']];
+                }
+
+                if (!empty($order['shop_id'])) {
+                    $user = User::get(['expert_id'=>$order['shop_id']]);
+                    if ($user) {
+                        $tips = Tips::get(['user_id'=>$user->id, 'type'=>$order['type']]);
+                        //存在则增加信息数量，否则新增
+                        if ($tips) {
+                            $tips->num = $tips->num + 1;
+                            $tips->save();
+                        } else {
+                            $tips = model('app\admin\model\Tips');
+                            $tips->user_id = $user->id;
+                            $tips->type = $order['type'];
+                            $tips->save();
+                        }
+                    }
+
+                    //发送专家的微信信息
+                    Frontend::sendTplMsg($user['openid'], '您好，您有一个问题需要解答，请及时处理！', $url, $data);
+                } else {
+                    $this->_asynchronousMessage($order['trade_sn']);
+                }
+
+                //发送用户的微信信息
+                Frontend::sendTplMsg($this->auth->openid, '您好，您的订单已支付，请留意专家的回复！', $user_url, $data);
+            }
+        }
+
+        $result = $orderModel->save($order);
+        if ($result === false) {
+            //事务回滚
+            $model->rollback();
+            $orderModel->rollback();
+            return false;
+        }
+
+        //事务提交
+        $model->commit();
+        $orderModel->commit();
+
+        return ['trade_sn'=>$order['trade_sn'], 'title'=>$order['title'], 'price'=>$order['totalprice']];
+    }
+
+    /**
+     * 专家在线问题详情页
+     */
+    public function expertQuestionDetail() {
+        $id = $this->request->param('id');
+        if (empty($id)) {
+            $this->error(__('Parameter error'));
+        }
+        //当前在线问题详情
+        $questionDetailInfo = Online::alias('a')
+            ->where('a.id',$id)
+            ->join('user' . ' u','a.user_id = u.id','LEFT')
+            ->join('user_expert' . ' e','a.expert_id = e.id','LEFT')
+            ->field('a.*,u.nickname,u.avatar,u.level,e.nickname as expertnickname,e.avatar as expertavatar,e.technosphere,e.achievement,e.level as expertlevel')
+            ->find();
+        //等级的转换
+        $questionDetailInfo['leveltext'] = __('Level ' . $questionDetailInfo['expertlevel']);
+        $this->assign("questionDetailInfo", $questionDetailInfo);
+        $level = 'one';
+        switch ($questionDetailInfo['expertlevel']) {
+            case '1' :
+                $level = 'one';
+                break;
+            case '2' :
+                $level = 'two';
+                break;
+            case '3' :
+                $level = 'three';
+                break;
+        }
+        $this->assign('onlinePrice', config('site.online_' . $level . '_price'));
+        $this->assign('localePrice', config('site.locale_' . $level . '_price'));
+        //追问追答
+        $questionAndAnswer = Online::alias('a')
+            ->where('a.id',$id)
+            ->join('order' . ' o','a.id = o.goods_id','LEFT')
+            ->where('o.is_show', '1')
+            ->field('o.*')
+            ->find();
+        $this->assign("questionAndAnswer", $questionAndAnswer);
+        return $this->view->fetch('expert_question_detail');
+    }
+
+}

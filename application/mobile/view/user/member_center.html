@@ -1,0 +1,322 @@
+{include file="public/head" isIndex="0" /}
+
+    <div class="member-center-wrap">
+        <div class="member-center-hd">
+            <a href="{:url('/mobile/user/profile')}" class="edit-btn"><img src="/assets/static_mobile/images/edit.png" alt=""></a>
+            <div class="left-box">
+                <div class="avatar-box">
+                    <img src="{if !empty($user.avatar)}{$user.avatar}{else}/assets/img/avatar.png{/if}" alt="">
+                </div>
+                {if $user.openid}
+                <a href="{:url('/mobile/connect/wechat')}" class="binding" style="background-color: #f0ad4e;">解绑微信</a>
+                {else}
+                <a href="{:url('/mobile/connect/wechat')}" class="binding">绑定微信</a>
+                {/if}
+            </div>
+            <div class="user-box">
+                <div class="user-name">
+                    <span class="name">{$user.nickname}</span>
+                </div>
+                <div class="p"><span class="phone">手机号码：{$user.mobile}</span><a href="{:url('/mobile/user/change_mobile')}" class="edit-number">修改</a></div>
+                <div class="p">金 豆：共 <span class="money-txt orange_gold">***</span> 豆，可提现 <span class="money-txt orange-money">***</span> 元</div>
+                <div class="p">金 币：共 <span class="money-txt">{$user.points}</span> 币</div>
+                <div class="p"><span class="pr-10">专家等级：{if isset($expert_level)}{$expert_level}{/if}</span><span>有效期：{if isset($expert_time)}{$expert_time}{/if}</span></div>
+                <div class="p"><span class="pr-10">企业等级：{if isset($enterprise_level)}{$enterprise_level}{/if}</span><span>有效期：{if isset($enterprise_time)}{$enterprise_time}{/if}</span></div>
+                <div class="btn-box">
+                    <a href="javascript:;" class="btn" id="checkMoney">查看金豆>></a>
+                    <a href="{:url('/user/getBillList')}" class="btn">查看账单明细>></a>
+<!--                    <a href="#" class="btn">投稿赚金币>></a>-->
+                </div>
+            </div>
+        </div>
+        <div class="member-center-bd">
+            <div class="row-box h-120">
+                <a href="{:url('/mobile/user/myArticle')}" class="half-box">
+                    <div class="half-inner">
+                        <span class="b-t">{$articleNum}</span>
+                        <span class="s-t">我的配方</span>
+                    </div>
+                </a>
+                <a href="{:url('/mobile/user/myAskquestion')}" class="half-box">
+                    <div class="half-inner">
+                        <span class="b-t">{$onlineNum}</span>
+                        <span class="s-t">我的咨询服务</span>
+                    </div>
+                </a>
+            </div>
+            <div class="row-box">
+                {if empty($user.verify_id)}
+                <a href="{:url('/mobile/user/idAuthentication')}" class="inner">
+                    填写&nbsp;<span class="red-txt">身份证号</span>，进行个人身份认证>>
+                    <i class="iconfont icon-jiantouyou"></i>
+                </a>
+                {else}
+                <a href="{:url('/mobile/user/idAuthentication')}" class="inner">
+                    查看&nbsp;<span class="red-txt">个人身份认证</span> 信息>>
+                    <i class="iconfont icon-jiantouyou"></i>
+                </a>
+                {/if}
+            </div>
+            <div class="row-box">
+                {if empty($user.expert_id)}
+                <a href="{:url('/mobile/user/expertApplication')}" class="inner">
+                    立即&nbsp;<span class="red-txt">成为专家</span>，为广大企业/用户解决更多难题>>
+                    <i class="iconfont icon-jiantouyou"></i>
+                </a>
+                {else}
+                <a href="{:url('/mobile/user/expertApplication')}" class="inner">
+                    查看&nbsp;<span class="red-txt">专家认证</span> 信息>>
+                    <i class="iconfont icon-jiantouyou"></i>
+                </a>
+                {/if}
+            </div>
+            <div class="row-box">
+                <a href="{:url('/mobile/user/my_tips')}" class="inner">
+                    <div class="message">
+                        <span class="txt">消息提醒</span>
+                        <?php $msgNum = get_msg_num($user['id']);?>
+                        {if $msgNum > 0}
+                        <div class="num-icon">{$msgNum}</div>
+                        {/if}
+                    </div>
+                    <i class="iconfont icon-jiantouyou"></i>
+                </a>
+            </div>
+            <div class="member-list-box">
+                <div class="title">我是工程师</div>
+                <ul>
+                    <li>
+                        <a href="{:url('/mobile/user/expertApplication')}">
+                            <span class="txt">我的认证信息</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('/mobile/user/onlineService')}">
+                            <span class="txt">我的在线服务</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('/mobile/user/localeService')}">
+                            <span class="txt">我的现场服务</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('/mobile/user/grabOnlineService')}">
+                            <span class="txt">在线服务抢单</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="member-list-box">
+                <div class="title">我的企业</div>
+                <ul>
+                    <li>
+                        <a href="{:url('index/user/enterprise')}">
+                            <span class="txt">企业认证信息</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    {if $user.enterprise_id}
+                    <li>
+                        <a href="{:url('index/user/enterprise_contact')}">
+                            <span class="txt">联系信息</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('index/user/honor')}">
+                            <span class="txt">荣誉资质</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    {/if}
+                    <li>
+                        <a href="/archives/157.html">
+                            <span class="txt">申请王者供应商</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    {if $user.enterprise_id}
+                    <li>
+                        <a href="{:url('index/user/purchase')}">
+                            <span class="txt">我的求购</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('index/user/supply')}">
+                            <span class="txt">供应信息</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('index/user/recruit')}">
+                            <span class="txt">人才招聘</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('index/user/leave_message')}">
+                            <span class="txt">我收到的留言</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('index/user/enterprise_order')}">
+                            <span class="txt">我收到的活动订单</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('index/user/activity')}">
+                            <span class="txt">我要发布开仓放粮</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    {else}
+                    <li>
+                        <a href="{:url('index/user/enterprise')}">
+                            <span class="txt">发布产品</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    {/if}
+                </ul>
+            </div>
+            <div class="member-list-box">
+                <div class="title">我的订单记录</div>
+                <ul>
+                    <li>
+                        <a href="{:url('/mobile/user/myArticle')}">
+                            <span class="txt">我的配方</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('/mobile/user/myKonwledge')}">
+                            <span class="txt">我的知识</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('/mobile/user/myAskquestion')}">
+                            <span class="txt">我的咨询</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('/mobile/user/myReservation')}">
+                            <span class="txt">我的服务</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('/index/user/activity_order')}">
+                            <span class="txt">我提交过的开仓放粮订单</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="member-list-box">
+                <div class="title">我要投稿</div>
+                <ul>
+                    <li>
+                        <a href="{:url('index/user/formula')}">
+                            <span class="txt">我要投稿配方</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:url('index/user/knowledge')}">
+                            <span class="txt">我要投稿知识库</span>
+                            <i class="iconfont icon-jiantouyou"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row-box">
+                <a href="{:url('index/user/job_wanted')}" class="inner">
+                    <span class="inner-txt">我要求职</span>
+                    <i class="iconfont icon-jiantouyou"></i>
+                </a>
+            </div>
+            <div class="row-box">
+                <a href="{:url('/mobile/user/myCollect')}" class="inner">
+                    <span class="inner-txt">我的收藏</span>
+                    <i class="iconfont icon-jiantouyou"></i>
+                </a>
+            </div>
+            <div class="row-box">
+                <a href="{:url('/mobile/user/takeCashList')}" class="inner">
+                    <span class="inner-txt">我的提现</span>
+                    <i class="iconfont icon-jiantouyou"></i>
+                </a>
+            </div>
+            <div class="row-box">
+                <a href="{:url('index/user/message')}" class="inner">
+                    <span class="inner-txt">平台群发</span>
+                    <i class="iconfont icon-jiantouyou"></i>
+                </a>
+            </div>
+            <div class="row-box">
+                <a href="http://wpa.qq.com/msgrd?v=3&uin=1185588894&site=qq&menu=yes" class="inner">
+                    <span class="inner-txt">vip联盟客服</span>
+                    <i class="iconfont icon-jiantouyou"></i>
+                </a>
+            </div>
+            <div class="row-box">
+                <a href="http://wpa.qq.com/msgrd?v=3&uin=779088800&site=qq&menu=yes" class="inner">
+                    <span class="inner-txt">咨询·投诉·反馈</span>
+                    <i class="iconfont icon-jiantouyou"></i>
+                </a>
+            </div>
+            <a href="{:url('/mobile/user/logout')}" class="exit-login-btn">退出登录</a>
+        </div>
+        <div class="modal-wrap">
+            <div class="js-bg"></div>
+            <div class="modal-content">
+                <div class="title">查看可用金豆</div>
+                <div class="content-box">
+                    <form action="" id="form">
+                        <div class="input-box">
+                            <input type="text" class="input" id="amount-number" placeholder="输入身份证后六位">
+                        </div>
+                        <div class="btn-box">
+                            <button type="button" class="btn cancel">取消</button>
+                            <button type="button" class="btn confirm">确认</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            $('#checkMoney').on('click', function() {
+                $('.modal-wrap').stop('true', 'true').fadeIn('linear')
+            })
+            $('.js-bg, .cancel').on('click', function() {
+                $(this).parents('.modal-wrap').stop('true', 'true').fadeOut('linear')
+                document.getElementById('form').reset()
+            })
+
+            $('.confirm').click(function () {
+                $.post('/mobile/user/getAmount', {number:$('#amount-number').val()}, function (data) {
+                    if (data.code == 1) {
+                        $('.orange_gold').html(data.data.gold);
+                        $('.orange-money').html(data.data.amount);
+                        $('.js-bg').trigger('click');
+                    } else {
+                        showmsg(data.msg);
+                    }
+                })
+            })
+        })
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="1"/}

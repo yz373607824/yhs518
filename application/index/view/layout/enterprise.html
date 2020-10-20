@@ -1,0 +1,35 @@
+{include file="public/head" isMember="0" /}
+
+<div class="wxp level-{$level}">
+
+    {include file="enterprise/banner" /}
+
+    <ul class="level-nav-wrap">
+        {include file="enterprise/nav" /}
+    </ul>
+
+    <div class="level-article-wrap">
+        <div class="wp1200 por">
+            <div class="left-img-box"><img src="/assets/static/images/level_l_shadow.png" alt=""></div>
+            <div class="right-img-box"><img src="/assets/static/images/level_r_shadow.png" alt=""></div>
+            <div class="bottom-img-box"><img src="/assets/static/images/level_b_shadow.png" alt=""></div>
+            <div class="level-article-box">
+                <div class="level-common-wrap{if in_array(request()->action(), ['detail'])} pt30{/if}">
+                    <div class="level-article-title">
+                        <div class="title">
+                            <div class="tt-box">
+                                {$info.company}
+                                <div class="img"><img src="/assets/static/images/level/level_{$info.level}.png" alt=""></div>
+                            </div>
+                        </div>
+                        <div class="title-img"><img src="/assets/static/images/level_title_decoration.png" alt="{$info.company}"></div>
+                    </div>
+                    {__CONTENT__}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{include file="public/footer" /}

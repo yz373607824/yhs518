@@ -1,0 +1,17 @@
+<div class="content">
+    <div class="product-box clearfloat">
+        <div class="info-box">
+            <div class="h3">{$read.title}</div>
+            <div class="msg">产品规格：{$read.standard}</div>
+            <div class="msg">数量： {$read.number} {$read.unit}</div>
+            <div class="msg">联系人： {$read.contacts}</div>
+            <div class="msg">联系电话： {$read.tel}</div>
+            <div class="msg">采购截止日期： {$read.end_time}</div>
+            <a href="{:url('enterprise/contact', ['id' => $info['id']])}" class="contact-btn">联系方式</a>
+        </div>
+    </div>
+    <div class="prodect-detail-box">
+        <div class="h3">产品要求</div>
+        {$read.content}
+    </div>
+</div>

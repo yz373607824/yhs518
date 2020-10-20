@@ -1,0 +1,19 @@
+<ul class="buy-products-list clearfloat">
+    {volist name="list" id="v"}
+    <li>
+        <a href="{:url('enterprise/purchase_detail', ['id' => $info['id'], 'itemid' => $v['id']])}">
+            <div class="title-box">{$v.title}</div>
+            <div class="info-box clearfloat">
+                <div class="info">
+                    <p>采购数量/{$v.unit}</p>
+                    <p><span class="strong">{$v.number}</span>{$v.unit}</p>
+                </div>
+                <div class="btn">查看详情</div>
+            </div>
+        </a>
+    </li>
+    {/volist}
+</ul>
+<div class="paged">
+    {$paged}
+</div>

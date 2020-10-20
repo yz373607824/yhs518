@@ -1,0 +1,68 @@
+<template src="../public/head.html" basePath="../../" navPath="./" indexPath="../">
+    {
+    "title": "我要提问"
+    }
+</template>
+
+<template src="../public/nav_header.html" basePath="../../" navTitle="我要提问"></template>
+
+<div id="member">
+    <div class="background"></div>
+    <div class="ask-questions-wrap">
+        <form action="">
+            <div class="form-row">
+                <div class="row-left">
+                    <div class="left-txt">标题<span class="red-star">*</span></div>
+                    <div class="input-box">
+                        <input type="text" class="input">
+                    </div>
+                </div>
+            </div>
+            <div class="text-area">
+                <div class="textarea-word">问题描述<span class="red-star">*</span></div>
+                <textarea rows="8" class="textarea"></textarea>
+            </div>
+            <div class="form-row">
+                <div class="row-left">
+                    <span class="left-txt">附件上传</span>
+                    <input type="text" readonly value="" class="file-input-val">
+                </div>
+                <div class="row-right">
+                    <div class="file-box">
+                        <input type="file" class="file">点击上传
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="row-left">
+                    <span class="left-txt">验证码</span>
+                    <input type="text" value="" class="file-input-val">
+                </div>
+                <div class="row-right">
+                    <div class="yzm-box">
+                        <img src="../../images/yzm_01.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="annotation">备注：需要支付 <span class="money-red">5</span> 元</div>
+            <div class="agree-box">
+                <input type="checkbox" id="checkbox_01" class="checkbox">
+                <label for="checkbox_01" class="label-checkbox"><span class="checkbox-txt">我已了解并同意</span><a href="#">提问须知</a></label>
+            </div>
+            <a href="#" class="btn">确认提交及支付</a>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.file').on('change', function () {
+            var file = $(this).get(0).files[0]
+            var fileName = file.name
+
+            $(this).parents('.form-row').find('.file-input-val').val(fileName)
+        })
+    })
+</script>
+
+<template src="../public/footer.html" basePath="../../"></template>

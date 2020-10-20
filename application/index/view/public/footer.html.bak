@@ -1,0 +1,205 @@
+
+<div class="footer level-{if isset($level)}{$level}{else}0{/if}">
+    <div class="footer-hd">
+        <div class="wp1200">
+            <div class="inner-footer-hd clearfloat">
+                <div class="friendly-txt">友情链接：</div>
+                <div class="friendly-list">
+                    <?php $list = get_list(5, 53, 100);?>
+                    {volist name="list" id="item"}
+                    <a href="{$item.link}" target="_blank" class="friendly-item">{$item.title}</a>
+                    {/volist}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bd">
+        <div class="wp1200">
+            <div class="inner-footer-bd clearfloat">
+                <div class="left-wrap">
+                    <dl>
+                        <dt>合作共享</dt>
+                        <dd><a href="{:url('/index/user/register')}">新用户注册</a></dd>
+                        <dd><a href="{:url('/archives/293')}">加入我们</a></dd>
+                        <dd><a href="{:url('/archives/294')}">联系我们</a></dd>
+                    </dl>
+                    <dl>
+                        <dt>关于我们</dt>
+                        <dd><a href="{:url('/archives/202')}">说化有益</a></dd>
+                        <dd><a href="{:url('/archives/201')}">平台资源</a></dd>
+                        <dd><a href="{:url('/archives/203')}">工程师队伍</a></dd>
+                    </dl>
+                    <dl>
+                        <dt>说化指引</dt>
+                        <dd><a href="{:url('/archives/102')}">使用规则</a></dd>
+                        <dd><a href="{:url('/archives/101')}">使用流程</a></dd>
+                        <dd><a href="{:url('/channel/common_problems')}">常见问题</a></dd>
+                    </dl>
+                    <dl>
+                        <dt>服务条款</dt>
+                        <dd><a href="{:url('/channel/service_agreement')}">服务协议</a></dd>
+                        <dd><a href="{:url('/channel/legal_claim')}">法律申明</a></dd>
+                        <dd><a href="{:url('/channel/privacy_policy')}">隐私策略</a></dd>
+                    </dl>
+                    <dl>
+                        <dt>企业服务</dt>
+                        <dd><a href="{:url('/archives/204')}">王者供应商</a></dd>
+                        <dd><a href="{:url('/archives/206')}">钻石供应商</a></dd>
+                        <dd><a href="{:url('/archives/205')}">黄金供应商</a></dd>
+                    </dl>
+                </div>
+                <div class="right-wrap">
+                    <div class="ewm-block">
+                        <img src="/assets/static/images/ewm.jpg" alt="">
+                    </div>
+                    <p>微信订阅号</p>
+                    <div class="share-wrap">
+                        <div class="bdsharebuttonbox">
+                            <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                            <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                            <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                            <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+                            <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                            <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+                        </div>
+                        <script>
+                            window._bd_share_config = {
+                                "common": {
+                                    "bdSnsKey": {},
+                                    "bdText": "",
+                                    "bdMini": "2",
+                                    "bdMiniList": false,
+                                    "bdPic": "",
+                                    "bdStyle": "0",
+                                    "bdSize": "16"
+                                },
+                                "share": {}
+                            };
+                            with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-ft">
+        <div class="wp1200">
+            <div class="inner-footer-ft clearfloat">
+                <div class="left-box">
+<!--                    <div class="left-txt1">全国统一销售热线：4006-888-378 ( 星期一至周五：8:30-17:30 )</div>-->
+                    <div class="left-txt2">
+                        Copyright ©2018-2019 有化说信息科技（深圳）有限公司
+                        <a target="_blank" href="http://www.miitbeian.gov.cn" class="com-link">粤ICP备19017965号</a>
+<!--                        网站建设：-->
+<!--                        <a title="专业广州网站建设|专业深圳网站建设|优网科技"  target="_blank" href="http://www.uweb.net.cn/"  class="com-link">优网科技</a>-->
+                    </div>
+                </div>
+                <div class="right-box">
+                    <div class="icon-box">
+                        <i class="iconfont icon-QQ"></i>
+                    </div>
+                    <div class="tel-number-box">
+                        <p class="num-txt">779088800</p>
+                        <p class="min-txt">在线咨询服务</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="article-r-nav-wrap">
+        <div class="custom-service">
+            <div class="service-icon">
+                <div class="qq-icon"><img src="/assets/static/images/qq.png" alt=""></div>
+                <div class="txt">客服</div>
+            </div>
+            <div class="text-sub">
+                <a href="http://wpa.qq.com/msgrd?v=3&uin=1185588894&site=qq&menu=yes" target="_blank" class="p-box">
+                    <div class="min-qq"><img src="/assets/static/images/qq.png" alt=""></div>
+                    <div class="p-txt">VIP联盟客服</div>
+                </a>
+                <a href="http://wpa.qq.com/msgrd?v=3&uin=779088800&site=qq&menu=yes" target="_blank" class="p-box">
+                    <div class="min-qq"><img src="/assets/static/images/qq.png" alt=""></div>
+                    <div class="p-txt">咨询·投诉</div>
+                </a>
+            </div>
+        </div>
+        <ul class="r-nav-list">
+            <li>
+                <?php $banner = get_banner(53, 1);?>
+                {volist name="banner" id="v"}
+                <a href="{$v.url}" class="item bg-red">
+                    <div class="p-box">
+                        {$v.name|html_entity_decode}
+                    </div>
+                    <div class="text-sub">
+                        {$v.description|html_entity_decode}
+                    </div>
+                </a>
+                {/volist}
+
+            </li>
+            <li>
+                <a href="#" class="item">
+                    <i class="iconfont icon-erweima"></i>
+                    <div class="ewm-sub">
+                        <img src="/assets/static/images/ewm.jpg" alt="">
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('/channel/common_problems')}" class="item">
+                    <i class="iconfont icon-wenhao"></i>
+                    <div class="txt-sub">常见问题</div>
+                </a>
+            </li>
+            <li>
+                <div class="item">
+                    <i class="iconfont icon-fenxiang1"></i>
+                    <div class="share-sub">
+                        <div class="bdsharebuttonbox">
+                            <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                            <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                            <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                            <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+                            <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                            <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+                        </div>
+                        <script>
+                            window._bd_share_config = {
+                                "common": {
+                                    "bdSnsKey": {},
+                                    "bdText": "",
+                                    "bdMini": "2",
+                                    "bdMiniList": false,
+                                    "bdPic": "",
+                                    "bdStyle": "0",
+                                    "bdSize": "16"
+                                },
+                                "share": {}
+                            };
+                            with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+                        </script>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="#" class="item" id="goback_top">
+                    <i class="iconfont icon-huidaodingbu"></i>
+                    <div class="txt-sub">回到顶部</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        $(function() {
+            returnTop();
+        })
+    </script>
+</div>
+
+</body>
+<script type="text/javascript" src="/assets/static/script/core.js"></script>
+<script type="text/javascript" src="/assets/static/script/script.js"></script>
+</html>

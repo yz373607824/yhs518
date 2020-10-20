@@ -1,0 +1,160 @@
+{include file="public/head" isMember="1" /}
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+
+            {include file="public/member_left_nav" /}
+            
+            <div class="c--member-right-wrap">
+                <div class="c--inner release-form-wrap">
+                    <h2 class="title rsbl-hd clearfloat">
+                        <p class="tt">发布资质荣誉</p>
+                        <a href="{:url('index/user/honor')}" class="href">返回列表>></a>
+                    </h2>
+                    <form name="honor" action="{:url('index/user/release_honor')}" method="post">
+                        <input type="hidden" name="id" value="{$read.id}">
+                        {:token('release_honor_token')}
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">标题：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="c--member-input-box-w100">
+                                <input type="text" class="c--member--inner-input" name="row[title]"  datatype="*" nullmsg="请填写名称" value="{$read.title}">
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="cilp pl107">请进行裁剪后上传，推荐<a href="http://xiuxiu.web.meitu.com/main.html" class="cilp" target="_blank" rel="nofollow">http://xiuxiu.web.meitu.com/main.html</a></div>
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">图片：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="file-img-box">
+                                <p class="file-instr">建议图片尺寸不小于230*165，图片严禁含有联系方式。</p>
+                                <div class="upload-file-block">
+                                    {if $read.image}
+                                    <div class="outer">
+                                        <input type="hidden" name="row[image]" class="images" value="{$read.image}">
+                                        <div class="inner-file-img">
+                                            <img class="c--member-upload-img" src="{$read.image}">
+                                        </div>
+                                        <span class="c--member-remove-btn" onclick="$(this).parent().remove();$('#addimage').show()"></span>
+                                    </div>
+                                    {/if}
+                                    <div class="outer" id="addimage"{if $read.image} style="display: none"{/if}>
+                                        <div class="inner-file-img">
+                                            <i class="iconfont icon-jiahao c--member-icon-jiahao"></i>
+                                            <input type="file" class="c--member-input-file" onchange="upload(this, 1, 'row[image]')">
+                                            <input type="hidden" class="file-hidden" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">验证码：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="c--member-yam-box">
+                                <div class="yam-inner">
+                                    <input type="text" class="c--member--inner-input" name="imgcaptcha" datatype="*" nullmsg="请填写验证码">
+                                </div>
+                                <img src="{:captcha_src()}" width="140" height="42" class="yzm-img" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
+                            </div>
+                        </div>
+                        <div class="form-btn">
+                            <div class="checkbox-block">
+                                <input type="checkbox" class="ifAgree" id="ifAgree1" name="ifAgree1" value="agree" datatype="*" nullmsg="请承诺发布的信息真实有效"{if $read} checked{/if}>
+                                <label class="mark take-cash-mark" for="ifAgree1"><span class="txt">我承诺发布的信息真实有效</span></label>
+                            </div>
+                            <div class="btn-box">
+                                <button class="c--member-submit-btn">立即上传</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        //uploadImg();
+
+        $.Tipmsg.r = null;
+        $('form[name="honor"]').Validform({
+            btnSubmit:".c--member-submit-btn",
+            tipSweep: true,
+            ajaxPost:true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            callback:function(data){
+                if (data.code == 1) {
+                    showmsg(data.msg, "{:url('user/honor')}");
+                } else {
+                    showmsg(data.msg);
+                    $('input[name=release_honor_token]').val(data.data.token);
+                    $('.yzm-img').trigger('click');
+                }
+            }
+        });
+
+        $('#text').on('change keydown keyup', function () {
+            $(".js-row-txt i").html($(this).val().length)
+        })
+    })
+    var uploading = false;
+    function upload(file, one, name)
+    {
+        if(uploading){
+            return false;
+        }
+        var box = $(file).parent().parent();
+        var formData = new FormData();
+        formData.append("file", file.files[0]);
+        $.ajax({
+            url : '/index/ajax/upload',
+            type : 'POST',
+            data : formData,
+            contentType: false,
+            processData: false,
+            dataType : 'json',
+            beforeSend: function(){
+                uploading = true;
+            },
+            success : function(data){
+                if (data.code == 1) {
+                    var html = '                                    <div class="outer">\n' +
+                        '                                        <input type="hidden" name="'+ name +'" class="images" value="'+data.data.url+'">\n' +
+                        '                                        <div class="inner-file-img">\n' +
+                        '                                            <img class="c--member-upload-img" src="'+data.data.url+'">\n' +
+                        '                                        </div>\n' +
+                        '                                        <span class="c--member-remove-btn" onclick="$(this).parent().remove();' + (one == 1 ? '$(\'#addimage\').show()' : '') + '"></span>\n' +
+                        '                                    </div>';
+                    $(box).before(html);
+                    if (one == 1) {
+                        $(box).hide();
+                    }
+                    uploading = false;
+                } else {
+                    showmsg(data.msg)
+                }
+            }
+        });
+        $(file).val('')
+    }
+</script>
+
+{include file="public/footer"  /}

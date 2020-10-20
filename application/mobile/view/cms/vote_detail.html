@@ -1,0 +1,75 @@
+
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+<div id="article">
+    <div class="vote-detail-wrap">
+        <div class="vote-detail-con">
+            <div class="title">{$__ARCHIVES__.title}</div>
+            <div class="msg">
+                <div class="img-box"><img src="{$__ARCHIVES__.image}" alt="{$__ARCHIVES__.title}"></div>
+                <div class="info-box">
+                    {if $__ARCHIVES__.name}
+                    <div class="p">
+                        <div class="tt">名称：</div>
+                        <div class="word">{$__ARCHIVES__.name}</div>
+                    </div>
+                    {/if}
+                    {if $__ARCHIVES__.address}
+                    <div class="p">
+                        <div class="tt">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</div>
+                        <div class="word">{$__ARCHIVES__.address}</div>
+                    </div>
+                    {/if}
+                    {if $__ARCHIVES__.website}
+                    <div class="p">
+                        <div class="tt">网&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</div>
+                        <div class="word">
+                            <a class="web" target="_blank" href="{$__ARCHIVES__.website}">{$__ARCHIVES__.website}</a>
+                        </div>
+                    </div>
+                    {/if}
+                </div>
+            </div>
+            <div class="btn-box">
+                <div class="vote-num">
+                    <div class="img"><img src="/assets/static_mobile/images/vote_03.png" alt=""></div>
+                    <div class="p">总票数 <span class="strong">{$__ARCHIVES__.invent_vote + $__ARCHIVES__.real_vote}</span></div>
+                </div>
+                <a href="javascript:vote({$__ARCHIVES__.id})" class="vote-btn">
+                    <div class="img"><img src="/assets/static_mobile/images/vote_04.png" alt=""></div>
+                    <div class="p">{$__CHANNEL__.vote_button|default='我要投票'}</div>
+                </a>
+            </div>
+            <div class="content-box">
+                {$__ARCHIVES__.content}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function vote(id) {
+        $.ajax({
+            url : '/mobile/ajax/vote',
+            type : 'POST',
+            data : {id:id},
+            dataType : 'json',
+            success : function(data) {
+                if (data.code == 1) {
+                    showmsg(data.msg, 'jump', data.url)
+                } else {
+                    if (data.data.url == undefined) {
+
+                        showmsg(data.msg);
+                    } else {
+                        showmsg(data.msg, 'jump', data.data.url);
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

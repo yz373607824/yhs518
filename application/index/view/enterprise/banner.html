@@ -1,0 +1,25 @@
+<?php
+    //等级对应的默认广告位
+    $banner = [
+        1 => 5,
+        2 => 6,
+        3 => 7,
+        4 => 8,
+    ];
+    $default = get_banner($banner[$level], 1);
+    $default = isset($default[0]['pic']) ? $default[0]['pic'] : '';
+?>
+
+{if $level == 1}
+<div class="level-silver-banner">
+    <img src="{$info.banner|default=$default}" alt="{$info.company}">
+</div>
+{else}
+<div class="level-banner" style="background-image: url('{$info.banner|default=$default}')">
+    <!--<div class="level-banner-con">-->
+        <!--<div class="img"><img src="/assets/static/images/level/level_banner_{$level}.png" alt=""></div>-->
+        <!--<div class="h1">{$info.company}</div>-->
+        <!--<div class="p">主营产品：{$info.product}</div>-->
+    <!--</div>-->
+</div>
+{/if}

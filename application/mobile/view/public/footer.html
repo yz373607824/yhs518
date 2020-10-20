@@ -1,0 +1,81 @@
+{if condition="[isIndex] eq 1"}
+<div class="footer">
+    <div class="ft">
+        <div class="qq-service">
+            <a href="http://wpa.qq.com/msgrd?v=3&uin=1185588894&site=qq&menu=yes" class="qq-box">
+                <div class="qq-img"><img src="/assets/static_mobile/images/qq.png" alt=""></div>
+                <div class="span">vip联盟客服</div>
+            </a>
+            <a href="http://wpa.qq.com/msgrd?v=3&uin=779088800&site=qq&menu=yes" class="qq-box">
+                <div class="qq-img"><img src="/assets/static_mobile/images/qq.png" alt=""></div>
+                <div class="span">咨询·投诉·反馈</div>
+            </a>
+        </div>
+        <!--<div class="p">全国统一销售热线：4006-730-739 ( 星期一至周五：8:30-17:30 )</div>-->
+        <div class="p">Copyright ©2019 说化有益信息科技（深圳）有限公司</div>
+        <div class="p"><a target="_blank" href="http://www.beian.miit.gov.cn">粤ICP备19017965号</a></div>
+    </div>
+</div>
+{/if}
+
+
+<div class="footer-bar">
+    <ul class="bar-box">
+        <li class="box-list">
+            <a href="{:url('/mobile')}" class="list-item {if $Request.path == 'mobile/index/index' || $Request.path == 'mobile'}on{/if}">
+                <div class="icon-img"><i class="iconfont icon-home"></i></div>
+                <div class="icon-title">首页</div>
+            </a>
+        </li>
+        <li class="box-list">
+            <a href="{:url('/mobile/expert/index')}" class="list-item {if $Request.path == 'mobile/expert/index' || $Request.path == 'mobile/expert/detail'}on{/if}">
+                <div class="icon-img"><i class="iconfont icon-zhuanjia"></i></div>
+                <div class="icon-title">专家在线</div>
+            </a>
+        </li>
+        <li class="box-list">
+            <a href="{:url('/mobile/channel/formula')}" class="list-item {if $Request.path == 'mobile/channel/formula' || $Request.path == 'mobile/channel/analysis' || (isset($__CHANNEL__.diyname) && $__CHANNEL__.diyname == 'formula')}on{/if}">
+                <div class="icon-img"><i class="iconfont icon-lab"></i></div>
+                <div class="icon-title">配方</div>
+            </a>
+        </li>
+        <li class="box-list">
+            <a href="{:url('/mobile/channel/konwledge')}" class="list-item {if $Request.path == 'mobile/channel/konwledge' || (isset($__CHANNEL__.diyname) && $__CHANNEL__.diyname == 'konwledge')}on{/if}">
+                <div class="icon-img"><i class="iconfont icon-zhishi"></i></div>
+                <div class="icon-title">知识·经验</div>
+            </a>
+        </li>
+        <li class="box-list">
+            <a href="{:url('/mobile/user/index')}" class="list-item {if $Request.controller == 'User'}on{/if}">
+                <div class="icon-img"><i class="iconfont icon-gerenzhongxin_xuanzhong"></i></div>
+                <div class="icon-title">{if $user}个人中心{else}登录/注册{/if}</div>
+                <?php $msgNum = get_msg_num($user['id']);?>
+                {if $msgNum > 0}
+                <div class="{if $Request.controller != 'User'}none-{/if}active">{$msgNum}</div>
+                {/if}
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<div class="sideBar-wrap">
+<!--    <div class="box qq-box">-->
+<!--        <div class="qq-img"><img src="/assets/static_mobile/images/qq.png" alt=""></div>-->
+<!--        <a href="http://wpa.qq.com/msgrd?v=3&uin=1185588894&site=qq&menu=yes" class="word">vip联盟客服</a>-->
+<!--    </div>-->
+<!--    <div class="box qq-box">-->
+<!--        <div class="qq-img"><img src="/assets/static_mobile/images/qq.png" alt=""></div>-->
+<!--        <a href="http://wpa.qq.com/msgrd?v=3&uin=779088800&site=qq&menu=yes" class="word">咨询·投诉</a>-->
+<!--    </div>-->
+    <div class="box back-top-box" id="backTop"><i class="iconfont icon-huidaodingbu"></i></div>
+</div>
+<script>
+    $(function () {
+        footerEvent();
+    })
+</script>
+</body>
+<script type="text/javascript" src="/assets/static_mobile/script/core.js"></script>
+<script type="text/javascript" src="/assets/static_mobile/script/script.js"></script>
+</html>

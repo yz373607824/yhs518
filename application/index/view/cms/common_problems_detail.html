@@ -1,0 +1,103 @@
+{include file="public/head" isMember="0"/}
+
+    <div class="common-page-content">
+        <div class="wp1200">
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/user/index')}" class="bread-hover">底部栏目</a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/channel/' . $__CHANNEL__.diyname)}" class="bread-hover">{$__CHANNEL__.name}</a>
+            </div>
+            <div class="common-problem-wrap clearfloat">
+                <div class="common-problem-nav">
+                    <div class="title">底部栏目</div>
+                    <div class="list-box">
+                        {cms:channellist id="channel" type="son" typeid="59" orderway="asc"}
+                        <div class="list">
+                            <div class="item clearfloat">
+                                <a href="{:url($channel.url)}" class="item-txt">{$channel.name}</a>
+                                <i class="iconfont icon-jiantouyou item-icon"></i>
+                            </div>
+                            <ul class="sub-con">
+                                {cms:channellist id="item" type="son" typeid="$channel.id"}
+                                <li {if $item.id == $__CHANNEL__.id}class="active"{/if}><a href="{if $item.type == 'link'}{$item.url}{else}{:url($item.url)}{/if}">{$item.name}</a></li>
+                                {/cms:channellist}
+                            </ul>
+                        </div>
+                        {/cms:channellist}
+                    </div>
+                </div>
+                <div class="common-problem-content">
+                    <div class="news-detail-wrap">
+                        <div class="inner-news-detail">
+                            <div class="article-wrap">
+                                <div class="title-box">
+                                    <h2>{$__ARCHIVES__.title}</h2>
+<!--                                    <h3>发表时间：{$__ARCHIVES__.publishtime|date='Y-m-d', ###}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;浏览次数：{$__ARCHIVES__.views}</h3>-->
+                                    <h3>浏览次数：{$__ARCHIVES__.views}</h3>
+                                </div>
+                                <div class="con-box">{$__ARCHIVES__.content|html_entity_decode}</div>
+                            </div>
+                        </div>
+                        <ul class="news-nav-wrap clearfloat">
+                            <?php
+                                    $prev = \addons\cms\model\Archives::getPrevNext("next", $__ARCHIVES__['weigh'], $__CHANNEL__['id']);
+                                    if( !$prev ){
+                                        echo '<li><a href="javascript:;"><i class="iconfont icon-jiantouzuo"></i>上一篇</a></li>';
+                            }else{
+                            echo '<li><a href="'. url('/archives/' . $prev->id) .'"><i class="iconfont icon-jiantouzuo"></i>上一篇</a></li>';
+                            }
+                            ?>
+                            <li><a href="{:url($__CHANNEL__.url)}"><i class="iconfont icon-caidan"></i>返回列表</a></li>
+                            <?php
+                                    $next = \addons\cms\model\Archives::getPrevNext("prev", $__ARCHIVES__['weigh'], $__CHANNEL__['id']);
+                                    if( !$next ){
+                                        echo '<li><a href="javascript:;"><i class="iconfont icon-jiantouyou"></i>下一篇</a></li>';
+                            }else{
+                            echo '<li><a href="'.url('/archives/' . $next->id).'"><i class="iconfont icon-jiantouyou"></i>下一篇</a></li>';
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="big-img-box">
+            <div class="big-img-content">
+                <div class="big-close-btn"><i class="iconfont icon-fork"></i></div>
+                <div class="show-wrap" id="show_wrap">
+                    <div class="inner-show">
+                        <div class="show-img">
+                            <img src="" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="show-info">* 请使用鼠标滚轮放大图片或者移动图片位置</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            $('.list-box .list').each(function() {
+                $(this).find('.sub-con').children().each(function() {
+                    if ($(this).hasClass('active')) {
+                        $(this).parent().slideDown('linear').end().closest('.list').addClass('on')
+                    }
+                })
+            })
+            $('.list-box').on('click', '.list', function() {
+                if ($(this).hasClass('on')) {
+                    $(this).removeClass('on').find('.sub-con').slideUp('linear')
+                } else {
+                    $(this).addClass('on').find('.sub-con').slideDown('linear').end().siblings().removeClass('on').find('.sub-con').slideUp('linear')
+                }
+            })
+
+            enlargeImg();
+        })
+    </script>
+
+{include file="public/footer"  /}

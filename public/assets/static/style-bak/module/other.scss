@@ -1,0 +1,98 @@
+.fail-wrap,
+.success-wrap {
+    position: relative;
+    padding: 200px 0;
+    background-color: #edf1f4;
+    .fail-content,
+    .success-content {
+        width: 1000px;
+        height: 440px;
+        margin: 0 auto;
+        padding-top: 60px;
+        padding-bottom: 70px;
+        background-color: #fff;
+        border: 1px solid #e3e3e3;
+        border-radius: 20px;
+        box-sizing: border-box;
+    }
+    .fail-icon-box,
+    .success-icon-box {
+        width: 100%;
+        margin-bottom: 25px;
+        text-align: center;
+        .fail-img {
+            display: inline-block;
+            vertical-align: top;
+            width: 126px;
+        }
+        .success-img {
+            display: inline-block;
+            vertical-align: top;
+            width: 150px;
+        }
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+    .p1 {
+        margin-bottom: 10px;
+        line-height: 1;
+        font-size: 30px;
+        font-family: "PingFang SC";
+        color: #444;
+        text-align: center;
+    }
+    .p2 {
+        margin-bottom: 35px;
+        line-height: 1;
+        font-size: 16px;
+        font-family: "PingFang SC";
+        color: #444;
+        text-align: center;
+    }
+    .fail-btn-box {
+        width: 100%;
+        text-align: center;
+        font-size: 0;
+    }
+    .a-btn {
+        display: inline-block;
+        vertical-align: top;
+        width: 150px;
+        height: 40px;
+        margin: 0 15px;
+        line-height: 38px;
+        text-align: center;
+        font-size: 16px;
+        font-family: "PingFang SC";
+        border: 1px solid $mainColor;
+        border-radius: 19px;
+        box-sizing: border-box;
+        @include transition();
+        &.bg1 {
+            color: $mainColor;
+            background-color: #ffeded;
+        }
+        &.bg2 {
+            color: #fff;
+            background-color: #db3833;
+        }
+        &.bg3 {
+            border-color: #7bc32f;
+            color: #7bc32f;
+            background-color: #f3ffee;
+        }
+        &.bg4 {
+            border-color: #7bc32f;
+            color: #fff;
+            background-color: #7bc32f;
+        }
+        &:hover {
+            color: #fff;
+            border-color: $hoverColor;
+            background-color: $hoverColor;
+        }
+    }
+}

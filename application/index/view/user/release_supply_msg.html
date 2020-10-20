@@ -1,0 +1,314 @@
+{include file="public/head" isMember="1" /}
+
+<script type="text/javascript">
+    var require = {
+        config: {$config|json_encode}
+    };
+</script>
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+
+            {include file="public/member_left_nav" /}
+
+            <div class="c--member-right-wrap">
+                <div class="c--inner release-form-wrap">
+                    <h2 class="title rsbl-hd clearfloat">
+                        <p class="tt">发布供应信息</p>
+                        <a href="{:url('index/user/supply')}" class="href">返回发布列表>></a>
+                    </h2>
+                    <form name="supply" action="{:url('index/user/release_supply')}" method="post">
+                        <input type="hidden" name="id" value="{$read.id}">
+                        {if !$read}
+                        <input type="hidden" name="returnUrl" value="{$returnUrl}">
+                        {/if}
+                        {:token('release_supply_token')}
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">产品类别：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="multse-select-wrap" data-placeholder="请选择产品类别">
+                                <input type="hidden" id="category" name="row[category]" value="{$read.category}" datatype="*" nullmsg="请选择产品类别">
+                                <div class="view">
+                                    <span class="placeholder">请选择产品类别</span>
+                                <div class="js-view"></div>
+                                </div>
+                                <div class="select-scroller" data-scroller="01" id="scroller01">
+                                    <div class="select-list">
+                                        <?php $list = getFields(241);?>
+                                        {volist name='list' id='v'}
+                                        <a class="select-item {if strpos($read.category,$v.value) !== false}checked{/if}" data-option="{$v.value}" data-val="{$v.value}">{$v.title}</a>
+                                        {/volist}
+                                    </div>
+                                </div>
+                                <i class="iconfont icon-jiantouxia arrow"></i>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">产品标题：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="c--member-input-box-w100">
+                                <input type="text" class="c--member--inner-input" name="row[title]" datatype="*" nullmsg="请填写产品名称" value="{$read.title}">
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="cilp pl107">请进行裁剪后上传，推荐<a href="http://xiuxiu.web.meitu.com/main.html" class="cilp" target="_blank" rel="nofollow">http://xiuxiu.web.meitu.com/main.html</a></div>
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">产品图片：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="file-img-box">
+                                <p class="file-instr">建议图片尺寸不小于300*230，图片严禁含有联系方式。(推荐产品请上传图片300*300)</p>
+                                <div class="upload-file-block">
+                                    {if $read.image}
+                                    <div class="outer">
+                                        <input type="hidden" name="row[image]" class="images" value="{$read.image}">
+                                        <div class="inner-file-img">
+                                            <img class="c--member-upload-img" src="{$read.image}">
+                                        </div>
+                                        <span class="c--member-remove-btn" onclick="$(this).parent().remove();$('#addimage').show()"></span>
+                                    </div>
+                                    {/if}
+                                    <div class="outer" id="addimage"{if $read.image} style="display: none"{/if}>
+                                        <div class="inner-file-img">
+                                            <i class="iconfont icon-jiahao c--member-icon-jiahao"></i>
+                                            <input type="file" class="c--member-input-file" onchange="upload(this, 1, 'row[image]')">
+                                            <input type="hidden" class="file-hidden" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="form-row-long">
+                                <p class="row-txt">产品描述:</p>
+                                <p class="red-star">*</p>
+                            </div>
+                            <div class="row-textarea-box">
+                                <textarea rows="5" class="area" name="row[description]" datatype="*" nullmsg="请填写产品描述">{$read.description}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="form-row-long">
+                                <p class="row-txt">详情介绍:</p>
+                                <p class="red-star">*</p>
+                            </div>
+                            <div class="c--member-textarea-box" style="height: 420px;">
+                                <textarea class="form-control editor" name="content" datatype="*" nullmsg="请填写详情介绍">{$read.content}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-row mb0 clearfloat">
+                            <div class="c--member-row-tt label-self">
+                                <span class="row-txt">自定义<br>标签：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="form-row-input w680">
+                                <input type="text" class="c--member--inner-input" maxlength="15" onchange="this.value = this.value.substring(0,15)" onkeydown="this.value = this.value.substring(0,15)" onkeyup="this.value = this.value.substring(0,15)" id="text" name="row[tags]"  datatype="*" nullmsg="请填写自定义标签" value="{$read.tags}" placeholder="为了更精准找到您的文章，请填写自定义标签">
+                            </div>
+                            <div class="form-row-txt">
+                                <span class="js-row-txt"><i>{:mb_strlen($read.tags,'UTF8')}</i>/15个汉字</span>
+                            </div>
+                        </div>
+                        <p class="instr">多个以 , 隔开。例如：辛酸,十二烷基伯胺,帕唑帕尼</p>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">商品单价：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="form-row-input w260">
+                                <input type="text" class="c--member--inner-input" name="row[price]"  datatype="*" nullmsg="请填写商品售价" value="{$read.price}">
+                            </div>
+                            <p class="form-row-txt pr25">元</p>
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">单位：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="form-row-input w260">
+                                <input type="text" class="c--member--inner-input" name="row[unit]"  datatype="*" nullmsg="请填写单位" value="{$read.unit}">
+                            </div>
+                        </div>
+                        <p class="instr red">商品单价：产品单价需要和客户购买单价一致、真实有效、避免虚报单价、提高用户信誉度，一旦被客户投诉价格有虚报，您的产品将被下架处理，严重者账户被拒，请知晓。</p>
+                        {if $level != 1}
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">企业推荐位:</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="form-radio-box">
+                                <label class="form-radio-inner">
+                                    <input type="radio" name="row[is_company]" value="1" id="radio_03" {if $read.is_company == 1}checked{/if}>
+                                    <label for="radio_03" class="radio-lb">
+                                        <span>是</span>
+                                    </label>
+                                </label>
+                                <label class="form-radio-inner">
+                                    <input type="radio" name="row[is_company]" value="0" id="radio_04" {if !$read || $read.is_company == 0}checked{/if}>
+                                    <label for="radio_04" class="radio-lb">
+                                        <span>否</span>
+                                    </label>
+                                </label>
+                            </div>
+                        </div>
+                        {/if}
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">供应总量：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="form-row-input w260">
+                                <input type="number" class="c--member--inner-input" name="row[total]"  datatype="*" nullmsg="请填写供应总量" value="{$read.total}">
+                            </div>
+                            <p class="form-row-txt pr25"></p>
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">最小采购量:</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="form-radio-box">
+                                <label class="form-radio-inner">
+                                    <input type="radio" name="number" value="0" id="radio_01"{if $read.number === '0'} checked{/if}  datatype="*" nullmsg="请填写最小采购量">
+                                    <label for="radio_01" class="radio-lb">
+                                        <span>不限</span>
+                                    </label>
+                                </label>
+                                <label class="form-radio-inner">
+                                    <input type="radio" name="number" value="1" id="radio_02"{if $read.number > 0} checked{/if}  datatype="*" nullmsg="请填写最小采购量">
+                                    <label for="radio_02" class="radio-lb">
+                                        <span>至少</span>
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="form-row-input w140">
+                                <input type="number" class="c--member--inner-input" name="row[number]" id="number" nullmsg="请填写最小采购量" value="{if $read.number > 0}{$read.number}{/if}">
+                            </div>
+                        </div>
+                        <script>
+                            $('input[name="number"]').click(function () {
+                                if ($(this).val() == 1) {
+                                    $('#number').attr('datatype', '*');
+                                } else {
+                                    $('#number').removeAttr('datatype');
+                                }
+                            })
+                        </script>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">验证码：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="c--member-yam-box">
+                                <div class="yam-inner">
+                                    <input type="text" class="c--member--inner-input" name="imgcaptcha" datatype="*" nullmsg="请填写验证码">
+                                </div>
+                                <img src="{:captcha_src()}" width="140" height="42" class="yzm-img" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
+                            </div>
+                        </div>
+                        <div class="form-btn">
+                            <div class="checkbox-block">
+                                <input type="checkbox" class="ifAgree" id="ifAgree1" name="ifAgree1" value="agree" datatype="*" nullmsg="请承诺发布的信息真实有效"{if $read} checked{/if}>
+                                <label class="mark take-cash-mark" for="ifAgree1"><span class="txt">我承诺发布的信息真实有效</span></label>
+                            </div>
+                            <div class="btn-box">
+                                <button class="c--member-submit-btn">立即上传</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/static/script/multsel.js"></script>
+<script>
+    $(function () {
+        //uploadImg();
+
+        var scroller01 = new IScroll('#scroller01', {
+            scrollX: false,
+            scrollY: true,
+            scrollbars: true,
+            interactiveScrollbars: true,
+            preventDefault: false,
+            mouseWheel: true
+        })
+        var scrollerArr = [scroller01]
+        multsel(scrollerArr)
+
+        $.Tipmsg.r = null;
+        $('form[name="supply"]').Validform({
+            btnSubmit:".c--member-submit-btn",
+            tipSweep: true,
+            ajaxPost:true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            callback:function(data){
+                if (data.code == 1) {
+                    showmsg(data.msg, "{:url('user/supply')}")
+                } else {
+                    showmsg(data.msg);
+                    $('input[name=release_supply_token]').val(data.data.token);
+                    $('.yzm-img').trigger('click');
+                }
+            }
+        });
+
+        $('#text').on('change keydown keyup', function () {
+            $(".js-row-txt i").html($(this).val().length)
+        })
+    })
+    var uploading = false;
+    function upload(file, one, name)
+    {
+        if(uploading){
+            return false;
+        }
+        var box = $(file).parent().parent();
+        var formData = new FormData();
+        formData.append("file", file.files[0]);
+        $.ajax({
+            url : '/index/ajax/upload',
+            type : 'POST',
+            data : formData,
+            contentType: false,
+            processData: false,
+            dataType : 'json',
+            beforeSend: function(){
+                uploading = true;
+            },
+            success : function(data){
+                if (data.code == 1) {
+                    var html = '                                    <div class="outer">\n' +
+                        '                                        <input type="hidden" name="'+ name +'" class="images" value="'+data.data.url+'">\n' +
+                        '                                        <div class="inner-file-img">\n' +
+                        '                                            <img class="c--member-upload-img" src="'+data.data.url+'">\n' +
+                        '                                        </div>\n' +
+                        '                                        <span class="c--member-remove-btn" onclick="$(this).parent().remove();' + (one == 1 ? '$(\'#addimage\').show()' : '') + '"></span>\n' +
+                        '                                    </div>';
+                    $(box).before(html);
+                    if (one == 1) {
+                        $(box).hide();
+                    }
+                    uploading = false;
+                } else {
+                    showmsg(data.msg)
+                }
+            }
+        });
+        $(file).val('')
+    }
+</script>
+
+{include file="public/footer"  /}
+<script src="https://cdn.bootcss.com/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="/assets/js/require.js" data-main="/assets/js/require-frontend.js"></script>

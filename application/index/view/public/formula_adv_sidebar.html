@@ -1,0 +1,56 @@
+<div class="common-adv-sidebar">
+    <?php $banner = get_banner(11, 1);?>
+    {volist name="banner" id="v"}
+    <a href="{$v.url}" target="_blank" class="special-adv-wrap">
+        <img src="{$v.pic}" alt="{$v.name}">
+    </a>
+    {/volist}
+    <div class="usual-adv-wrap">
+        <div class="usual-adv-banner clearfloat">
+            <div class="h2">用户配方需求</div>
+            <a href="{:url('/channel/user_formula')}" class="ahref">了解更多需求，去发布配方</a>
+        </div>
+        <ul class="need-list-box">
+            <?php $alist = get_list(21, 99, 2);?>
+            {volist name="alist" id="item"}
+            <li class="list">
+                
+                    <h2>
+                        <a href="{:url('/archives/' . $item.id)}" target="_blank" class="item" style="font-size: 14px;">
+                        {$item.title|mb_substr=0,20}{if mb_strlen($item.title) > 20}...{/if}
+                        </a>
+                    </h2>
+                    <p class="t-p">{$item.description|mb_substr=0,48}{if mb_strlen($item.description) > 48}...{/if}</p>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+    <div class="usual-adv-wrap">
+        <div class="usual-adv-banner clearfloat">
+            <div class="h2">热门配方</div>
+            <a href="{:url('/channel/formula')}" target="_blank" class="ahref">从这里了解更多配方需求</a>
+        </div>
+        <ul class="hot-recipe-box">
+            <?php $alist = get_list(11, 70, 10, 0, 'hot_formula');?>
+            {volist name="alist" id="item"}
+            <li class="list">
+                <a href="{:url('/archives/' . $item.id)}" target="_blank" class="item clearfloat">
+                    {if !empty($item.image)}
+                    <div class="img"><img src="{$item.image}" alt="{$item.image}"></div>
+                    {/if}
+                    <div class="info-box">
+                        <h4>{if $item.price != 0}<img src="/assets/static/images/industry_2.png" alt="">{/if} {$item.title}</h4>
+                        <p>{$item.description}</p>
+                    </div>
+                </a>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+    <div class="adv-banner-box">
+        <?php $banner = get_banner(12, 5);?>
+        {volist name="banner" id="v"}
+        <a href="{$v.url}" target="_blank"><img src="{$v.pic}" alt="{$v.name}"></a>
+        {/volist}
+    </div>
+</div>

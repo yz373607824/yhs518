@@ -1,0 +1,51 @@
+{include file="public/head" isMember="0"/}
+
+    <div class="common-page-content">
+        <div class="wp1200">
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/channel/' . $__CHANNEL__.diyname)}" class="bread-hover">{$__CHANNEL__.name}</a>
+            </div>
+            <div class="common-problem-wrap clearfloat">
+                <div class="common-problem-nav">
+                    <div class="title">{$__CHANNEL__.name}</div>
+                </div>
+                <div class="common-problem-content">
+                    <div class="news-detail-wrap">
+                        <div class="inner-news-detail">
+                            <div class="article-wrap">
+                                <div class="title-box">
+                                    <h2>{$__ARCHIVES__.title}</h2>
+                                    <h3>浏览次数：{$__ARCHIVES__.views}</h3>
+                                </div>
+                                <div class="con-box">{$__ARCHIVES__.content|html_entity_decode}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="big-img-box">
+            <div class="big-img-content">
+                <div class="big-close-btn"><i class="iconfont icon-fork"></i></div>
+                <div class="show-wrap" id="show_wrap">
+                    <div class="inner-show">
+                        <div class="show-img">
+                            <img src="" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="show-info">* 请使用鼠标滚轮放大图片或者移动图片位置</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            enlargeImg();
+        })
+    </script>
+
+{include file="public/footer"  /}

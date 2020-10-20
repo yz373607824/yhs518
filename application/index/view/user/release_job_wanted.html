@@ -1,0 +1,130 @@
+{include file="public/head" isMember="1" /}
+
+<script type="text/javascript">
+    var require = {
+        config: {$config|json_encode}
+    };
+</script>
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+
+            {include file="public/member_left_nav" /}
+
+            <div class="c--member-right-wrap">
+                <div class="c--inner release-form-wrap">
+                    <h2 class="title rsbl-hd clearfloat">
+                        <p class="tt">发布求职信息</p>
+                        <a href="{:url('index/user/job_wanted')}" class="href">返回发布列表>></a>
+                    </h2>
+                    <form name="job_wanted" action="{:url('index/user/release_job_wanted')}" method="post">
+                        <input type="hidden" name="id" value="{$read.id}">
+                        <input type="hidden" name="returnUrl" value="{$returnUrl}">
+                        {:token('release_job_wanted_token')}
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">期望职位：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="c--member-input-box-w100">
+                                <input type="text" class="c--member--inner-input" name="row[title]" datatype="*" nullmsg="请填写期望职位" value="{$read.title}">
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">姓名：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="form-row-input w320">
+                                <input type="text" class="c--member--inner-input" name="row[name]" datatype="*" nullmsg="请填写姓名" value="{$read.name}">
+                            </div>
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">工作年限：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="select-wrap w339">
+                                <select class="c--member-select-box por-z2" name="row[term]"  datatype="*" nullmsg="请选择工作年限">
+                                    <?php $list = getFields(245);?>
+                                    {volist name='list' id='v'}
+                                    <option value="{$v.value}"{if $v.value == $read.term} selected{/if}>{$v.title}</option>
+                                    {/volist}
+                                </select>
+                                <i class="iconfont icon-jiantouxia"></i>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="form-row-long">
+                                <p class="row-txt">个人简历:</p>
+                                <p class="red-star">*</p>
+                            </div>
+                            <div class="c--member-textarea-box" style="height: 420px;">
+                                <textarea class="form-control editor" name="content" datatype="*" nullmsg="请填写详情介绍">{$read.content}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">验证码：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="c--member-yam-box">
+                                <div class="yam-inner">
+                                    <input type="text" class="c--member--inner-input" name="imgcaptcha" datatype="*" nullmsg="请填写验证码">
+                                </div>
+                                <img src="{:captcha_src()}" width="140" height="42" class="yzm-img" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
+                            </div>
+                        </div>
+                        <div class="form-btn">
+                            <div class="checkbox-block">
+                                <input type="checkbox" class="ifAgree" id="ifAgree1" name="ifAgree1" value="agree" datatype="*" nullmsg="请承诺发布的信息真实有效"{if $read} checked{/if}>
+                                <label class="mark take-cash-mark" for="ifAgree1"><span class="txt">我承诺发布的信息真实有效</span></label>
+                            </div>
+                            <div class="btn-box">
+                                <button class="c--member-submit-btn">立即发布</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        //uploadImg();
+
+        $.Tipmsg.r = null;
+        $('form[name="job_wanted"]').Validform({
+            btnSubmit:".c--member-submit-btn",
+            tipSweep: true,
+            ajaxPost:true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            callback:function(data){
+                if (data.code == 1) {
+                    showmsg(data.msg, "{:url('user/job_wanted')}")
+                } else {
+                    showmsg(data.msg);
+                    $('input[name=release_job_wanted_token]').val(data.data.token);
+                    $('.yzm-img').trigger('click');
+                }
+            }
+        });
+
+        $('#text').on('change keydown keyup', function () {
+            $(".js-row-txt i").html($(this).val().length)
+        })
+    })
+</script>
+
+{include file="public/footer"  /}
+<script src="https://cdn.bootcss.com/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="/assets/js/require.js" data-main="/assets/js/require-frontend.js"></script>

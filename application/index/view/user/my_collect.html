@@ -1,0 +1,53 @@
+
+{include file="public/head" isMember="1" /}
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+            {include file="public/member_left_nav" /}
+            <div class="c--member-right-wrap">
+                <div class="c--inner release-scare-buying-wrap">
+                    <h2 class="title rsbl-hd clearfloat">
+                        <p class="tt">收藏列表</p>
+                    </h2>
+                    <div class="table-hd">
+                        <div class="td-01 w408" style="width: 450px;">文章标题</div>
+                        <div class="td-01 w126">时间</div>
+                        <div class="td-01 w30" style="padding-left: 60px;">操作</div>
+                    </div>
+                    <ul class="list-block">
+                        {volist name="list" id="vo"}
+                        <li class="js-list">
+                            <a style="color: #2aa0f9;width:450px;" class="td-02 w408" href="{:url('/archives/' . $vo.aid)}">{$vo.title|mb_substr=0,30}{if mb_strlen($vo.title) > 30}...{/if}</a>
+                            <div class="td-02 w126">{$vo.createtime|date='Y-m-d H:i',###}</div>
+                            <div class="td-02 w30" style="padding-left: 30px;width: 90px;"><a href="javascript:cancel({$vo.id})">取消收藏</a></div>
+                        </li>
+                        {/volist}
+                    </ul>
+                    <div class="paged">
+                        {$list->render()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        memberCenterEvent();
+    })
+
+    function cancel(id) {
+        if (confirm('确定要取消收藏吗？')) {
+            $.post('/user/myCollect', {id:id}, function (data) {
+                if (data.code == 1) {
+                    showmsg(data.msg, 'refresh');
+                } else {
+                    showmsg(data.msg);
+                }
+            })
+        }
+    }
+</script>
+{include file="public/footer"  /}

@@ -1,0 +1,74 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="page">
+        <div class="analysis-list-wrap">
+            <div class="common-tab-box">
+                <a href="{:url('/mobile/channel/formula')}">配方索取</a>
+                <a href="{:url('/mobile/channel/analysis')}" class="on">技术分享</a>
+            </div>
+            <div class="analysis-search-box">
+                <form action="" class="common-search-block">
+                    <div class="common-search-icon"><i class="iconfont icon-sousuo1"></i></div>
+                    <div class="input-box"><input type="text" class="input" id="keywords" placeholder="输入相关关键词"></div>
+                    <a href="javascript:search();" class="common-serach-btn">搜索</a>
+                </form>
+            </div>
+            <div class="analysis-list-box">
+                <?php $alist = get_list(19, 73, 1, 1, 'is_recommend');?>
+                <?php
+                    for ($i = 0; $i < count($alist); $i++) {
+                        if (!empty($alist[$i]['valid_time']) && $alist[$i]['valid_time'] != '0000-00-00 00:00:00' && date('Y-m-d H:i:s') > $alist[$i]['valid_time']) {
+                            unset($alist[$i]);
+                        }
+                    }
+                ?>
+                {volist name="alist" id="item"}
+                <a href="{$item.link}" class="alink"><img src="{$item.pic}" alt="{$item.title}"></a>
+                {/volist}
+                <ul class="analysis-list">
+                    {volist name='$__PAGELIST__' id='item'}
+                    <li><a href="{$item.link}" class="item"><img src="{$item.image}" alt="{$item.title}"></a></li>
+                    {/volist}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        let page = 1;
+        function search() {
+            $(".analysis-list").html('');
+            page = 0;
+            loadData();
+        }
+
+        $(function() {
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let keywords = $("#keywords").val();
+            let param = {page:page, keywords:keywords};
+            $.get("{:url('/mobile/channel/analysis')}", param, function(res){
+                res.data = res.data.data;
+                let html = '';
+                for (let i = 0; i < res.data.length; i++) {
+                    html += '<li><a href="'+res.data[i].link+'" class="item"><img src="'+res.data[i].image+'" alt="'+res.data[i].title+'"></a></li>';
+                }
+                $(".analysis-list").append(html);
+            });
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="1"/}

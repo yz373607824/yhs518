@@ -1,0 +1,97 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="member">
+        <div class="comment-wrap">
+            <form id="form1" action="{if $flag == 'expert'}{:url('/mobile/user/replyAppraise')}{else}{:url('/mobile/user/appraise')}{/if}" method="post">
+                {:token()}
+                <input type="hidden" name="id" value="{$order.id}">
+                <div class="star-rate">
+                    <div class="star-row">
+                        <span class="txt" style="padding-left: 10px;">星级评价：</span>
+                    </div>
+                    {if empty($order.appraise)}
+                    <div class="row-right">
+                        <input type="hidden" value="0" name="star" id="starCount">
+                        <a href="javascript:;" data-star="1" class="star-default">
+                            <img src="/assets/static_mobile/images/star.jpg" class="light" alt="">
+                            <img src="/assets/static_mobile/images/no_star.jpg" class="dark" alt="">
+                        </a>
+                        <a href="javascript:;" data-star="2" class="star-default">
+                            <img src="/assets/static_mobile/images/star.jpg" class="light" alt="">
+                            <img src="/assets/static_mobile/images/no_star.jpg" class="dark" alt="">
+                        </a>
+                        <a href="javascript:;" data-star="3" class="star-default">
+                            <img src="/assets/static_mobile/images/star.jpg" class="light" alt="">
+                            <img src="/assets/static_mobile/images/no_star.jpg" class="dark" alt="">
+                        </a>
+                        <a href="javascript:;" data-star="4" class="star-default">
+                            <img src="/assets/static_mobile/images/star.jpg" class="light" alt="">
+                            <img src="/assets/static_mobile/images/no_star.jpg" class="dark" alt="">
+                        </a>
+                        <a href="javascript:;" data-star="5" class="star-default">
+                            <img src="/assets/static_mobile/images/star.jpg" class="light" alt="">
+                            <img src="/assets/static_mobile/images/no_star.jpg" class="dark" alt="">
+                        </a>
+                    </div>
+                    <a href="javascript:;" class="reset" id="reset">重 置</a>
+                    {else}
+                    <div class="row-right">
+                        {for start="1" end="$order.star"}
+                        <a href="javascript:;" data-star="1" class="star-default">
+                            <img src="/assets/static_mobile/images/star.jpg" class="dark" alt="">
+                        </a>
+                        {/for}
+                    </div>
+                    {/if}
+                </div>
+                <div class="text-area">
+                    <div class="textarea-word">评价内容<span class="red-star">*</span></div>
+                    <textarea rows="8" class="textarea" datatype="*" nullmsg="请填写评价内容" name="appraise" {if $flag == 'expert'}readonly{/if}>{$order.appraise}</textarea>
+                </div>
+                {if $flag == 'expert' || (!empty($order.replyappraise))}
+                <div class="text-area">
+                    <div class="textarea-word">回复内容<span class="red-star">*</span></div>
+                    <textarea rows="8" class="textarea" datatype="*" nullmsg="请填写回复内容" name="replyappraise">{$order.replyappraise}</textarea>
+                </div>
+                {/if}
+                {if (empty($order.appraise) && $flag == 'customer') || (empty($order.replyappraise) && $flag == 'expert')}
+                <a href="javascript:;" class="btn">确认提交</a>
+                {/if}
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+    <script>
+        $(function() {
+            {if (empty($order.appraise) && $flag == 'customer')}
+            starRate();
+            {/if}
+            $.Tipmsg.r = null;
+            $('#form1').Validform({
+                btnSubmit:".btn",
+                tipSweep: true,
+                ajaxPost: true,
+                tiptype: function (msg, o, cssctl) {
+                    if (!o.obj.is("form")) {
+                        var objtip = o.obj.siblings(".checktip");
+                        cssctl(objtip, o.type);
+                        showmsg(msg);
+                        return false;
+                    }
+                },
+                callback: function (data) {
+                    showmsg(data.msg);
+                    if (data.code == 1) {
+                        window.history.back();
+                    } else {
+                        $('input[name=__token__]').val(data.data.token);
+                    }
+                }
+            });
+        })
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

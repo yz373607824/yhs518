@@ -1,0 +1,183 @@
+{include file="public/head" isMember="1" /}
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+    <div class="common-member-wrap">
+        <div class="wp1200">
+            <div class="c--wrap clearfloat">
+
+                {include file="public/member_left_nav" /}
+
+                <div class="c--member-right-wrap">
+                    <div class="c--inner personal-data-wrap">
+                        <h2 class="title rsbl-hd clearfloat">
+                            <p class="tt">修改个人资料</p>
+                            <a href="{:url('/user/index')}" class="href">返回>></a>
+                        </h2>
+                        <form id="form1" class="form-box" method="POST" action="{:url('api/user/profile')}">
+                            {:token()}
+                            <div class="form-row">
+                                <div class="row-left">
+                                    <span class="row-txt">头像：</span>
+                                </div>
+                                <div class="row-rigth">
+                                    <div class="personal-avatar-box">
+                                        <div class="personal-avatar-inner {if empty($user.avatar)}no-avatar{/if}">
+                                            <img src="{$user.avatar}" alt="" class="region-img">
+                                            <input type="file" onchange="upload(this);" class="personal-input-file">
+                                            <input type="hidden" class="file-hidden" name="avatar" value="{$user.avatar}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="row-left">
+                                    <span class="row-txt">{:__('Nickname')}：</span>
+                                </div>
+                                <div class="row-rigth">
+                                    <div class="row-input-box">
+                                        <input type="text" name="nickname" value="{$user.nickname}" class="inp">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="row-left">
+                                    <span class="row-txt">性别：</span>
+                                </div>
+                                <div class="row-rigth clearfloat">
+                                    <div class="row-radio-box">
+                                        <input type="radio" name="gender" datatype="*" nullmsg="请选择性别" {if $user.gender == 1}checked{/if} value="1" class="radio-0" id="radio-01">
+                                        <label for="radio-01" class="radio-lb"><span class="sex-txt">男</span></label>
+                                    </div>
+                                    <div class="row-radio-box">
+                                        <input type="radio" name="gender" class="radio-0" {if $user.gender == 0}checked{/if} value="0" id="radio-02">
+                                        <label for="radio-02" class="radio-lb"><span class="sex-txt">女</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="row-left">
+                                    <span class="row-txt">出生日期：</span>
+                                </div>
+                                <div class="row-rigth">
+                                    <div class="row-date-box">
+                                        <input type="text" name="birthday" value="{if $user.birthday != '0000-00-00'}{$user.birthday}{/if}" readonly="readonly" class="date" id="Date1" value="请选择出生日期">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="row-left">
+                                    <span class="row-txt">新密码：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="row-rigth">
+                                    <div class="row-input-box">
+                                        <input type="password" name="newpassword" id="newpassword" placeholder="不修改请留空" class="inp">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="row-left">
+                                    <span class="row-txt">确认密码：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="row-rigth">
+                                    <div class="row-input-box">
+                                        <input type="password" id="confirmPassword" placeholder="不修改请留空" class="inp">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bfc">
+                                <div class="btn-box">
+                                    <button type="button" class="btn">确认修改</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/static/laydate/laydate.js"></script>
+    <script>
+        laydate.render({
+            elem: '#Date1'
+        });
+        $(function() {
+            // uploadImg();
+
+            $.Tipmsg.r = null;
+            $('#form1').Validform({
+                btnSubmit:".btn",
+                tipSweep: true,
+                ajaxPost:true,
+                tiptype: function (msg, o, cssctl) {
+                    if (!o.obj.is("form")) {
+                        var objtip = o.obj.siblings(".checktip");
+                        cssctl(objtip, o.type);
+                        showmsg(msg);
+                        return false;
+                    }
+                },
+                beforeSubmit : function () {
+                    //验证是否输入密码
+                    var newpassword = $.trim($('#newpassword').val());
+                    var confirmPassword = $.trim($('#confirmPassword').val());
+                    var passwordReg = /^(?![^a-zA-Z]+$)(?!\D+$)/;
+
+                    if (newpassword != '') {
+                        if (!passwordReg.test(newpassword)) {
+                            showmsg('密码必须是数字和字母，长度在6-30中');
+                            return false;
+                        }
+
+                        if (newpassword != confirmPassword) {
+                            showmsg('您两次输入的账号密码不一致');
+                            return false;
+                        }
+                    }
+
+                    return true;
+                },
+                callback:function(data){
+                    if (data.code == 1) {
+                        showmsg('修改成功', '/user/index.html');
+                    } else {
+                        showmsg('修改失败');
+                    }
+                }
+            });
+        })
+
+        var uploading = false;
+        function upload(file)
+        {
+            var formData = new FormData();
+            formData.append("file", file.files[0]);
+            if(uploading){
+                return false;
+            }
+            $.ajax({
+                url : '/index/ajax/upload',
+                type : 'POST',
+                data : formData,
+                contentType: false,
+                processData: false,
+                dataType : 'json',
+                beforeSend: function(){
+                    uploading = true;
+                },
+                success : function(data){
+                    if (data.code == 1) {
+                        $('.region-img').attr('src', data.data.url);
+                        $('.file-hidden').val(data.data.url);
+                    } else {
+                        showmsg(data.msg)
+                    }
+                    uploading = false;
+                }
+            });
+        }
+    </script>
+
+{include file="public/footer"  /}

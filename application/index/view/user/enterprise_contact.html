@@ -1,0 +1,109 @@
+
+{include file="public/head" isMember="1" /}
+<script type="text/javascript">
+    var require = {
+        config: {$config|json_encode}
+    };
+</script>
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+
+            {include file="public/member_left_nav" /}
+
+            <div class="c--member-right-wrap">
+                <div class="enterprise-message-wrap">
+                    <h2 class="title id-check">
+                        <span class="id-t">企业联系信息</span>
+                    </h2>
+                    <form name="enterprise" action="{:url('index/user/enterprise_contact')}" method="post">
+                        {:token('enterprise_contact_token')}
+                        <div class="box">
+                            <div class="row-wrap clearfloat">
+                                <div class="row-txt-block">
+                                    <span class="txt">联系信息：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="c--member-textarea-box w107" style="height: 420px;">
+                                    <textarea class="form-control editor" name="contact_text">{$enterprise.contact_text}</textarea>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt">地图坐标：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="coordinate" value="{$enterprise.coordinate}" placeholder="如：113.364679,23.142067">
+                                    </div>
+                                    <a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" class="btn-get-position" target="_blank">获取坐标</a>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-txt-block">
+                                    <span class="txt">验证码：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="c--member-yam-box w107">
+                                    <div class="yam-inner">
+                                        <input type="text" class="c--member--inner-input" name="imgcaptcha" datatype="*" nullmsg="请填写验证码">
+                                    </div>
+                                    <img src="{:captcha_src()}" width="140" height="42" class="yzm-img" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
+                                </div>
+                            </div>
+                            <div class="form-btn">
+                                <div class="checkbox-block mt0">
+                                    <input type="checkbox" class="ifAgree" id="ifAgree1" name="ifAgree1" value="agree" datatype="*" nullmsg="请阅读并接受协议内容"{if $enterprise} checked{/if}>
+                                    <label class="mark take-cash-mark" for="ifAgree1"><span class="txt">我确认阅读并接受</span></label>
+                                    <a href="#" class="a-href">《有化说网会员注册协议》</a>
+                                    <a href="#" class="a-href">《有化说网隐私政策条款》</a>
+                                </div>
+                                <div class="btn-box">
+                                    <button class="c--member-submit-btn">立即提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+        $.Tipmsg.r = null;
+        $('form[name="enterprise"]').Validform({
+            btnSubmit:".c--member-submit-btn",
+            tipSweep: true,
+            ajaxPost:true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            callback:function(data){
+                if (data.code == 1) {
+                    showmsg(data.msg, "{:url('user/index')}")
+                } else {
+                    showmsg(data.msg);
+                    $('input[name=enterprise_contact_token]').val(data.data.token);
+                    $('.yzm-img').trigger('click');
+                }
+            }
+        });
+
+    })
+</script>
+
+{include file="public/footer"  /}
+<script src="https://cdn.bootcss.com/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="/assets/static/script/require.js" defer data-main="/assets/static/script/require-frontend.js"></script>

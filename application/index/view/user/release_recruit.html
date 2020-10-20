@@ -1,0 +1,210 @@
+{include file="public/head" isMember="1" /}
+
+<script type="text/javascript">
+    var require = {
+        config: {$config|json_encode}
+    };
+</script>
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+<script src="/assets/static/script/pca.js"></script>
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+            {include file="public/member_left_nav" /}
+            <div class="c--member-right-wrap">
+                <div class="c--inner release-form-wrap">
+                    <h2 class="title rsbl-hd clearfloat">
+                        <p class="tt">发布人才招聘</p>
+                        <a href="{:url('index/user/recruit')}" class="href">返回列表>></a>
+                    </h2>
+                    <form name="recruit" action="{:url('index/user/release_recruit')}" method="post">
+                        <input type="hidden" name="id" value="{$read.id}">
+                        {if !$read}
+                        <input type="hidden" name="returnUrl" value="{$returnUrl}">
+                        {/if}
+                        {:token('release_recruit_token')}
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">职 位：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="c--member-input-box-w100">
+                                <input type="text" class="c--member--inner-input" name="row[title]"  datatype="*" nullmsg="请填写职位" value="{$read.title}">
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">工作年限：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="select-wrap w339">
+                                <select class="c--member-select-box por-z2" name="row[term]"  datatype="*" nullmsg="请选择工作年限">
+                                    <?php $list = getFields(245);?>
+                                    {volist name='list' id='v'}
+                                    <option value="{$v.value}"{if $v.value == $read.term} selected{/if}>{$v.title}</option>
+                                    {/volist}
+                                </select>
+                                <i class="iconfont icon-jiantouxia"></i>
+                            </div>
+                            <div class="c--member-row-tt pl10">
+                                <span class="row-txt">薪资：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="select-wrap w339">
+                                <select class="c--member-select-box por-z2" name="row[salary]"  datatype="*" nullmsg="请选择薪资">
+                                    <?php $list = getFields(246);?>
+                                    {volist name='list' id='v'}
+                                    <option value="{$v.value}"{if $v.value == $read.salary} selected{/if}>{$v.title}</option>
+                                    {/volist}
+                                </select>
+                                <i class="iconfont icon-jiantouxia"></i>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">详细地址：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="select-wrap w150">
+                                <select class="c--member-select-box por-z2" name="row[province]" id="province" datatype="*" nullmsg="请选择省份">
+                                </select>
+                                <i class="iconfont icon-jiantouxia"></i>
+                            </div>
+                            <div class="select-wrap w150">
+                                <select class="c--member-select-box por-z2" name="row[city]" id="city" datatype="*" nullmsg="请选择城市">
+                                </select>
+                                <i class="iconfont icon-jiantouxia"></i>
+                            </div>
+                            <div class="select-wrap w150">
+                                <select class="c--member-select-box por-z2" name="row[area]" id="area" datatype="*" nullmsg="请选择地区">
+                                </select>
+                                <i class="iconfont icon-jiantouxia"></i>
+                            </div>
+                            <div class="form-row-input w-auto">
+                                <input type="text" class="c--member--inner-input" placeholder="详细地址" name="row[location]"  datatype="*" nullmsg="请填写详细地址" value="{$read.title}">
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="inner-form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">招聘人数：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="form-row-input w320">
+                                    <input type="text" class="c--member--inner-input" name="row[number]"  datatype="*" nullmsg="请填写招聘人数" value="{$read.number}">
+                                </div>
+                            </div>
+                            <div class="inner-form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">公 司：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="form-row-input w320">
+                                    <input type="text" class="c--member--inner-input" name="row[company]"  datatype="*" nullmsg="请填写公司" value="{$read.company}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">详情：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="form-row-textarea">
+                                <p class="instr-p">此处填写，务必详细！</p>
+                                <div class="c--member-textarea-box no-float" style="height: 420px;">
+                                    <textarea class="form-control editor" name="content" datatype="*" nullmsg="请填写详情">{$read.content}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">验证码：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="c--member-yam-box">
+                                <div class="yam-inner">
+                                    <input type="text" class="c--member--inner-input" name="imgcaptcha" datatype="*" nullmsg="请填写验证码">
+                                </div>
+                                <img src="{:captcha_src()}" width="140" height="42" class="yzm-img" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
+                            </div>
+                        </div>
+                        <div class="form-btn">
+                            <div class="checkbox-block">
+                                <input type="checkbox" class="ifAgree" id="ifAgree1" name="ifAgree1" value="agree" datatype="*" nullmsg="请承诺发布的信息真实有效"{if $read} checked{/if}>
+                                <label class="mark take-cash-mark" for="ifAgree1"><span class="txt">我承诺发布的信息真实有效</span></label>
+                            </div>
+                            <div class="btn-box">
+                                <button class="c--member-submit-btn">发布招聘信息</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        newPCA('{$read.province}', '{$read.city}', '{$read.area}');
+
+        $("#province").change(function () {
+            changeCity($(this).val());
+            //改变区县
+            changeArea(null, null);
+        });
+
+        $("#city").change(function () {
+            var province = $("#province").val();
+            changeArea(province, $(this).val());
+        });
+
+        //要把这个拿出来，样式有冲突
+        function changeArea(province, city, area) {
+            //遍历区县
+            var areaOption = '<option value="">请选择区县</option>';
+
+            if (province != undefined && province != '' && city != undefined && city != '') {
+                for (var i = 0; i < pcaJson[province][city].length; i++) {
+                    var a = pcaJson[province][city][i];
+                    if (a == area) {
+                        areaOption += '<option value="' + a + '" selected>' + a + '</option>';
+                    } else {
+                        areaOption += '<option value="' + a + '">' + a + '</option>';
+                    }
+                }
+            }
+
+            $("#area").html(areaOption);
+        }
+
+        $.Tipmsg.r = null;
+        $('form[name="recruit"]').Validform({
+            btnSubmit:".c--member-submit-btn",
+            tipSweep: true,
+            ajaxPost:true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            callback:function(data){
+                if (data.code == 1) {
+                    showmsg(data.msg, "{:url('user/recruit')}")
+                } else {
+                    showmsg(data.msg);
+                    $('input[name=release_recruit_token]').val(data.data.token);
+                    $('.yzm-img').trigger('click');
+                }
+            }
+        });
+    })
+</script>
+
+{include file="public/footer"  /}
+<script src="https://cdn.bootcss.com/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="/assets/js/require.js" data-main="/assets/js/require-frontend.js"></script>

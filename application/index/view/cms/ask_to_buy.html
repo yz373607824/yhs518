@@ -1,0 +1,91 @@
+{include file="public/head" isMember="0" /}
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <?php $banner = get_banner(33, 1);?>
+        <a href="{$banner.0.url}" target="_blank" class="article-banner-wrap">
+            <img src="{$banner.0.pic}" alt="">
+        </a>
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('enterprise/index')}" class="bread-hover">联盟企业</a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a class="bread-hover">求购产品</a>
+        </div>
+        <div class="tab-filter-wrap">
+            <div class="tab-list">
+
+                {include file="public/enterprise_nav" /}
+
+            </div>
+            <div class="filter-block">
+                <form action="" method="get" id="searchform">
+                    <div class="supply-search-block clearfloat">
+                        <div class="input-box">
+                            <i class="iconfont icon-sousuo1"></i>
+                            <input type="text" name="keyword" placeholder="输入相关关键词">
+                        </div>
+                        <div class="btn"><a href="javascript:$('#searchform').submit()">搜索</a></div>
+                    </div>
+                </form>
+                <div class="filter-list pt20">
+                    <dl class="clearfloat bt1">
+                        <dt>产品类别：</dt>
+                        <dd>
+                            {cms:pagefilter id="filter" exclude=""}
+                            {volist name="$filter.content" id="item"}
+                            <a href="{$item.url}" class="{$item.active?'on':''}">{$item.title}</a>
+                            {/volist}
+                            {/cms:pagefilter}
+                        </dd>
+                    </dl>
+                    <dl class="clearfloat">
+                        <dt>标&nbsp;&nbsp;&nbsp;&nbsp;签：</dt>
+                        <dd>
+                            {volist name='tags' id='item'}
+                            <a href="{$item.url}" class="{$item.active?'on':''}">{$item.title}</a>
+                            {/volist}
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="ask-to-buy-wrap">
+            <ul class="ask-to-buy-list-box clearfloat">
+                {cms:pagelist id="item" channel="$__CHANNEL__.id" model="$__CHANNEL__.model_id" orderby="id" orderway="desc" addon="true"}
+                <li class="atb-list">
+                    <a target="_blank" href="{:url($item.url)}">
+                        <div class="title clearfloat">
+                            <p class="p1">{$item.title}</p>
+                            {if $item.online == 1}
+                            <div class="p2">
+                                <span class="p-t orange">{$item.company}</span>
+                                <img src="/assets/static/images/service_icon.png" class="p-icon" alt="">
+                            </div>
+                            {else}
+                            <div class="p2"><span class="p-t">{$item.company}</span></div>
+                            {/if}
+                        </div>
+                        <div class="msg-box clearfloat">
+                            <div class="left-msg">
+                                <p>采购数量/{$item.unit}</p>
+                                <p><span class="strong">{$item.number}</span>/{$item.unit}</p>
+                            </div>
+                            <div class="right-msg">
+                                <div class="btn">查看详情</div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                {/cms:pagelist}
+            </ul>
+            <div class="paged">
+                {cms:pageinfo type="full" /}
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="public/footer"  /}

@@ -1,0 +1,98 @@
+{include file="public/head" isMember="0"/}
+
+    <div class="common-page-content">
+        <div class="wp1200">
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="#" class="bread-hover">我的主页</a>
+                <i class="iconfont icon-jiantouyou"></i>
+                {if $__CHANNEL__.name == '关于我们' || $__CHANNEL__.name == '网站地图' }
+                <a href="/archives/{$__ARCHIVES__.id}" class="bread-hover">{$__ARCHIVES__.title}</a>
+                {else}
+                <a href="/channel/{$__CHANNEL__.diyname}" class="bread-hover">{$__CHANNEL__.name}</a>
+                {/if}
+            </div>
+            <div class="common-problem-wrap clearfloat">
+                <div class="common-problem-nav">
+                    <div class="title">我的主页</div>
+                    <a href="/archives/48" class="item clearfloat {if $__ARCHIVES__.title == '关于我们' }on{/if}">
+                        <span class="item-txt">关于我们</span>
+                        <i class="iconfont icon-jiantouyou item-icon"></i>
+                    </a>
+                    <a href="/channel/common_problems" class="item clearfloat {if $__CHANNEL__.name == '常见问题' }on{/if}">
+                        <span class="item-txt">常见问题</span>
+                        <i class="iconfont icon-jiantouyou item-icon"></i>
+                    </a>
+                    <a href="/channel/new_guide" class="item clearfloat {if $__CHANNEL__.name == '新手指南' }on{/if}">
+                        <span class="item-txt">新手指南</span>
+                        <i class="iconfont icon-jiantouyou item-icon"></i>
+                    </a>
+                    <a href="/channel/network_terms" class="item clearfloat {if $__CHANNEL__.name == '网站条款' }on{/if}">
+                        <span class="item-txt">网站条款</span>
+                        <i class="iconfont icon-jiantouyou item-icon"></i>
+                    </a>
+                    <a href="/archives/55" class="item clearfloat {if $__ARCHIVES__.title == '网站地图' }on{/if}">
+                        <span class="item-txt">网站地图</span>
+                        <i class="iconfont icon-jiantouyou item-icon"></i>
+                    </a>
+                </div>
+                <div class="common-problem-content">
+                    <div class="news-detail-wrap">
+                        <div class="inner-news-detail">
+                            <div class="article-wrap">
+                                <div class="title-box">
+                                    <h2>{$__ARCHIVES__.title}</h2>
+                                </div>
+                                <div class="map-box" id="map"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=W6V7r06TbAVRv7WM30fE05eOVh6PNoGX"></script>
+    <script>
+        //封装百度地图api函数
+        function bmap(param) {
+            var map = new BMap.Map("map");
+            var point = new BMap.Point(113.974746,22.84655);
+            var scaleControl = new BMap.ScaleControl({
+                anchor: BMAP_ANCHOR_BOTTOM_LEFT
+            });
+            scaleControl.setUnit(BMAP_UNIT_METRIC);
+            map.addControl(scaleControl);
+            var navControl = new BMap.NavigationControl({
+                anchor: BMAP_ANCHOR_TOP_LEFT,
+                type: 0
+            });
+            map.addControl(navControl);
+            var overviewControl = new BMap.OverviewMapControl({
+                anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+                isOpen: false
+            });
+            map.addControl(overviewControl);
+            map.enableScrollWheelZoom(true);
+            map.centerAndZoom(point, 12);
+            // 创建地址解析器实例
+            var myGeo = new BMap.Geocoder();
+            // 将地址解析结果显示在地图上,并调整地图视野
+            myGeo.getPoint(param, function(point) {
+                if (point) {
+                    map.centerAndZoom(point, 16);
+                    map.addOverlay(new BMap.Marker(point));
+                } else {
+                    alert("您选择地址没有解析到结果!");
+                }
+            });
+        }
+        $(function() {
+            bmap('广州市白云区竹料达到32栋168厂');
+        })
+    </script>
+
+{include file="public/footer" /}

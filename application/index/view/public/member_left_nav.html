@@ -1,0 +1,95 @@
+<div class="common-member-left-wrap">
+    <a href="{:url('/user/index')}" class="title">我的主页</a>
+    <ul class="nav-list-box">
+        <li>
+            <div class="list-item clearfloat ">
+                <p class="list-t"><span class="txt">我是工程师</span></p>
+                <p class="list-icon"><i class="iconfont icon-jiantouyou"></i></p>
+            </div>
+            <div class="sub">
+<!--                <a href="{:url('index/user/engineer_page')}" class="sub-item{if request()->action() == 'engineer_page'} active{/if}">如何成为工程师</a>-->
+                <a href="{:url('index/user/expertApplication')}" class="sub-item{if request()->action() == 'expertapplication'} active{/if}">我的认证信息</a>
+                <a href="{:url('/user/onlineService')}" class="sub-item{if request()->action() == 'onlineservice'} active{/if}">我的在线服务</a>
+                <a href="{:url('/user/localeService')}" class="sub-item{if request()->action() == 'localeservice'} active{/if}">我的现场服务</a>
+                <a href="{:url('/user/grabOnlineService')}" class="sub-item{if request()->action() == 'grabonlineservice'} active{/if}">在线服务抢单</a>
+            </div>
+        </li>
+        <li>
+            <div class="list-item clearfloat">
+                <p class="list-t"><span class="txt">我的企业</span></p>
+                <p class="list-icon"><i class="iconfont icon-jiantouyou"></i></p>
+            </div>
+            <div class="sub">
+                <a href="{:url('index/user/enterprise')}" class="sub-item{if request()->action() == 'enterprise'} active{/if}">企业认证信息</a>
+                {if $user.enterprise_id}
+                <a href="{:url('index/user/enterprise_contact')}" class="sub-item{if request()->action() == 'enterprise_contact'} active{/if}">联系信息</a>
+                <a href="{:url('index/user/honor')}" class="sub-item{if request()->action() == 'release_honor' or request()->action() == 'honor'} active{/if}">荣誉资质</a>
+                {/if}
+                <a href="{:getLink(95)}" class="sub-item{if isset($__CHANNEL__) and $__CHANNEL__.id == 95} active{/if}">申请王者供应商</a>
+                {if $user.enterprise_id}
+                <a href="{:url('index/user/purchase')}" class="sub-item{if request()->action() == 'release_purchase' or request()->action() == 'purchase'} active{/if}">我的求购</a>
+                <a href="{:url('index/user/supply')}" class="sub-item{if request()->action() == 'release_supply' or request()->action() == 'supply'} active{/if}">供应信息</a>
+                <a href="{:url('index/user/recruit')}" class="sub-item{if request()->action() == 'release_recruit' or request()->action() == 'recruit'} active{/if}">人才招聘</a>
+                <a href="{:url('index/user/leave_message')}" class="sub-item{if request()->action() == 'leave_message'} active{/if}">我收到的留言</a>
+                <a href="{:url('index/user/enterprise_order')}" class="sub-item{if request()->action() == 'enterprise_order'} active{/if}">我收到的活动订单</a>
+                <a href="{:url('index/user/activity')}" class="sub-item{if request()->action() == 'release_activity' or request()->action() == 'activity'} active{/if}">我要发布开仓放粮</a>
+                {else}
+                <a href="{:url('index/user/enterprise')}" class="sub-item">发布产品</a>
+                {/if}
+            </div>
+        </li>
+        <li>
+            <div class="list-item clearfloat">
+                <p class="list-t"><span class="txt">我的订单记录</span></p>
+                <p class="list-icon"><i class="iconfont icon-jiantouyou"></i></p>
+            </div>
+            <div class="sub">
+                <a href="{:url('/user/myArticle')}" class="sub-item{if request()->action() == 'myarticle'} active{/if}">我的配方</a>
+                <a href="{:url('/user/myKonwledge')}" class="sub-item{if request()->action() == 'mykonwledge'} active{/if}">我的知识</a>
+                <a href="{:url('/user/myAskquestion')}" class="sub-item{if request()->action() == 'myaskquestion'} active{/if}">我的咨询</a>
+                <a href="{:url('/user/myReservation')}" class="sub-item{if request()->action() == 'myreservation'} active{/if}">我的服务</a>
+                <a href="{:url('user/activity_order')}" class="sub-item{if request()->action() == 'activity_order'} active{/if}">我提交过的开仓放粮订单</a>
+            </div>
+        </li>
+        <li{if request()->action() == 'job_wanted' or request()->action() == 'release_job_wanted'} class="on"{/if}>
+            <div class="list-item clearfloat" onclick="window.location.href='{:url(\'/user/job_wanted\')}'">
+                <p class="list-t"><span class="txt">我要求职</span></p>
+                <p class="list-icon"><i class="iconfont icon-jiantouyou"></i></p>
+            </div>
+        </li>
+        <li>
+            <div class="list-item clearfloat">
+                <p class="list-t"><span class="txt">我要发布</span></p>
+                <p class="list-icon"><i class="iconfont icon-jiantouyou"></i></p>
+            </div>
+            <div class="sub">
+                <a href="{:url('/user/formula')}" class="sub-item{if request()->action() == 'release_formula' or request()->action() == 'formula'} active{/if}">发布配方</a>
+                <a href="{:url('/user/knowledge')}" class="sub-item{if request()->action() == 'release_knowledge' or request()->action() == 'knowledge'} active{/if}">发布知识</a>
+            </div>
+        </li>
+        <li>
+            <div class="list-item clearfloat" onclick="window.location.href='{:url(\'/user/myCollect\')}'">
+                <p class="list-t"><span class="txt" {if request()->action() == 'mycollect'}style="color: #db3733;"{/if}>我的收藏</span></p>
+                <p class="list-icon"><i class="iconfont icon-jiantouyou"></i></p>
+            </div>
+        </li>
+        <li>
+            <div class="list-item clearfloat" onclick="window.location.href='{:url(\'/user/takeCashList\')}'">
+                <p class="list-t"><span class="txt" {if request()->action() == 'takecashlist' or request()->action() == 'takecash'}style="color: #db3733;"{/if}>我要提现</span></p>
+                <p class="list-icon"><i class="iconfont icon-jiantouyou"></i></p>
+            </div>
+        </li>
+        <li{if request()->action() == 'message' or request()->action() == 'message_detail'} class="on"{/if}>
+            <div class="list-item clearfloat" onclick="window.location.href='{:url(\'user/message\')}'">
+                <p class="list-t"><span class="txt">平台群发</span></p>
+                <p class="list-icon"><i class="iconfont icon-jiantouyou"></i></p>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<script>
+    $(function() {
+        memberLeftNavEvent();
+    })
+</script>

@@ -1,0 +1,5 @@
+<li class="nav-list{if request()->action() == 'detail'} on{/if}"><a href="{:url('enterprise/detail', ['id' => $info.id])}" class="list-href">关于我们</a></li>
+<li class="nav-list{if request()->action() == 'supply' or request()->action() == 'supply_detail'} on{/if}"><a href="{:url('enterprise/supply', ['id' => $info.id])}" class="list-href">供应产品</a></li>
+<li class="nav-list{if request()->action() == 'purchase' or request()->action() == 'purchase_detail'} on{/if}"><a href="{:url('enterprise/purchase', ['id' => $info.id])}" class="list-href">求购产品</a></li>
+<li class="nav-list{if request()->action() == 'recruit'} on{/if}"><a href="{:url('enterprise/recruit', ['id' => $info.id])}" class="list-href">人才招聘</a></li>
+<li class="nav-list{if request()->action() == 'contact'} on{/if}"><a href="{:url('enterprise/contact', ['id' => $info.id])}" class="list-href">联系方式</a></li>

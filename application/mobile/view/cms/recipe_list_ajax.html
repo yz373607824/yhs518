@@ -1,0 +1,31 @@
+{volist name='$__PAGELIST__' id='item'}
+<li class="list">
+    <div class="item">
+        {if !empty($item.image) && $item.image != '/public'}
+        <a href="{:url('/mobile/archives/' . $item['id'])}" class="img-box"><img src="{$item.image}" alt="{$item.title}"></a>
+        {/if}
+        <div class="info-box">
+            <a href="{:url('/mobile/archives/' . $item['id'])}" class="title">
+                {if $item.price != 0}<div class="img"><img src="/assets/static_mobile/images/industry_1.png" alt=""></div>{/if}
+                <span class="txt">{$item.title}</span>
+                {if $item.flag == 'hot'}<span class="hot">HOT~</span>{/if}
+            </a>
+            <div class="msg">配方简介：{$item.description}</div>
+            <div class="msg">配方用途：{$item.purpose}</div>
+            <div class="region">来源：{$item.source}</div>
+            <div class="feature-box {if empty($item.image) || $item.image == '/public'}flex-right{/if}">
+                {if $item.price > 0}<span class="r-priced">已付款：{$item.paynum}</span>{/if}
+                <a href="javascript:;" onclick="like(this, {$item.id});" class="r-block">
+                    <span class="icon like {if $item.like}on{/if}"></span>
+                    <span class="r-txt">{$item.likes}</span>
+                </a>
+                <a href="javascript:;" onclick="collect(this, {$item.id});" class="r-block">
+                    <span class="icon collect {if $item.collect}on{/if}"></span>
+                    <span class="r-txt">收藏</span>
+                </a>
+            </div>
+            <a href="{:url('/mobile/archives/' . $item['id'])}" class="btn">查看详情 >></a>
+        </div>
+    </div>
+</li>
+{/volist}

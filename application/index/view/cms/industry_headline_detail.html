@@ -1,0 +1,85 @@
+{include file="public/head" isMember="0"/}
+
+<div class="common-page-content">
+        <div class="wp1200">
+            <?php $banner = get_banner(16,1);?>
+            {volist name='banner' id='item'}
+            <a href="{$item.url}" target="_blank" class="article-banner-wrap h300">
+                <img src="{$item.pic}" alt="{$item.name}">
+            </a>
+            {/volist}
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                {cms:breadcrumb id="item"}
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{if $item.name == '首页'}/{else}{:url($item.url)}{/if}" class="bread-hover">{$item.name}</a>
+                {/cms:breadcrumb}
+            </div>
+            <div class="industry-headline-wrap clearfloat">
+                <div class="common-left-block">
+                    <div class="tab-filter-wrap">
+                        <div class="tab-list">
+                            {cms:channellist id="channel" type="son" typeid="$__CHANNEL__.parent_id" orderby="weigh" orderway="desc"}
+                            <div class="tab-item"><a href="{:url($channel.url)}" {if $__CHANNEL__.id == $channel.id}class="on"{/if}>{$channel.name}</a></div>
+                            {/cms:channellist}
+                        </div>
+                    </div>
+                    <div class="news-detail-wrap">
+                        <div class="inner-news-detail">
+                            <div class="article-wrap">
+                                <div class="title-box2">
+                                    <h2>{$__ARCHIVES__.title}</h2>
+                                    <div class="title-box2-bottom clearfloat">
+                                        <span class="time">发布时间：{$__ARCHIVES__.publishtime|date='Y-m-d H:i:s',###}</span>
+                                        <a href="/" class="news-logo"><img src="/assets/static/images/logo2.png" alt=""></a>
+                                    </div>
+                                </div>
+                                <div class="con-box">
+                                    {$__ARCHIVES__.content|html_entity_decode}
+                                </div>
+                                <div class="statement-box">
+                                    <strong>声明：</strong>说化有益•表面处理联盟+发布此信息目的在于传播更多信息。说化有益•表面处理联盟+不保证该信息（包括但不限于文字、数据及图表）全部或者部分内容的准确性、真实性、完整性、有效性、及时性、原创性等。用户应按照自己的独立判断自行决定，据此操作，风险自担。
+                                </div>
+                            </div>
+                            <ul class="news-nav-wrap clearfloat">
+                                <?php
+                                    $prev = \addons\cms\model\Archives::getPrevNext("next", $__ARCHIVES__['weigh'], $__CHANNEL__['id']);
+                                    if( !$prev ){
+                                        echo '<li><a href="javascript:;"><i class="iconfont icon-jiantouzuo"></i>上一篇</a></li>';
+                                    }else{
+                                        echo '<li><a href="'. url('/archives/' . $prev->id) .'"><i class="iconfont icon-jiantouzuo"></i>上一篇</a></li>';
+                                    }
+                                ?>
+                                <li><a href="{:url($__CHANNEL__.url)}"><i class="iconfont icon-caidan"></i>返回列表</a></li>
+                                <?php
+                                    $next = \addons\cms\model\Archives::getPrevNext("prev", $__ARCHIVES__['weigh'], $__CHANNEL__['id']);
+                                    if( !$next ){
+                                        echo '<li><a href="javascript:;"><i class="iconfont icon-jiantouyou"></i>下一篇</a></li>';
+                                    }else{
+                                        echo '<li><a href="'.url('/archives/' . $next->id).'"><i class="iconfont icon-jiantouyou"></i>下一篇</a></li>';
+                                    }
+                                ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {include file="../application/index/view/cms/public/common_adv_sidebar.html" /}
+            </div>
+        </div>
+
+        <script>
+            $(function() {
+                returnTop();
+            })
+
+            function search(){
+                var keywords = $("#keywords").val();
+                var url = $(".type-on").attr("href");
+                window.location.href = url + "&keywords=" + keywords;
+            }
+        </script>
+    </div>
+
+{include file="public/footer"  /}

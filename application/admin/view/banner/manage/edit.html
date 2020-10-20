@@ -1,0 +1,46 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-name" data-rule="required" class="form-control form-control" name="row[name]" type="text" value="{$row.name}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('PicWidth')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-picwidth" data-rule="required" class="form-control form-control" name="row[picwidth]" type="text" value="{$row.picwidth}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('PicHeight')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-picheight" data-rule="required" class="form-control form-control" name="row[picheight]" type="text" value="{$row.picheight}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('PicimgWidth')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-picimgwidth" data-rule="required" class="form-control form-control" name="row[picimgwidth]" type="text" value="{$row.picimgwidth}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('PicimgHeight')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-picimgheight" data-rule="required" class="form-control form-control" name="row[picimgheight]" type="text" value="{$row.picimgheight}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            {:build_radios('row[status]', ['normal'=>__('Normal'), 'hidden'=>__('Hidden')], $row['status'])}
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

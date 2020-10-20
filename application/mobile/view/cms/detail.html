@@ -1,0 +1,21 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="article">
+        <div class="article-detail-wrap">
+            <div class="detail">
+                <div class="title-box">
+                    <div class="tt">{$__ARCHIVES__.title}</div>
+                    <div class="data">
+                        <span>浏览次数：{$__ARCHIVES__.views}</span>
+                    </div>
+                </div>
+                <div class="content">
+                    {$__ARCHIVES__.content}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

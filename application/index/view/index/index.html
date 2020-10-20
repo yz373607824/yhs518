@@ -1,0 +1,683 @@
+
+{include file="public/head" isMember="0" /}
+
+    <div id="web">
+        <section class="index-banner-wrap">
+            <div class="index-banner-box">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <?php $banner = get_banner(23, 10);?>
+                        {volist name="banner" id="v"}
+                        <a href="{$v.url}" class="swiper-slide" style="background-image: url({$v.pic})" target="_blank"></a>
+                        {/volist}
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="form-box">
+                    <div class="inner-form">
+                        <div class="fun-block clearfloat">
+                            <a href="{:url('/user/register')}" class="btn">这里注册</a>
+                            <a href="{:url('/user/enterprise')}" class="btn">供求发布</a>
+                        </div>
+                        <form action="{:url('/user/index_login')}" method="post"  class="form-block" {if $user}style="display: none"{/if}>
+                            {:token('index_login_token')}
+                            <div class="input-block">
+                                <input type="text" name="account" class="inp" placeholder="手机/邮箱/用户名">
+                            </div>
+                            <div class="input-block">
+                                <input type="password" name="password" class="inp" placeholder="登陆密码">
+                            </div>
+                            <div class="login-btn-box clearfloat">
+                                <div class="ahref">
+                                    <a href="{:url('/user/login')}">手机登陆</a>&nbsp; / &nbsp;<a href="{:url('/user/forgetpwd')}">找回密码</a>
+                                </div>
+                                <button class="login-btn">登 录</button>
+                            </div>
+                        </form>
+                        <div class="logined-block clearfloat" {if !$user}style="display: none"{/if} onclick="location.href = '{:url(\'/user/index\')}'">
+                            <div class="logined-img"><img src="{$user.avatar}" alt=""></div>
+                            <div class="logined-info">
+                                {if isset($enterprise_level)}
+                                <div class="icon-box"><img src="/assets/static/images/level/level_{$enterprise_level}.png" alt=""></div>
+                                {/if}
+                                <div class="name" style="font-size: 14px;width:100px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">{if $user}{$user.nickname}{/if}</div>
+                            </div>
+                            <a href="{:url('/user/logout')}" class="logined-btn">退出登录</a>
+                        </div>
+                        <div class="online-count-block">
+                            <span class="iconfont icon-face"></span>
+                            <span class="txt">今日热度： <b class="num">{$loginNum}</b> 人气</span>
+                        </div>
+                        <div class="fast-link-block">
+                            <div class="link" onclick="location.href='{:url(\'/user/expertapplication\')}'">
+<!--                                    <span class="iconfont icon-111"></span>-->
+                                <img src="/assets/static/images/index_icon_01a.png" alt="">
+                                <span class="t">加入工程师</span>
+                                <i class="iconfont icon-jiantouyou"></i>
+                            </div>
+                            <div class="link" onclick="location.href='{:url(\'/user/formula\')}'">
+<!--                                    <span class="iconfont icon-weibiaoti9"></span>-->
+                                <img src="/assets/static/images/index_icon_02.png" alt="">
+                                <span class="t">我要投稿</span>
+                                <i class="iconfont icon-jiantouyou"></i>
+                            </div>
+                            <div class="link" onclick="location.href='{:url(\'/channel/teamwork_win\')}'">
+<!--                                    <span class="iconfont icon-hezuo1"></span>-->
+                                <img src="/assets/static/images/index_icon_03.png" alt="">
+                                <span class="t">加入至尊联盟</span>
+                                <i class="iconfont icon-jiantouyou"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="wp1200">
+                <ul class="advs-list-box clearfloat">
+                    <?php $banner = get_banner(24, 4);?>
+                    {volist name="banner" id="v"}
+                    <li><a href="{$v.url}" target="_blank"><img src="{$v.pic}" alt="{$v.name}"></a></li>
+                    {/volist}
+                </ul>
+            </div>
+        </section>
+
+        <section class="expert-online-wrap">
+            <div class="wp1200">
+                <div class="expert-top-con clearfloat">
+                    <div class="expert-title-box">
+                        <div class="expert-title-01">
+                            <div class="title-01">
+                                <div class="b-txt">E</div>
+                                <div class="s-txt">
+                                    <p class="cn">专家在线</p>
+                                    <p class="en">Expert online</p>
+                                </div>
+                            </div>
+                            <div class="p-t1">全国行业顶尖技术专家</div>
+                            <div class="p-t1">定时在线为您服务！</div>
+                            <div class="p-t1">为行业企业提供技术支持与服务</div>
+                            <div class="p-t1">致力于成为创业企业的专用工程师</div>
+                            <a href="{:url('/expert/index')}" class="btn">更多专家</a>
+                            <a href="{:url('/expert/index')}" class="btn">全网提问</a>
+                        </div>
+                        <div class="expert-title-02">
+                            <div class="title-02">
+                                <div class="cn">常见问题</div>
+                                <div class="en">Common problem</div>
+                            </div>
+                            <?php $alist = get_list(9, 129, 5, 0, 'recommended_position');?>
+                            {volist name="alist" id="item"}
+                                <a href="{$item.link}" class="p-t2">{$item.title|mb_substr=0,15}{if mb_strlen($item.title) > 15}...{/if}</a>
+                            {/volist}
+                            <a href="{:url('/channel/expert_common_problems')}" class="btn">更多问题</a>
+                        </div>
+                    </div>
+                    <div class="expert-con-box">
+                        <?php $alist = get_expert(1, 0, 'index_recommend');?>
+                        {volist name="alist" id="item"}
+                        <a href="{:url('/expert/detail', ['id'=>$item.id])}" class="expert-info-block clearfloat">
+                            <div class="expert-img"><img src="{$item.avatar}" alt=""></div>
+                            <div class="info">
+                                <div class="name">
+                                    <span class="n">{$item.nickname}</span>
+                                    <span class="j">{$item.level}</span>
+                                </div>
+                                <div class="p"><span>学历：{$item.education}</span><span>工作年限：{$item.workage}年</span></div>
+                                <div class="p">精通行业/领域：{$item.technosphere}</div>
+                                <div class="btn-block">
+                                    {if strpos($item.service,'online') !== false}
+                                    <div class="btn">我要提问</div>
+                                    {/if}
+                                    {if strpos($item.service,'locale') !== false}
+                                    <div class="btn">我要现场服务</div>
+                                    {/if}
+                                </div>
+                            </div>
+                        </a>
+                        {/volist}
+                        <div class="expert-list-swiper">
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    <?php $alist = get_expert(10, 0, 'index_list_recommend');?>
+                                    {volist name="alist" id="item"}
+                                    <a href="{:url('/expert/detail', ['id'=>$item.id])}" class="swiper-slide">
+                                        <div class="tt">{$item.nickname}</div>
+                                        <div class="job">{$item.level}</div>
+                                        <div class="p"><span>学历：{$item.education}</span><span>工作年限：{$item.workage}年</span></div>
+                                        <div class="p">精通行业/领域：{$item.technosphere}</div>
+                                        <div class="btn-block">
+                                            {if strpos($item.service,'online') !== false}
+                                            <div class="btn">我要提问</div>
+                                            {/if}
+                                            {if strpos($item.service,'locale') !== false}
+                                            <div class="btn">我要现场服务</div>
+                                            {/if}
+                                        </div>
+                                    </a>
+                                    {/volist}
+                                </div>
+                            </div>
+                            <div class="button-prev"><i class="iconfont icon-jiantouzuo"></i></div>
+                            <div class="button-next"><i class="iconfont icon-jiantouyou"></i></div>
+                        </div>
+                        <div class="online-number-block clearfloat">
+                            <div class="inner-block">
+                                <div class="avatar-img"><img src="/assets/static/images/online_num_a.png" alt=""></div>
+                                <div class="t">今日提问：{$questionNum}人次</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="expert-adv-box">
+                        <?php $activity = enterpriseActivity();?>
+                        {if $activity}
+                        <div class="expert-adv-title"></div>
+                        <div class="product-block">
+                            <a href="/archives/{$activity.id}.html" class="product-bg">
+                                <img src="{$activity.image}" alt="{$activity.title}" title="{$activity.title}">
+                            </a>
+                            <div class="product-con">
+                                <div class="row">
+                                    <div class="row-tt">规格</div>
+                                    <div class="txt">{$activity.format}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="row-tt">剩余</div>
+                                    <div class="txt">{$activity.number}{$activity.unit}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="row-tt">结束时间</div>
+                                    <div class="txt pl-5"><?php echo date('Y/m/d H:i', strtotime($activity['end_time']));?></div>
+                                </div>
+                                <a href="/archives/{$activity.id}.html" class="row-btn">
+                                    <span class="money">¥{:round($activity.unit_price, 1)}</span>
+                                    <span class="unit">/{$activity.unit}</span>
+                                    <span class="buy-btn">立即订购</span>
+                                </a>
+                            </div>
+                        </div>
+                        {else}
+                        <div class="adv-img-box">
+                            <?php $ad = get_banner(51, 1);?>
+                            {volist name="ad" id="v"}
+                            <img src="{$v.pic}" alt="">
+                            {/volist}
+                        </div>
+                        {/if}
+                    </div>
+                </div>
+                <ul class="expert-bottom-con">
+                    <?php $banner = get_banner(25, 10);?>
+                    {volist name="banner" id="v"}
+                    <li><a href="{$v.url}" target="_blank"><img src="{$v.pic}" alt="{$v.name}"></a></li>
+                    {/volist}
+                </ul>
+            </div>
+        </section>
+
+        <section class="news-wrap">
+            <div class="wp1200">
+                <div class="news-box">
+                    <div class="block">
+                        <div class="title-box clearfloat">
+                            <div class="img-box">
+                                <a href="{:url('/channel/konwledge')}" class="title-txt">知识·经验</a>
+                            </div>
+                            <?php $banner = get_banner(42, 1);?>
+                            {volist name="banner" id="v"}
+                            <a href="{$v.url}" target="_blank" class="a-more">{$v.name}</a>
+                            {/volist}
+                        </div>
+                        <div class="tab-list">
+                            <div class="list on">热门知识</div>
+                            <div class="list">最新知识</div>
+                            <div class="list">其他信息</div>
+                        </div>
+                        <div class="tab-box">
+                            <div class="con">
+                                <?php $banner = get_banner(31, 1);?>
+                                {volist name="banner" id="v"}
+                                <a href="{$v.url}" target="_blank" class="img"><img src="{$v.pic}" alt="{$v.name}"></a>
+                                {/volist}
+                                <?php $alist = get_list(15, 74, 1, 0, 'index_hot_recommend');?>
+                                {volist name="alist" id="item"}
+                                <a href="{:url('/archives/' . $item.id)}" class="title-a">
+                                    <!-- <div class="date-block">
+                                        <div class="b">{$item.createtime|date='d', ###}</div>
+                                        <div class="s">{$item.createtime|date='Y-m', ###}</div>
+                                    </div> -->
+                                    <div class="text-block">
+                                        <h5>{$item.title}</h5>
+                                        <p>{$item.description}</p>
+                                    </div>
+                                </a>
+                                {/volist}
+                                <ul class="con-list zhishi">
+                                    <?php $alist = get_list(15, 74, 8, 0, 'index_hot_list_recommend');?>
+                                    {volist name="alist" id="item" key="k"}
+                                    <li><a href="{:url('/archives/' . $item.id)}" {if $item.flag == 'hot'}class="special-a"{/if}>{$item.title}</a>{if $item.flag == 'hot'}<span class="hot">hot~</span>{/if}</li>
+                                    {/volist}
+                                </ul>
+                            </div>
+                            <div class="con">
+                                <?php $banner = get_banner(31, 1);?>
+                                {volist name="banner" id="v"}
+                                <a href="{$v.url}" target="_blank" class="img"><img src="{$v.pic}" alt="{$v.name}"></a>
+                                {/volist}
+                                <?php $alist = get_list(15, 74, 1, 0, 'index_new_recommend');?>
+                                {volist name="alist" id="item"}
+                                <a href="{:url('/archives/' . $item.id)}" class="title-a">
+                                    <!-- <div class="date-block">
+                                        <div class="b">{$item.createtime|date='d', ###}</div>
+                                        <div class="s">{$item.createtime|date='Y-m', ###}</div>
+                                    </div> -->
+                                    <div class="text-block">
+                                        <h5>{$item.title}</h5>
+                                        <p>{$item.description}</p>
+                                    </div>
+                                </a>
+                                {/volist}
+                                <ul class="con-list zhishi">
+                                    <?php $alist = get_list(15, 74, 8, 0, 'index_new_list_recommend');?>
+                                    {volist name="alist" id="item" key="k"}
+                                    <li><a href="{:url('/archives/' . $item.id)}" {if $item.flag == 'hot'}class="special-a"{/if}>{$item.title}</a>{if $item.flag == 'hot'}<span class="hot">hot~</span>{/if}</li>
+                                    {/volist}
+                                </ul>
+                            </div>
+                            <div class="con">
+                                <?php $banner = get_banner(31, 1);?>
+                                {volist name="banner" id="v"}
+                                <a href="{$v.url}" target="_blank" class="img"><img src="{$v.pic}" alt="{$v.name}"></a>
+                                {/volist}
+                                <?php $alist = get_list(15, 74, 1, 0, 'index_other_recommend');?>
+                                {volist name="alist" id="item"}
+                                <a href="{:url('/archives/' . $item.id)}" class="title-a">
+                                    <!-- <div class="date-block">
+                                        <div class="b">{$item.createtime|date='d', ###}</div>
+                                        <div class="s">{$item.createtime|date='Y-m', ###}</div>
+                                    </div> -->
+                                    <div class="text-block">
+                                        <h5>{$item.title}</h5>
+                                        <p>{$item.description}</p>
+                                    </div>
+                                </a>
+                                {/volist}
+                                <ul class="con-list zhishi">
+                                    <?php $alist = get_list(15, 74, 8, 0, 'index_other_list_recommend');?>
+                                    {volist name="alist" id="item" key="k"}
+                                    <li><a href="{:url('/archives/' . $item.id)}" {if $item.flag == 'hot'}class="special-a"{/if}>{$item.title}</a>{if $item.flag == 'hot'}<span class="hot">hot~</span>{/if}</li>
+                                    {/volist}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <div class="title-box clearfloat">
+                            <div class="img-box">
+                                <a href="{:url('/channel/formula')}" class="title-txt">配方索取</a>
+                            </div>
+                            <?php $banner = get_banner(43, 1);?>
+                            {volist name="banner" id="v"}
+                            <a href="{$v.url}" target="_blank" class="a-more">{$v.name}</a>
+                            {/volist}
+                        </div>
+                        <div class="con">
+                            <?php $banner = get_banner(32, 1);?>
+                            {volist name="banner" id="v"}
+                            <a href="{$v.url}" target="_blank" class="img"><img src="{$v.pic}" alt="{$v.name}"></a>
+                            {/volist}
+                            <?php $alist = get_list(11, 70, 1, 0, 'index_recommend');?>
+                            {volist name="alist" id="item"}
+                            <a href="{:url('/archives/' . $item.id)}" class="title-a">
+                                <!-- <div class="date-block">
+                                    <div class="b">{$item.createtime|date='d', ###}</div>
+                                    <div class="s">{$item.createtime|date='Y-m', ###}</div>
+                                </div> -->
+                                <div class="text-block">
+                                    <h5>{$item.title}</h5>
+                                    <p>{$item.description}</p>
+                                </div>
+                            </a>
+                            {/volist}
+                            <ul class="con-list peifang">
+                                <?php $alist = get_list(11, 70, 8, 0, 'index_list_recommend');?>
+                                {volist name="alist" id="item" key="k"}
+                                <li><a href="{:url('/archives/' . $item.id)}" {if $item.flag == 'hot'}class="special-a"{/if}>{$item.title}</a>{if $item.flag == 'hot'}<span class="hot">hot~</span>{/if}</li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                    <!--<div class="block">
+                        <div class="title-box clearfloat">
+                            <div class="img-box">
+                                <a href="{:url('/channel/analysis')}" class="title-txt">技术分享</a>
+                            </div>
+                            <?php $banner = get_banner(44, 1);?>
+                            {volist name="banner" id="v"}
+                            <a href="{$v.url}" target="_blank" class="a-more">{$v.name}</a>
+                            {/volist}
+                        </div>
+                        <div class="con">
+                            <?php $banner = get_banner(48, 2);?>
+                            {volist name="banner" id="v"}
+                            <a href="{$v.url}" target="_blank" class="con-bg-01">
+                                <img src="{$v.pic}" alt="{$v.name}">
+                            </a>
+                            {/volist}
+                        </div>
+                    </div>-->
+                    <div class="block">
+                        <div class="dict-title">
+                            <a href="{:url('/channel/encyclopedias')}">化工百科</a>
+                        </div>
+                        <div class="dict-con">
+                            <div class="con-search">
+                                <div class="con-search-tag">表面化学·百科</div>
+                                <form action="{:url('/channel/encyclopedias')}" method="get" class="con-search-form">
+                                    <div class="input">
+                                        <input type="text" name="encyclopediasKeyword" placeholder="请输入CAS号、化合物名称、中文别名" style="font-size:5px;">
+                                    </div>
+                                    <button>搜索</button>
+                                </form>
+                            </div>
+                            <div class="con-keyword">
+                                <div class="con-keyword-title">表面化学·百科</div>
+                                <div class="con-keyword-list">
+                                    {cms:arclist id="row" channel="133" orderby="views" orderway="desc" limit="27"}
+                                    <a href="{$row.url}" title="{$row.title}">{$row.title}</a>
+                                    {/cms:arclist}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="news-adv-list">
+                    <?php $banner = get_banner(26, 3);?>
+                    {volist name="banner" id="v"}
+                    <li><a href="{$v.url}" target="_blank"><img src="{$v.pic}" alt="{$v.name}"></a></li>
+                    {/volist}
+                </ul>
+            </div>
+        </section>
+
+        <section class="industry-wrap">
+            <div class="wp1200">
+                <div class="hd-box clearfloat">
+                    <div class="box">
+                        <div class="title-box clearfloat">
+                            <div class="img-box">
+                                <a href="{:url('/channel/industry_headlines_hyzh')}" class="b">行业资讯</a>
+                                <span class="s">这里有更新的行业资讯信息</span>
+                            </div>
+                            <a href="{:url('/channel/industry_headlines_hyzh')}" class="href-wrap">更多资讯</a>
+                        </div>
+                        <div class="con-box con-box-01">
+                            <div class="list-01">
+                                <?php $alist = get_list(1, 49, 2, 0, 'index_recommend');?>
+                                {volist name="alist" id="item"}
+                                <a href="{:url('/archives/' . $item.id)}" class="item-01 clearfloat">
+                                    <div class="img-box"><img src="{$item.image}" alt="{$item.title}"></div>
+                                    <div class="info-box">
+                                        <div class="h2">
+            <!--                                            {if $item.flag == 'hot'}<img src="/assets/static/images/index_img_12.png" alt="">{/if}-->
+            <!--                            <span class="icon-tab">顶</span>-->
+                                            <span class="t">{$item.title|mb_substr=0,23}{if mb_strlen($item.title) > 23}...{/if}</span>
+                                        </div>
+                                        <div class="p">{$item.description|mb_substr=0,65}{if mb_strlen($item.description) > 65}...{/if}</div>
+                                        <div class="msg">{$item.publishtime|date="Y-m-d", ###}</div>
+            <!--                                        <div class="msg clearfloat">-->
+            <!--                                            <p>展览时间：{$item.date}</p>-->
+            <!--                                            <p>展览地点：{$item.address|mb_substr=0,10}{if mb_strlen($item.address) > 10}...{/if}</p>-->
+            <!--                                        </div>-->
+                                    </div>
+                                </a>
+                                {/volist}
+                            </div>
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    <?php $banner = get_banner(29, 10);?>
+                                    {volist name="banner" id="v"}
+                                    <a href="{$v.url}" target="_blank" class="swiper-slide">
+                                        <img src="{$v.pic}" alt="{$v.name}">
+                                    </a>
+                                    {/volist}
+                                </div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="title-box clearfloat">
+                            <div class="img-box">
+                                <a href="{:url('/channel/industry_headline_hytt')}" class="b">市场行情</a>
+                                <span class="s">这里有最新的市场行情与动态</span>
+                            </div>
+                            <a href="{:url('/channel/industry_headline_hytt')}" class="href-wrap">更多关注</a>
+                        </div>
+                        <div class="con-box con-box-02">
+                            <div class="swiper-container con-box-02-swiper">
+                                <div class="swiper-wrapper">
+                                    <?php $banner = get_banner(50, 10);?>
+                                    {volist name="banner" id="v"}
+                                    <a href="{$v.url}" target="_blank" class="swiper-slide"><img src="{$v.pic}" alt=""></a>
+                                    {/volist}
+                                </div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                            <ul class="info-list">
+                                <?php $alist = get_list(1, 47, 9, 0, 'index_list_recommend');?>
+                                {volist name="alist" id="item" key='i'}
+                                <li class="item">
+                                    <span class="item-num">{if $i == 1}顶{else}{$i}{/if}</span>
+                                    <a href="{:url('/archives/' . $item.id)}" class="item-href">{$item.title|mb_substr=0,30}{if mb_strlen($item.title) > 30}...{/if}</a>
+                                    <span class="date">{$item.createtime|date='Y-m-d', ###}</span>
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="enterprise-wrap">
+            <div class="wp1200">
+                <div class="hd-wrap clearfloat">
+                    <div class="hd-box">
+                        <div class="title-box clearfloat">
+                            <div class="tt">
+                                <span class="b">联盟优质企业展播</span>
+                                <span class="s">优质 诚信 高效企业</span>
+                            </div>
+                            <?php $banner = get_banner(45, 1);?>
+                            {volist name="banner" id="v"}
+                            <a href="{$v.url}" target="_blank">{$v.name}</a>
+                            {/volist}
+                        </div>
+                        <div class="con-box con-01">
+                            <ul class="list-wrap">
+                                <?php $list = getEnterpriseList(11, 'is_excellent');?>
+                                {volist name="list" id="v"}
+                                <li>
+                                    <a href="{:url('enterprise/detail', ['id' => $v['id']])}">
+                                        <img src="{$v.logo}" alt="{$v.company}">
+                                    </a>
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hd-box">
+                        <div class="title-box clearfloat">
+                            <div class="tt tt-01">
+                                <span class="b">活跃企业</span>
+                            </div>
+                            <?php $banner = get_banner(46, 1);?>
+                            {volist name="banner" id="v"}
+                            <a href="{$v.url}" target="_blank">{$v.name}</a>
+                            {/volist}
+                        </div>
+                        <div class="con-box con-02">
+                            <ul class="list-wrap">
+                                <?php $list = getEnterpriseList(10, 'is_active');?>
+                                {volist name="list" id="v"}
+                                <li>
+                                    <a href="{:url('enterprise/detail', ['id' => $v['id']])}">
+                                        <div class="img"><img src="{$v.logo}" alt="{$v.company}"></div>
+                                        <h4 class="word">{$v.company}</h4>
+                                    </a>
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hd-box">
+                        <div class="title-box clearfloat">
+                            <div class="tt tt-02">
+                                <span class="b">金牌成员</span>
+                            </div>
+                            {if $user}
+                            <?php $is_enterprise = getEnterprise($user['id'], 'id');?>
+                            {if $is_enterprise}
+                            <a href="{:getLink(95)}" target="_blank">加入金牌成员</a>
+                            {else}
+                            <a href="{:url('index/user/enterprise')}" target="_blank">加入金牌成员</a>
+                            {/if}
+                            {else}
+                            <a href="{:url('/user/register')}" target="_blank">加入金牌成员</a>
+                            {/if}
+                        </div>
+                        <div class="con-box con-03">
+                            <ul class="list-wrap">
+                                <?php $list = getEnterpriseList(15, '', 'a.createtime DESC', '2,3,4');?>
+                                {volist name="list" id="v"}
+                                <li>
+                                    <a href="{:url('enterprise/detail', ['id' => $v['id']])}">{$v.company|mb_substr=0,14}{if mb_strlen($v.company) > 14}...{/if}</a>
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="ft-wrap clearfloat">
+                    <div class="ft-box clearfloat">
+                        <a href="{:getLink(69)}" class="ft-box-a">
+                            <div class="round-box"><img src="/assets/static/images/round_icon_01.png" alt="" class="round-icon"></div>
+                            <div class="title"><span class="txt">供应信息</span></div>
+                        </a>
+                        <div class="list-box">
+                            <ul class="list-wrap clearfloat">
+                                <?php $list = get_list(10, 69, 6, 0, 'is_index');?>
+                                {volist name="list" id="v"}
+                                <li><a href="{:url('enterprise/supply_detail', ['id' => getEnterprise($v['user_id'], 'id'), 'itemid' => $v['id']])}">{$v.title}</a></li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="ft-box clearfloat">
+                        <a href="{:getLink(67)}" class="ft-box-a">
+                            <div class="round-box"><img class="round-icon" src="/assets/static/images/round_icon_02.png" alt=""></div>
+                            <div class="title"><span class="txt">求购信息</span></div>
+                        </a>
+                        <div class="list-box">
+                            <ul class="list-wrap clearfloat">
+                                <?php $list = get_list(8, 67, 6, 0, 'is_index');?>
+                                {volist name="list" id="v"}
+                                <li><a href="{:url('enterprise/purchase_detail', ['id' => getEnterprise($v['user_id'], 'id'), 'itemid' => $v['id']])}">{$v.title}</a></li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="recruit-wrap">
+            <div class="wp1200">
+                <div class="recruit-box">
+                    <div class="title-block">
+                        <div class="title">
+                            <div class="b-txt">B</div>
+                            <div class="s-txt">
+                                <p class="cn">表面人才</p>
+                                <p class="en">Biaomainrencai</p>
+                            </div>
+                        </div>
+                        <div class="p">行业顶尖各类精英在此汇聚，为您挑选更合适的优秀人才！</div>
+                        <div class="p">打造高端行业平台需要诚信，拼搏的您一起加入！</div>
+                        <div class="hot-box">
+                            <div class="h2">急需职位</div>
+                            <ul class="list-wrap clearfloat">
+                                <?php $tags = getTags(71, 12);?>
+                                {volist name="tags" id="v"}
+                                <li><a href="{:getLink(71)}?keyword={$v.name}">{$v.name}</a></li>
+                                {/volist}
+                            </ul>
+                        </div>
+                        <a href="{:getLink(71)}" class="btn">更多职位</a>
+                    </div>
+                    <ul class="recruit-list clearfloat">
+                        <?php $list = indexRecruit();?>
+                        {volist name="list" id="v"}
+                        <li>
+                            <a href="{:url('enterprise/recruit', ['id' => $v['id']])}">
+                                <div class="hd-box">
+                                    <div class="img"><img src="{$v.logo}" alt="{$v.company}"></div>
+                                    <div class="tt-txt">
+                                        <div class="h3">{$v.company}</div>
+                                        <div class="p">{$v.supplier_type}</div>
+                                    </div>
+                                </div>
+                                <div class="ft-box clearfloat">
+                                    <div class="num-box"><span class="red">{$v.sum}</span>个热招职位</div>
+                                    <div class="address-box">{$v.city}{$v.area}</div>
+                                </div>
+                            </a>
+                        </li>
+                        {/volist}
+                    </ul>
+                </div>
+                <?php $banner = get_banner(27, 1);?>
+                {volist name="banner" id="v"}
+                <div class="ft-adv-box" style="background-image: url({$v.pic});">
+<!--                    <a href="{$v.url}" class="btn">-->
+<!--                        <span class="t">我有化说</span>-->
+<!--                    </a>-->
+                </div>
+                {/volist}
+            </div>
+        </section>
+
+    </div>
+
+<?php $banner = get_banner(21, 1);?>
+{volist name="banner" id="v"}
+{if $v.picimg}
+<div class="fixed-adv-wrap" id="indexFixedAdv">
+    <div class="close-box">
+        <div class="countdown">
+            剩余 <span class="second">05</span> 秒
+        </div>
+        <div class="js-close-btn"></div>
+    </div>
+    <a href="{$v.url}"><img src="{$v.picimg}" alt=""></a>
+</div>
+{/if}
+{/volist}
+
+<script>
+    $(function () {
+        indexEvent();
+        // indexCountDown(5);
+        countdown(5);
+
+        var news_list = $('.news-box .tab-list')
+        var news_box = $('.news-box .tab-box')
+        tabs(news_list, news_box)
+
+        $('.js-close-btn').on('click', function () {
+            $(this).parents('.fixed-adv-wrap').fadeOut('linear')
+        })
+    })
+</script>
+
+{include file="public/footer"  /}

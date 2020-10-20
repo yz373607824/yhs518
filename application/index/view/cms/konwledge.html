@@ -1,0 +1,366 @@
+{include file="public/head" isMember="0" /}
+<style>
+    .on{
+        color: #5387e2 !important;
+    }
+</style>
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+    <div class="common-page-content recipe-wrap">
+        <div class="wp1200">
+            <?php $banner = get_banner(13,1);?>
+            {volist name='banner' id='item'}
+            <a href="{$item.url}" target="_blank" class="article-banner-wrap">
+                <img src="{$item.pic}" alt="{$item.name}">
+            </a>
+            {/volist}
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/channel/konwledge')}" class="bread-hover">知识·经验</a>
+            </div>
+            <div class="industry-list-wrap clearfloat">
+                <div class="common-left-block">
+                    <div class="industry-search-box clearfloat">
+                        <div class="search-block">
+                            <div class="common-search-box">
+                                <div class="common-search-input-box w100">
+                                    <input type="text" id="keywords" value="{$keywords}" class="search--input" placeholder="请输入标题">
+                                    <i class="iconfont icon-sousuo1 search--icon"></i>
+                                </div>
+                                <a href="javascript:search($('#keywords').val());" class="search--btn w100">搜索</a>
+                            </div>
+                        </div>
+                        <div class="submit-block">
+                            <h3>没有找到你需要的知识吗？</h3>
+                            <div class="js-submit-alter" id="js_submit_alter">提交你的需求</div>
+                        </div>
+                    </div>
+                    <div class="industry-tap-box">
+                        <div class="filter-box">
+                            <dl class="filter-list clearfloat">
+                                <dt>知识类别:</dt>
+                                <dd>
+                                    {cms:pagefilter id="filter" exclude=""}
+                                    {volist name="$filter.content" id="item"}
+                                    <div>
+                                        <a href="{$item.url}" class="{$item.active?'on type-on':''}">{$item.title}</a>
+                                    </div>
+                                    {/volist}
+                                    {/cms:pagefilter}
+                                </dd>
+                            </dl>
+                            <dl class="filter-list clearfloat">
+                                <dt>标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签:</dt>
+                                <dd>
+                                    {volist name='tags' id='item'}
+                                    <div>
+                                        <a href="{$item.url}" class="{$item.active?'on':''}">{$item.title}</a>
+                                    </div>
+                                    {/volist}
+                                </dd>
+                            </dl>
+                            <dl class="filter-list clearfloat">
+                                <dt>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类:</dt>
+                                <dd class="clearfloat">
+                                    <div class="select-box w200" style="width: 300px;">
+                                        <select class="inner-select category—type">
+                                            <option value="">请选择分类</option>
+                                            <option {if isset($category_type) && $category_type == 'industrial_cleaning_agent'}selected{/if} value="industrial_cleaning_agent">[前处理]工业清洗剂</option>
+                                            <option {if isset($category_type) && $category_type == 'the_surface_film'}selected{/if} value="the_surface_film">[前处理]表面成膜</option>
+                                            <option {if isset($category_type) && $category_type == 'post_processing'}selected{/if} value="post_processing">后处理</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="select-box w200 category-industrial_cleaning_agent" style="width: 300px;{if !isset($category_type) || $category_type != 'industrial_cleaning_agent'}display: none;{/if}">
+                                        <select class="inner-select category-value">
+                                            <option value="">请选择</option>
+                                            {volist name='industrial_cleaning_agent' id='item'}
+                                            <option {if isset($category_value) && $category_value == $item}selected{/if} value="{$item}">{$item}</option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+
+                                    <div class="select-box w200 category-the_surface_film" style="width: 300px;{if !isset($category_type) || $category_type != 'the_surface_film'}display: none;{/if}">
+                                        <select class="inner-select category-value">
+                                            <option value="">请选择</option>
+                                            {volist name='the_surface_film' id='item'}
+                                            <option {if isset($category_value) && $category_value == $item}selected{/if} value="{$item}">{$item}</option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+
+                                    <div class="select-box w200 category-post_processing" style="width: 300px;{if !isset($category_type) || $category_type != 'post_processing'}display: none;{/if}">
+                                        <select class="inner-select category-value">
+                                            <option value="">请选择</option>
+                                            {volist name='post_processing' id='item'}
+                                            <option {if isset($category_value) && $category_value == $item}selected{/if} value="{$item}">{$item}</option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+
+                                    <div class="select-box w200 category-" style="width: 300px;{if isset($category_type) && $category_type != ''}display: none;{/if}">
+                                        <select class="inner-select">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                </dd>
+                            </dl>
+
+                        </div>
+                        
+                    </div>
+
+
+                    <ul class="industry-list-box">
+                            <div class="recipe-header-block">
+                            {volist name='free_charge' id='item' key='k'}
+                            <a href="{$item.url}" class="recipe-header-type">
+                                <span class="sp-txt {$item.active?'on':''}">{$item.title}</span>
+                            </a>
+                            {/volist}
+                            <div class="tip-box">
+                                <div class="p"><strong>温馨提示：</strong></div>
+                                <div class="p">知识库已通过平台工程师严格审核，如有疑问，请咨询在线工程师或者客服。</div>
+                            </div>
+                            </div>
+    
+                        {volist name='$__PAGELIST__' id='item'}
+                        <li class="industry-list">
+                            <div  class="item clearfloat">
+                                {if !empty($item.image) && $item.image != '/public'}
+                                <a href="{if $item.jumpurl}{$item.jumpurl}{else}{:url($item.url)}{/if}" target="_blank" class="img-box">
+                                    <div class="img">
+                                        <img src="{$item.image}" alt="{$item.title}">
+                                    </div>
+                                </a>
+                                {/if}
+                                <div class="info-box">
+                                    <h2 class="h2">
+                                        <a href="{:url($item.url)}" target="_blank">{if $item.price != 0}<img src="/assets/static/images/industry_2.png" alt="">{/if}<span class="h2-txt">{$item.title}</span>{if $item.flag == 'hot'}<span class="hot">hot~</span>{/if}</a>
+                                    </h2>                                    
+                                    <div class="p clearfloat">
+                                        <span class="b-txt">知识简介：</span>
+                                        <span class="s-txt">{$item.description}</span>
+                                    </div>
+                                    <div class="p clearfloat">
+                                        <span class="b-txt">发布者：</span>
+                                        <span class="s-txt">{$item.source}</span>
+                                    </div>
+                                    <div class="feature-box">
+                                        <a href="{:url($item.url)}" target="_blank" class="info-btn">查看详细</a>
+                                        <div class="r">
+                                            {if $item.price != 0}<span class="r-priced">已付款：{$item.paynum}</span>{/if}
+                                            <a href="javascript:;" onclick="like(this, {$item.id});" class="r-block">
+                                                <span class="icon like {if $item.like}on{/if}"></span>
+                                                <span class="r-txt">{$item.likes}</span>
+                                            </a>
+                                            <a href="javascript:;" onclick="collect(this, {$item.id});" class="r-block">
+                                                <span class="icon collect {if $item.collect}on{/if}"></span>
+                                                <span class="r-txt">收藏</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        {/volist}
+                    </ul>
+                    <div class="paged">
+                        {$__PAGELIST__->render()}
+                    </div>
+                </div>
+                {include file="public/konwledge_adv_sidebar" /}
+            </div>
+        </div>
+        <div class="modal-wrap submit-recipe">
+            <div class="submit-recipe-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>提交需求信息</h2>
+                <form action="/diyform" method="post" id="form1" class="formId">
+                    <p class="tip">非会员用户，请先注册、登录公众号或者移动端绑定微信，方便及时查收信息和反馈。</p>
+                    <input type="hidden" name="__diyname__" value="konwledge_demand">
+                    {:token('konwledge_demand_token')}
+<!--                    <div class="row-block">-->
+<!--                        <div class="input-box">-->
+<!--                            <span class="red-star">*</span>-->
+<!--                            <span class="input-span">联系人：</span>-->
+<!--                            <input type="text" name="row[linkman]" datatype="*" nullmsg="请填写联系人" class="input-text">-->
+<!--                        </div>-->
+<!--                        <div class="input-box">-->
+<!--                            <span class="red-star">*</span>-->
+<!--                            <span class="input-span">企业名称：</span>-->
+<!--                            <input type="text" name="row[company]" datatype="*" nullmsg="请填写企业名称" class="input-text">-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="row--block">
+                        <div class="word-box">
+                            <span class="red-star">*</span>
+                            <span class="input-span">知识需求标题：</span>
+                        </div>
+                        <div class="input--box">
+                            <input type="text" name="row[title]" datatype="*" nullmsg="请填写知识需求标题" class="input">
+                        </div>
+                    </div>
+                    <div class="text-area">
+                        <div class="placeholder">
+                            <span class="red-star">*</span><span class="txt">知识需求详情：</span>
+                        </div>
+                        <textarea class="textwrap" name="row[demand_detail]" datatype="*" nullmsg="请填写知识需求详情" rows="7" placeholder=""></textarea>
+                    </div>
+                    <div class="row-block">
+                        <div class="input-box clearfloat">
+                            <span class="red-star">*</span>
+                            <span class="input-span">验证码：</span>
+                            <input type="text" name="captcha" datatype="*" nullmsg="请填写验证码" class="input-yzm">
+                        </div>
+                        <img style="margin-top: 0px;width: 130px;height: 50px;" src="{:captcha_src()}" onclick="this.src = '{:captcha_src()}?r=' + Math.random();" alt="验证码没能获取到，请刷新重试" class="yzm-img">
+                    </div>
+                    <div class="submit-btn-wrap">
+                        <button class="js-sub-btn">确认提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="bg" id="overlay"></div>
+    </div>
+
+    <script>
+        var urlJson = {:json_encode($Request.param)};
+
+        //点赞
+        function like(obj, id) {
+            $.post('/handleArchives/like', {id:id}, function (data) {
+                //如果处理成功才改变图标状态
+                if (data.code == 1) {
+                    showmsg(data.msg);
+                    //获取span的图标对象
+                    let span = $(obj).children('span').eq(0);
+                    let span2 = $(obj).children('span').eq(1);
+                    //判断是否激活
+                    if (span.hasClass('on')) {
+                        span.removeClass('on');
+                        span2.text(parseInt(span2.text()) - 1);
+                    } else {
+                        span.addClass('on');
+                        span2.text(parseInt(span2.text()) + 1);
+                    }
+                } else {
+                    showmsg(data.msg,data.url);
+                }
+            })
+        }
+
+        //收藏文章
+        function collect(obj, id)
+        {
+            $.post('/handleArchives/collect', {id:id}, function (data) {
+                //如果处理成功才改变图标状态
+                if (data.code == 1) {
+                    showmsg(data.msg);
+                    //获取span的图标对象
+                    let span = $(obj).children('span').eq(0);
+                    //判断是否激活
+                    if (span.hasClass('on')) {
+                        span.removeClass('on');
+                    } else {
+                        span.addClass('on');
+                    }
+                } else {
+                    showmsg(data.msg,data.url);
+                }
+            })
+        }
+
+        $(function(){
+            $('.category—type').change(function () {
+                $('.category-industrial_cleaning_agent').css('display', 'none');
+                $('.category-the_surface_film').css('display', 'none');
+                $('.category-post_processing').css('display', 'none');
+                $('.category-').css('display', 'none');
+                $('.category-' + $(this).val()).css('display', '');
+
+                if ($(this).val() == '') {
+                    urlJson.category_type = $('.category—type').val();
+                    urlJson.category_value = '';
+                    getUrl();
+                }
+            })
+
+            $('.category-value').change(function () {
+                urlJson.category_type = $('.category—type').val();
+                urlJson.category_value = $(this).val();
+                getUrl();
+            })
+
+            $('#js_submit_alter').on('click', function() {
+                $('.submit-recipe').addClass('md-show')
+            })
+
+            $('.modal-close').on('click', function() {
+                $('.submit-recipe').removeClass('md-show')
+                $(':input', '.formId')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+            })
+
+            $.Tipmsg.r = null;
+            $('#form1').Validform({
+                btnSubmit:".js-sub-btn",
+                tipSweep: true,
+                ajaxPost:true,
+                tiptype: function (msg, o, cssctl) {
+                    if (!o.obj.is("form")) {
+                        var objtip = o.obj.siblings(".checktip");
+                        cssctl(objtip, o.type);
+                        showmsg(msg);
+                        return false;
+                    }
+                },
+                callback:function(data){
+                if (data.code == 1) {
+                    showmsg(data.msg, "{:url('/channel/konwledge')}")
+                } else {
+                    if (data.url) {
+                        showmsg(data.msg, data.url)
+                    } else {
+                        showmsg(data.msg)
+                        $('input[name=konwledge_demand_token]').val(data.data.token);
+                        $('.yzm-img').trigger('click');
+                    }
+
+                }
+            }
+            });
+        })
+
+        function getUrl()
+        {
+            var i = 0;
+            var url = "{:url('/channel/konwledge')}";
+            for (var key in urlJson) {
+                url += i == 0 ? '?' : '&';
+                url += key + '=' + urlJson[key];
+                i++;
+            }
+            window.location.href = url;
+        }
+
+        function search(keywords)
+        {
+            urlJson.keywords = keywords;
+            getUrl();
+        }
+    </script>
+    <script>
+        $('#keywords').keyup(function (e) {
+            var content = $('#keywords').val();
+            if (e.keyCode === 13)
+                search(content);
+        });
+    </script>
+
+{include file="public/footer"  /}

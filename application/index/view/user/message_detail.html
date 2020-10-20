@@ -1,0 +1,34 @@
+{include file="public/head" isMember="1"/}
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('user/index')}" class="bread-hover">我的主页</a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('user/message')}" class="bread-hover">平台群发</a>
+        </div>
+        <div class="common-problem-wrap clearfloat">
+            <div class="common-problem-nav">
+                {include file="public/member_left_nav" /}
+            </div>
+            <div class="common-problem-content">
+                <div class="news-detail-wrap">
+                    <div class="inner-news-detail">
+                        <div class="article-wrap">
+                            <div class="title-box">
+                                <h2>{$read.title}</h2>
+                            </div>
+                            {$read.content|html_entity_decode}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="public/footer"  /}

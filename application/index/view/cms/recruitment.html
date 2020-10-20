@@ -1,0 +1,116 @@
+{include file="public/head" isMember="0" /}
+
+<script src="/assets/static/script/pca.js"></script>
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:getLink(0, $__CHANNEL__.diyname)}" class="bread-hover">人才需求</a>
+        </div>
+        <div class="recruitment-wrap">
+            <form action="" method="get" id="searchform">
+                <div class="tab-filter-wrap">
+                    <div class="tab-list">
+                        <div class="tab-item"><a href="{:getLink(0, $__CHANNEL__.diyname)}" class="on">人才需求</a></div>
+                        <div class="tab-item"><a href="{:getLink(96)}">人才供应</a></div>
+                    </div>
+                    <div class="filter-block ptb0">
+                        <div class="filter-list">
+                            {volist name="__FILTERLIST__" id="v"}
+                            <dl class="clearfloat">
+                                <dt>{$v.title}：</dt>
+                                <dd>
+                                    {volist name="$v.content" id="item"}
+                                    <a href="{$item.url}" class="{$item.active?'on':''}">{$item.title}</a>
+                                    {/volist}
+                                </dd>
+                            </dl>
+                            {/volist}
+                            <div class="address-filter">
+                                <p class="tt">所在区域：</p>
+                                <div class="address-select-block">
+                                    <select class="inner-address-select" name="province" id="province">
+                                    </select>
+                                </div>
+                                <div class="address-select-block">
+                                    <select class="inner-address-select" name="city" id="city">
+                                    </select>
+                                </div>
+                                <div class="address-select-block">
+                                    <select class="inner-address-select" name="area" id="area">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="adv-search-banner clearfloat">
+                    <?php $ad = get_banner(36, 1);?>
+                    {volist name="ad" id="v"}
+                    <img src="{$v.pic}" alt="">
+                    {/volist}
+                    <div class="search-region">
+                        <div class="common-search-box w390">
+                            <div class="common-search-input-box w70">
+                                <input type="text" class="search--input" name="keyword" placeholder="输入相关关键词" value="{:input('keyword')}">
+                                <i class="iconfont icon-sousuo1 search--icon"></i>
+                            </div>
+                            <a href="javascript:$('#searchform').submit()" class="search--btn w70">搜索</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <ul class="recruitment-list-box">
+                {cms:pagelist id="item" channel="$__CHANNEL__.id" model="$__CHANNEL__.model_id" orderby="id" orderway="desc" addon="true"}
+                <li class="recruitment-list">
+                    <div class="js-inner-recruitment clearfloat">
+                        <div class="row row-01">{$item.title}</div>
+                        <div class="row row-02">地点：{$item.province}{$item.city}{$item.area}</div>
+                        <div class="row row-03">人数：{$item.number}</div>
+                        <div class="row row-04">公司：{$item.company}</div>
+                        <div class="arrow"><i class="iconfont icon-jiantouxia"></i></div>
+                    </div>
+                    <div class="sub">
+                        {$item.content|htmlspecialchars_decode}
+                        <a href="{:url('index/enterprise/detail', ['id' => $item.enterprise_id])}" class="sub-btn">了解公司更多信息 >></a>
+                    </div>
+                </li>
+                {/cms:pagelist}
+            </ul>
+            <div class="paged">
+                {cms:pageinfo type="full" /}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        newPCA("{:input('province')}", "{:input('city')}", "{:input('area')}");
+
+        $("#province").change(function () {
+            changeCity($(this).val());
+            //改变区县
+            changeArea(null, null);
+        });
+
+        $("#city").change(function () {
+            var province = $("#province").val();
+            changeArea(province, $(this).val());
+        });
+
+        $('.js-inner-recruitment').on('click', function () {
+            if($(this).hasClass('on')) {
+                $(this).removeClass('on').next().slideUp('linear');
+            }else {
+                $(this).addClass('on').next().slideDown('linear').end().parent().siblings().find('.js-inner-recruitment').removeClass('on').next().slideUp('linear');
+            }
+        })
+    })
+</script>
+{include file="public/footer"  /}

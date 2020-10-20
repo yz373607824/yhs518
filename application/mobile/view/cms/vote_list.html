@@ -1,0 +1,76 @@
+
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+<div id="article">
+    <?php $banner = get_banner(52, 1);?>
+    <div class="vote-list-banner" style="background-image: url('{$banner.0.picimg}');">
+        {if $__CHANNEL__.vote_signup_url}
+        <a href="{$__CHANNEL__.vote_signup_url}" class="sign-up">我要报名 >></a>
+        {/if}
+    </div>
+    <div class="vote-list-wrap">
+
+        <div class="countdown">距离投票结束时间：
+            <?php $times = timediff($__CHANNEL__['vote_end_time']);?>
+            {if !$times}
+            已结束
+            {else}
+            <span class="countdate" id="days"></span> 天
+            <span class="countdate" id="hrs"></span> 小时
+            <span class="countdate" id="mins"></span> 分
+            <span class="countdate" id="secs"></span> 秒
+            {/if}
+        </div>
+        <ul class="lists-box">
+        {cms:pagelist id="item" channel="$__CHANNEL__.id" model="$__CHANNEL__.model_id" orderby="id" orderway="desc" addon="true"}
+            <li class="list">
+                <a href="{:url('/mobile/archives/' . $item['id'])}" class="img-box"><img src="{$item.image|default=$__CHANNEL__.image}" alt="{$item.title}"></a>
+                <div class="info-box">
+                    <a href="{:url('/mobile/archives/' . $item['id'])}" class="title">{$item.title}</a>
+                    <div class="btn-box">
+                        <div class="vote-num">
+                            <!--<div class="img"><img src="/assets/static_mobile/images/vote_03.png" alt=""></div>-->
+                            <div class="p">总票数 <span class="strong">{$item.invent_vote + $item.real_vote}</span></div>
+                        </div>
+                        <a href="javascript:vote({$item.id});" class="vote-btn">
+                            <!--<div class="img"><img src="/assets/static_mobile/images/vote_04.png" alt=""></div>-->
+                            <div class="p">{$__CHANNEL__.vote_button|default='我要投票'}</div>
+                        </a>
+                    </div>
+                </div>
+            </li>
+        {/cms:pagelist}
+        </ul>
+    </div>
+</div>
+
+<script>
+    function vote(id) {
+        $.ajax({
+            url : '/mobile/ajax/vote',
+            type : 'POST',
+            data : {id:id},
+            dataType : 'json',
+            success : function(data) {
+                if (data.code == 1) {
+                    showmsg(data.msg, 'jump', data.url)
+                } else {
+                    if (data.data.url == undefined) {
+
+                        showmsg(data.msg);
+                    } else {
+                        showmsg(data.msg, 'jump', data.data.url);
+                    }
+                }
+            }
+        });
+    }
+
+    $(function () {
+        countdown({$__CHANNEL__.vote_end_time - time()});
+    })
+</script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

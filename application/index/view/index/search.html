@@ -1,0 +1,50 @@
+{include file="public/head" isMember="0" /}
+
+    <div class="common-member-wrap">
+        <div class="wp1200">
+            <div class="c--wrap clearfloat">
+                <div class="c--member-right-wrap Wauto">
+                    <div class="c--inner search-results-wrap">
+                        <h2 class="title">搜索结果</h2>
+                        <div class="search-box">
+                            <div class="search-inner">
+                                <div class="input-box"><input type="text" id="all_keywords2" name="all_keywords2" placeholder="请输入标题或名称" value="{$keywords}"></div>
+                                <a href="javascript:location.href = '/search?keywords=' + $('#all_keywords2').val();" class="search-btn">搜索</a>
+                            </div>
+                        </div>
+                        <ul class="results-list-box">
+                            {volist name='list' id='item'}
+                            <li class="clearfloat">
+                                <div class="p">{$item.title}</div>
+                                <a href="{$item.url}" class="btn">查看</a>
+                            </li>
+                            {/volist}
+                        </ul>
+                        <div class="paged">
+                            {if $total > $pagesize}
+                            {if $pagenum == 0}
+                            <a class="prev">上一页</a>
+                            {else}
+                            <a href="/search?pagenum={$pagenum - 1}&keywords={$keywords}" class="prev">上一页</a>
+                            {/if}
+                            <span class="current">{$pagenum + 1}</span>
+                            {if $total / $pagesize > ($pagenum + 1) }
+                            <a class="next" href="/search?pagenum={$pagenum + 1}&keywords={$keywords}">下一页</a>
+                            {else}
+                            <a class="next">下一页</a>
+                            {/if}
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $('#all_keywords2').keyup(function (e) {
+        var content2 = $('#all_keywords2').val();
+        if (e.keyCode === 13)
+        location.href = '/search?keywords=' + content2;
+    });
+</script>
+{include file="public/footer"  /}

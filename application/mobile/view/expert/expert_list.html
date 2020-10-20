@@ -1,0 +1,243 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="page">
+        <div class="expert-list-wrap">
+            <div class="expert-ask-box">
+                <div class="hd">
+                    <div class="hd-left-box">
+                        <div class="title">全网提问</div>
+                        {$site.mobile_all_question_text|html_entity_decode}
+                    </div>
+                    <div class="hd-right-box">
+                        <a href="{:url('/mobile/expert/all_online_page')}">我要提问</a>
+                    </div>
+                </div>
+                <div class="ft">
+                    <div class="swiper-container expert-ask-swiper">
+                        <div class="swiper-wrapper">
+                            {volist name='grabList' id='item'}
+                            <div class="swiper-slide">
+                                <div class="title">{$item.title}</div>
+                                <p class="msg">问题描述：{$item.question_description}</p>
+                                <div class="btn-box">
+                                    <a href="{:url('/mobile/user/grabOnlineService')}" class="a-btn {if $item.is_grab == 1}disabled{/if}">{if $item.is_grab == 1}已解答{else}我要解答{/if}</a>
+                                </div>
+                            </div>
+                            {/volist}
+                        </div>
+                    </div>
+                    <div class="button-prev"><i class="iconfont icon-jiantouzuo"></i></div>
+                    <div class="button-next"><i class="iconfont icon-jiantouyou"></i></div>
+                </div>
+            </div>
+            <?php $banner = get_banner(30, 1);?>
+            {volist name="banner" id="v"}
+            <a href="{$v.m_url}" class="expert-adv-box">
+                <img src="{$v.picimg}" alt="{$v.name}">
+            </a>
+            {/volist}
+            <div class="expert-search-box">
+                <form action="" class="common-search-block">
+                    <div class="common-search-icon"><i class="iconfont icon-sousuo1"></i></div>
+                    <div class="input-box"><input type="text" class="input" id="keywords" placeholder="请输入专家的名字"></div>
+                    <a href="javascript:search();" class="common-serach-btn">搜索</a>
+                </form>
+            </div>
+            <div class="expert-select-box">
+                <form action="">
+                    <div class="common-filter-block">
+                        <dl class="filter-txt">
+                            <dt>服务类型：</dt>
+                            <dd>
+                                <select class="select-box" id="service">
+                                    <option value="">全部</option>
+                                    <option value="online">在线咨询</option>
+                                    <option value="locale">现场服务</option>
+                                </select>
+                                <div class="filter-btn">选择类型 <i class="iconfont icon-jiantouyou"></i></div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="common-filter-block">
+                        <dl class="filter-txt">
+                            <dt>专家等级：</dt>
+                            <dd>
+                                <select class="select-box" id="grade">
+                                    <option value="">全部</option>
+                                    <option value="1">工程师</option>
+                                    <option value="2">高级工程师</option>
+                                    <option value="3">专家</option>
+                                </select>
+                                <div class="filter-btn">选择等级 <i class="iconfont icon-jiantouyou"></i></div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="common-filter-block">
+                        <dl class="filter-txt">
+                            <dt>专家擅长：</dt>
+                            <dd>
+                                <select class="select-box" id="adept">
+                                    <option value="">全部</option>
+                                    {volist name='tagsList' id='tags'}
+                                    <option value="{$tags.name}">{$tags.name}</option>
+                                    {/volist}
+                                </select>
+                                <div class="filter-btn">选择擅长 <i class="iconfont icon-jiantouyou"></i></div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="common-filter-block">
+                        <dl class="filter-txt">
+                            <dt>所在区域：</dt>
+                            <dd>
+                                <input type="text" readonly unselectable="on" onfocus="this.blur()" class="address-input" id="address01" placeholder="全部">
+                                <div class="filter-btn">选择区域 <i class="iconfont icon-jiantouyou"></i></div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="common-filter-block">
+                        <dl class="filter-txt">
+                            <dt>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类：</dt>
+                            <dd>
+                                <div class="select-item">
+                                    <select class="select-box" id="category—type">
+                                        <option value="">全部</option>
+                                        <option value="industrial_cleaning_agent">[前处理]工业清洗剂</option>
+                                        <option value="the_surface_film">[前处理]表面成膜</option>
+                                        <option value="post_processing">后处理</option>
+                                    </select>
+                                    <div class="filter-btn">选择分类 <i class="iconfont icon-jiantouyou"></i></div>
+                                </div>
+
+                                <input type="hidden" id="category-value">
+
+                                <div class="select-item category-industrial_cleaning_agent" style="display: none;">
+                                    <select class="select-box" onchange="change(this)">
+                                        <option value="">全部</option>
+                                        {volist name='industrial_cleaning_agent' id='item'}
+                                        <option value="{$item}">{$item}</option>
+                                        {/volist}
+                                    </select>
+                                    <div class="filter-btn">选择分类 <i class="iconfont icon-jiantouyou"></i></div>
+                                </div>
+
+                                <div class="select-item category-the_surface_film" style="display: none;">
+                                    <select class="select-box" onchange="change(this)">
+                                        <option value="">全部</option>
+                                        {volist name='the_surface_film' id='item'}
+                                        <option value="{$item}">{$item}</option>
+                                        {/volist}
+                                    </select>
+                                    <div class="filter-btn">选择分类 <i class="iconfont icon-jiantouyou"></i></div>
+                                </div>
+
+                                <div class="select-item category-post_processing" style="display: none;">
+                                    <select class="select-box" onchange="change(this)">
+                                        <option value="">全部</option>
+                                        {volist name='post_processing' id='item'}
+                                        <option value="{$item}">{$item}</option>
+                                        {/volist}
+                                    </select>
+                                    <div class="filter-btn">选择分类 <i class="iconfont icon-jiantouyou"></i></div>
+                                </div>
+
+                                <div class="select-item category-">
+                                    <select class="select-box">
+                                        <option value="">全部</option>
+                                    </select>
+                                    <div class="filter-btn">选择分类 <i class="iconfont icon-jiantouyou"></i></div>
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="btn-box">
+                        <button type="button" class="sub-btn" onclick="search();">筛选</button>
+                    </div>
+                </form>
+            </div>
+            <ul class="expert-list-box">
+            </ul>
+            <div class="no-result-wrap" style="display: none">
+                <div class="word">您好，没有您搜索的专家。</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let page = 0;
+        function search() {
+            $(".expert-list-box").html('');
+            page = 0;
+            loadData();
+        }
+
+        function change(obj) {
+            $('#category-value').val($(obj).val());
+        }
+
+        $(function() {
+            $('#category—type').change(function () {
+                $('.category-industrial_cleaning_agent').css('display', 'none');
+                $('.category-the_surface_film').css('display', 'none');
+                $('.category-post_processing').css('display', 'none');
+                $('.category-').css('display', 'none');
+                $('.category-' + $(this).val()).css('display', '');
+                $('.category-industrial_cleaning_agent select').get(0).selectedIndex=0;
+                $('.category-the_surface_film select').get(0).selectedIndex=0;
+                $('.category-post_processing select').get(0).selectedIndex=0;
+                $('#category-value').val('');
+            })
+
+            expertEvent();
+            var area1 = new LArea();
+            area1.init({
+                'trigger': '#address01', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+                'valueTo': '#address01', //选择完毕后id属性输出到该位置
+                'keys': {
+                    id: 'name',
+                    name: 'name'
+                }, //绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+                'type': 1, //数据源类型
+                'data': LAreaData1, //数据源
+                'onClose': function(address) {
+                }
+            });
+
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let keywords = $("#keywords").val();
+            let service = $("#service").val();
+            let grade = $("#grade").val();
+            let adept = $("#adept").val();
+            let address = $("#address01").val();
+            let category_type = $("#category—type").val();
+            let category_value = $("#category-value").val();
+            let param = {page:page, keywords:keywords, service:service, grade:grade, adept:adept, address:address, category_type:category_type, category_value:category_value};
+            $.get("{:url('/mobile/expert/index')}", param, function(res){
+
+                $(".expert-list-box").append(res.data);
+
+                if ($(".expert-list-box").html() == '') {
+                    $('.no-result-wrap').show();
+                } else {
+                    $('.no-result-wrap').hide();
+                }
+            });
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="1"/}

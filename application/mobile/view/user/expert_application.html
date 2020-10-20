@@ -1,0 +1,534 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="member">
+        <div class="expert-application-wrap">
+            {if $expert}
+                {if $expert.status == 1}
+                <div class="audit-status">已审核</div>
+                {elseif $expert.status == 0}
+                <div class="audit-status">审核中</div>
+                {else}
+                <div class="audit-status">审核不通过，请联系管理员</div>
+                {/if}
+            {/if}
+            <form id="form1" action="{:url('/mobile/user/expertApplication')}" method="post">
+                {:token('expert_application_token')}
+                <div class="upload-row">
+                    <div class="left-txt">头像<span class="red-star">*</span></div>
+                    <div class="avatar-box">
+                        <img src="{if isset($expert)}{$expert.avatar}{/if}" alt="" class="region-img">
+                        <input type="file" class="input-file">
+                        <input type="hidden" class="file-hidden" datatype="*" nullmsg="请上传头像" name="row[avatar]" value="{if isset($expert)}{$expert.avatar}{/if}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">姓名<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" datatype="*" nullmsg="请填写姓名" name="row[name]" value="{if isset($expert)}{$expert.name}{/if}" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">昵称<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" datatype="*" nullmsg="请填写昵称" name="row[nickname]" value="{if isset($expert)}{$expert.nickname}{/if}" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">性别<span class="red-star">*</span></div>
+                        <div class="radio-wrap">
+                            <div class="radio-box">
+                                <input type="radio" datatype="*" {if isset($expert) && $expert.sex == '男'}checked{/if} nullmsg="请选择性别" name="row[sex]" value="男" class="radio" id="man">
+                                <label for="man" class="label-radio"><span class="radio-txt">男</span></label>
+                            </div>
+                            <div class="radio-box">
+                                <input type="radio" name="row[sex]" {if isset($expert) && $expert.sex == '女'}checked{/if} value="女" class="radio" id="woman">
+                                <label for="woman" class="label-radio"><span class="radio-txt">女</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="upload-row">
+                    <div class="left-txt">个人身份证正面<span class="red-star">*</span></div>
+                    <div class="files-img-box js-show-upload-img" data-upload-img="{if !empty($expert.id_just_image)}{$expert.id_just_image}{else}/assets/static_mobile/images/upload_bg.png{/if}">
+                        <img src="{if !empty($expert.id_just_image)}{$expert.id_just_image}{else}/assets/static_mobile/images/upload_bg.png{/if}" alt="">
+                        <input type="hidden" datatype="*" nullmsg="请上传个人身份证正面照片" class="file-hidden" name="row[id_just_image]" value="{if isset($expert)}{$expert.id_just_image}{/if}">
+                    </div>
+                    <div class="js-example" data-example-img="/assets/static/images/sfzzm.jpg">示例</div>
+                    <a href="javascript:;" class="js-upload"><input type="file" class="input-file">{if isset($expert)}重新{/if}上传</a>
+                </div>
+                <div class="upload-row">
+                    <div class="left-txt">个人身份证反面<span class="red-star">*</span></div>
+                    <div class="files-img-box js-show-upload-img" data-upload-img="{if !empty($expert.id_back_image)}{$expert.id_back_image}{else}/assets/static_mobile/images/upload_bg.png{/if}">
+                        <img src="{if !empty($expert.id_back_image)}{$expert.id_back_image}{else}/assets/static_mobile/images/upload_bg.png{/if}" alt="">
+                        <input type="hidden" datatype="*" nullmsg="请上传个人身份证反面照片" class="file-hidden" name="row[id_back_image]" value="{if isset($expert)}{$expert.id_back_image}{/if}">
+                    </div>
+                    <div class="js-example" data-example-img="/assets/static/images/sfzfm.jpg">示例</div>
+                    <a href="javascript:;" class="js-upload"><input type="file" class="input-file">{if isset($expert)}重新{/if}上传</a>
+                </div>
+                <div class="upload-row">
+                    <div class="left-txt">个人手持身份证正面<span class="red-star">*</span></div>
+                    <div class="files-img-box js-show-upload-img" data-upload-img="{if !empty($expert.id_hand_image)}{$expert.id_hand_image}{else}/assets/static_mobile/images/upload_bg.png{/if}">
+                        <img src="{if !empty($expert.id_hand_image)}{$expert.id_hand_image}{else}/assets/static_mobile/images/upload_bg.png{/if}" alt="">
+                        <input type="hidden" datatype="*" nullmsg="请上传个人手持身份证正面照片" class="file-hidden" name="row[id_hand_image]" value="{if isset($expert)}{$expert.id_hand_image}{/if}">
+                    </div>
+                    <div class="js-example" data-example-img="/assets/static/images/scsfz.jpg">示例</div>
+                    <a href="javascript:;" class="js-upload"><input type="file" class="input-file">{if isset($expert)}重新{/if}上传</a>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">手机<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert)}{$expert.mobile}{/if}" datatype="*,/^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/" nullmsg="请填写手机" errormsg="手机格式错误" name="row[mobile]" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">邮箱<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert)}{$expert.email}{/if}" datatype="*,e" nullmsg="请填写邮箱" errormsg="邮箱格式错误" name="row[email]" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">学历<span class="red-star">*</span></div>
+                        <div class="member-select-box">
+                            <select class="select" datatype="*" nullmsg="请选择学历" name="row[education]">
+                                <option value="小学" {if isset($expert) && $expert.education == '小学'}selected{/if}>小学</option>
+                                <option value="高级中学" {if isset($expert) && $expert.education == '高级中学'}selected{/if}>高级中学</option>
+                                <option value="中专" {if isset($expert) && $expert.education == '中专'}selected{/if}>中专</option>
+                                <option value="职校中技" {if isset($expert) && $expert.education == '职校中技'}selected{/if}>职校中技</option>
+                                <option value="专科" {if isset($expert) && $expert.education == '专科'}selected{/if}>专科</option>
+                                <option value="本科" {if isset($expert) && $expert.education == '本科'}selected{/if}>本科</option>
+                                <option value="硕士研究生" {if isset($expert) && $expert.education == '硕士研究生'}selected{/if}>硕士研究生</option>
+                                <option value="博士" {if isset($expert) && $expert.education == '博士'}selected{/if}>博士</option>
+                                <option value="博士后" {if isset($expert) && $expert.education == '博士后'}selected{/if}>博士后</option>
+                            </select>
+                            <div class="icon-box"><i class="iconfont icon-jiantouxia"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">毕业院校<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert)}{$expert.college}{/if}" placeholder="如果没有，请填写“无”" name="row[college]" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">单位名称<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert)}{$expert.company}{/if}" datatype="*" nullmsg="请填写单位名称" placeholder="如果没有，请填写“无”" name="row[company]" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">请选择地址<span class="red-star">*</span></div>
+                        <div class="address-box">
+                            <input type="text" name="address" readonly unselectable="on" onfocus="this.blur()" class="member-address" id="address01" placeholder="地址选择" value="{$expert.province},{$expert.city},{$expert.county}">
+                            <div class="icon-box"><i class="iconfont icon-jiantouxia"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">详细地址<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" datatype="*" nullmsg="请填写详细地址" name="row[address]" value="{if isset($expert)}{$expert.address}{/if}" placeholder="请输入详细地址，如果没有，请填写“无”" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">申请职称<span class="red-star">*</span></div>
+                        <div class="member-select-box">
+                            <select class="select" datatype="*" nullmsg="请填写申请职称" name="row[level]">
+                                <option value="1" {if isset($expert) && $expert.level == '1'}selected{/if}>工程师</option>
+                                <option value="2" {if isset($expert) && $expert.level == '2'}selected{/if}>高级工程师</option>
+                                <option value="3" {if isset($expert) && $expert.level == '3'}selected{/if}>专家</option>
+                            </select>
+                            <div class="icon-box"><i class="iconfont icon-jiantouxia"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">现任单位职务<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert)}{$expert.job}{/if}" datatype="*" nullmsg="请填写现任单位职务" name="row[job]" placeholder="如果没有，请填写“无”" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">从事技术领域<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert)}{$expert.technosphere}{/if}" datatype="*" nullmsg="请填写从事技术领域" name="row[technosphere]" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">从业工龄<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert)}{$expert.workage}{/if}" datatype="*" nullmsg="请填写从业工龄" name="row[workage]" placeholder="填写数字，例如 10" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="text-area">
+                    <div class="textarea-word">主要成就</div>
+                    <textarea name="row[achievement]" rows="5" placeholder="完善信息有助于您及时通过认证" class="textarea">{if isset($expert)}{$expert.achievement}{/if}</textarea>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">专家擅长<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert)}{$expert.adept}{/if}" name="row[adept]" datatype="*" nullmsg="请填写专家擅长" placeholder="填写您最擅长的技术，对您有益" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="multse-row">
+                    <div class="left-txt">[前处理]工业清洗剂</div>
+                    <div class="multse-select-wrap">
+                        <input type="hidden" id="industrial_cleaning_agent" name="row[industrial_cleaning_agent]" value="{$expert.industrial_cleaning_agent}">
+                        <div class="view">
+                            <span class="placeholder">{if !empty($expert.industrial_cleaning_agent)}{$expert.industrial_cleaning_agent}{else}请选择类别{/if}</span>
+                            <div class="js-view"></div>
+                        </div>
+                        <div class="select-scroller" data-scroller="01" id="scroller01">
+                            <div class="select-list">
+                                {volist name='industrial_cleaning_agent' id='item'}
+                                <a class="select-item {if strpos($expert.industrial_cleaning_agent,$item) !== false}checked{/if}" data-option="{$item}" data-val="{$item}">{$item}</a>
+                                {/volist}
+                            </div>
+                        </div>
+                        <i class="iconfont icon-jiantouxia arrow"></i>
+                    </div>
+                </div>
+                <div class="multse-row">
+                    <div class="left-txt">[前处理]表面成膜</div>
+                    <div class="multse-select-wrap">
+                        <input type="hidden" id="the_surface_film" name="row[the_surface_film]" value="{$expert.the_surface_film}">
+                        <div class="view">
+                            <span class="placeholder">{if !empty($expert.the_surface_film)}{$expert.the_surface_film}{else}请选择类别{/if}</span>
+                            <div class="js-view"></div>
+                        </div>
+                        <div class="select-scroller" data-scroller="02" id="scroller02">
+                            <div class="select-list">
+                                {volist name='the_surface_film' id='item'}
+                                <a class="select-item {if strpos($expert.the_surface_film,$item) !== false}checked{/if}" data-option="{$item}" data-val="{$item}">{$item}</a>
+                                {/volist}
+                            </div>
+                        </div>
+                        <i class="iconfont icon-jiantouxia arrow"></i>
+                    </div>
+                </div>
+                <div class="multse-row">
+                    <div class="left-txt">后处理</div>
+                    <div class="multse-select-wrap">
+                        <input type="hidden" id="post_processing" name="row[post_processing]" value="{$expert.post_processing}">
+                        <div class="view">
+                            <span class="placeholder">{if !empty($expert.post_processing)}{$expert.post_processing}{else}请选择类别{/if}</span>
+                            <div class="js-view"></div>
+                        </div>
+                        <div class="select-scroller" data-scroller="03" id="scroller03">
+                            <div class="select-list">
+                                {volist name='post_processing' id='item'}
+                                <a class="select-item {if strpos($expert.post_processing,$item) !== false}checked{/if}" data-option="{$item}" data-val="{$item}">{$item}</a>
+                                {/volist}
+                            </div>
+                        </div>
+                        <i class="iconfont icon-jiantouxia arrow"></i>
+                    </div>
+                </div>
+                <div class="text-area">
+                    <div class="textarea-word">详情介绍</div>
+                    <textarea rows="5" class="textarea editor" name="row[content]">{if isset($expert)}{$expert.content}{/if}</textarea>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">专家现场服务预约时间</div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert) && !empty($expert.service_starttime)}{$expert.service_starttime}{/if}" name="row[service_starttime]" readonly class="input" id="date_a1">
+                        </div>
+                        <div class="left-span">至</div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert) && !empty($expert.service_endtime)}{$expert.service_endtime}{/if}" name="row[service_endtime]" readonly class="input" id="date_a2">
+                        </div>
+                        <div class="date-img posr"><img src="/assets/static_mobile/images/date.png" alt=""></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">专家在线咨询时间</div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert) && !empty($expert.advisory_starttime)}{$expert.advisory_starttime}{/if}" name="row[advisory_starttime]" readonly class="input" id="date_b1">
+                        </div>
+                        <div class="left-span">至</div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert) && !empty($expert.advisory_endtime)}{$expert.advisory_endtime}{/if}" name="row[advisory_endtime]" readonly class="input" id="date_b2">
+                        </div>
+                        <div class="date-img posr"><img src="/assets/static_mobile/images/date.png" alt=""></div>
+                    </div>
+                </div>
+                <div class="special-row">
+                    <div class="span">专家服务项<span class="red-star">*</span></div>
+                    <div class="checkbox-box">
+                        <input type="checkbox" datatype="*" nullmsg="请选择专家服务项" name="row[service][]" value="online" {if isset($expert) && strpos($expert.service,'online') !== false}checked{/if} class="checkbox" id="checkbox_02">
+                        <label for="checkbox_02" class="label-checkbox square"><span class="checkbox-txt">提供在线咨询</span></label>
+                    </div>
+                    <div class="checkbox-box">
+                        <input type="checkbox" name="row[service][]" value="locale" {if isset($expert) && strpos($expert.service,'locale') !== false}checked{/if} class="checkbox" id="checkbox_03">
+                        <label for="checkbox_03" class="label-checkbox square"><span class="checkbox-txt">提供现场服务</span></label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">专家期限<span class="red-star">*</span></div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert)}{$expert.deadline_starttime|date='Y-m-d',###}{/if}" datatype="*" nullmsg="请选择期限开始时间" name="row[deadline_starttime]" readonly class="input" id="date_02">
+                        </div>
+                        <div class="left-span">至</div>
+                        <div class="input-box">
+                            <input type="text" value="{if isset($expert)}{$expert.deadline_endtime|date='Y-m-d',###}{/if}" datatype="*" nullmsg="请选择期限结束时间" name="row[deadline_endtime]" readonly class="input" id="date_03">
+                        </div>
+                        <div class="date-img posr"><img src="/assets/static_mobile/images/date.png" alt=""></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row-left">
+                        <div class="left-txt">验证码</div>
+                        <div class="input-box">
+                            <input type="text" datatype="*" nullmsg="请填写验证码" name="img_captcha" class="file-input-val">
+                        </div>
+                    </div>
+                    <div class="row-right">
+                        <div class="yzm-box">
+                            <img src="{:captcha_src()}" onclick="this.src = '{:captcha_src()}?r=' + Math.random();" alt="验证码没能获取到，请刷新重试">
+                        </div>
+                    </div>
+                </div>
+                <div class="agree-box">
+                    <input type="checkbox" id="checkbox_01" class="checkbox" name="checkbox_01" value="checkbox_01" datatype="*" nullmsg="请阅读并接受协议内容" {if isset($expert)} checked{/if}>
+                    <label for="checkbox_01" class="label-checkbox"><span class="checkbox-txt">我确认阅读并接受</span><a href="{:url('/archives/177')}">《成为工程师的合同附件同意书 （协议）》</a></label>
+                </div>
+                <a href="javascript:;" class="btn">提交申请</a>
+            </form>
+        </div>
+        <div class="images-fixed-box">
+            <div class="inner-box">
+                <div class="close-btn"><i class="iconfont icon-fork"></i></div>
+                <div class="con">
+                    <div class="img-box"><img src="" alt=""></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+    <script src="/assets/static_mobile/script/multsel.js"></script>
+    <script>
+        $(function() {
+            // 专家申请头像
+            $('.input-file').on('change', function () {
+                let hiddenInp = $(this).next()
+                let preview = $(this).parent()
+                let file = $(this).get(0).files[0]
+
+                if (file.type.indexOf('image') === 0) {
+                    let uploading = false;
+                    let formData = new FormData();
+                    formData.append("file", file);
+                    if(uploading){
+                        return false;
+                    }
+                    $.ajax({
+                        url : '/index/ajax/upload',
+                        type : 'POST',
+                        data : formData,
+                        contentType: false,
+                        processData: false,
+                        dataType : 'json',
+                        beforeSend: function(){
+                            uploading = true;
+                        },
+                        success : function(data){
+                            if (data.code == 1) {
+                                preview.find('img').attr('src', data.data.url)
+                                hiddenInp.val(data.data.url)
+                            } else {
+                                showmsg(data.msg)
+                            }
+                            uploading = false;
+                        }
+                    });
+                }
+            })
+
+            // 身份证上传
+            $('.js-example').on('click', function () {
+                var img = $(this).attr('data-example-img')
+                $('.images-fixed-box').find('.img-box img').attr('src', img).end().fadeIn('linear')
+            })
+            $('.js-show-upload-img').on('click', function () {
+                var img = $(this).attr('data-upload-img')
+                $('.images-fixed-box').find('.img-box img').attr('src', img).end().fadeIn('linear')
+            })
+            $('.close-btn').click(function () {
+                $('.images-fixed-box').fadeOut('linear')
+            })
+            $('.js-upload').on('change', '.input-file', function () {
+                var file = $(this).get(0).files[0]
+                var hiddenInp = $(this).closest('.upload-row').find('.file-hidden')
+                var showUploadImg = $(this).closest('.upload-row').find('.js-show-upload-img')
+                var filesImg = $(this).parents('.upload-row').find('.files-img-box img')
+
+                if (file.type.indexOf('image') === 0) {
+                    let uploading = false;
+                    let formData = new FormData();
+                    formData.append("file", file);
+                    if(uploading){
+                        return false;
+                    }
+                    $.ajax({
+                        url : '/index/ajax/upload',
+                        type : 'POST',
+                        data : formData,
+                        contentType: false,
+                        processData: false,
+                        dataType : 'json',
+                        beforeSend: function(){
+                            uploading = true;
+                        },
+                        success : function(data){
+                            if (data.code == 1) {
+                                showUploadImg.attr('data-upload-img', data.data.url)
+                                hiddenInp.val(data.data.url)
+                                filesImg.attr('src', data.data.url)
+                            } else {
+                                showmsg(data.msg)
+                            }
+                            uploading = false;
+                        }
+                    });
+
+                    $(this).parents('.upload-row').find('.files-img-box').addClass('on')
+                } else {
+                    alert('请选择图片!')
+                    $(this).parents('.upload-row').find('.files-img-box').removeClass('on')
+                }
+            })
+
+            $.Tipmsg.r = null;
+            $('#form1').Validform({
+                btnSubmit:".btn",
+                tipSweep: true,
+                ajaxPost:true,
+                tiptype: function (msg, o, cssctl) {
+                    if (!o.obj.is("form")) {
+                        var objtip = o.obj.siblings(".checktip");
+                        cssctl(objtip, o.type);
+                        showmsg(msg);
+                        return false;
+                    }
+                },
+                callback:function(data){
+                    if (data.code == 1) {
+                        showmsg(data.msg, 'jump', "{:url('/mobile/user/index')}")
+                    } else {
+                        showmsg(data.msg);
+                        $('input[name=expert_application_token]').val(data.data.token);
+                        $('.yzm-box img').trigger('click');
+                    }
+                }
+            });
+
+            var area1 = new LArea();
+            area1.init({
+                'trigger': '#address01', // 触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+                'valueTo': '#address01', // 选择完毕后id属性输出到该位置
+                'keys': {
+                    id: 'name',
+                    name: 'name'
+                }, // 绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+                'type': 1, // 数据源类型
+                'data': LAreaData1, // 数据源
+                'onClose': function(address) {
+                }
+            });
+            var date_02 = new rolldate.Date({
+                el: '#date_02',
+                format: 'YYYY-MM-DD',
+                beginYear: 1975,
+                endYear: 2200,
+                theme: '#db3733'
+            })
+            var date_03 = new rolldate.Date({
+                el: '#date_03',
+                format: 'YYYY-MM-DD',
+                beginYear: 1975,
+                endYear: 2200,
+                theme: '#db3733'
+            })
+            var date_04 = new rolldate.Date({
+                el: '#date_a1',
+                format: 'hh:mm',
+                theme: '#db3733'
+            })
+            var date_05 = new rolldate.Date({
+                el: '#date_a2',
+                format: 'hh:mm',
+                theme: '#db3733'
+            })
+            var date_06 = new rolldate.Date({
+                el: '#date_b1',
+                format: 'hh:mm',
+                theme: '#db3733'
+            })
+            var date_07 = new rolldate.Date({
+                el: '#date_b2',
+                format: 'hh:mm',
+                theme: '#db3733'
+            })
+            var scroller01 = new IScroll('#scroller01', {
+                tap: true,
+                scrollX: false,
+                scrollY: true,
+                mouseWheel: false
+            })
+            var scroller02 = new IScroll('#scroller02', {
+                tap: true,
+                scrollX: false,
+                scrollY: true,
+                mouseWheel: false
+            })
+            var scroller03 = new IScroll('#scroller03', {
+                tap: true,
+                scrollX: false,
+                scrollY: true,
+                mouseWheel: false
+            })
+            var scrollerArr = [scroller01, scroller02, scroller03]
+            multsel(scrollerArr)
+        })
+    </script>
+    <script type="text/javascript">
+        var require = {
+            config: {$config|json_encode}
+        };
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}
+<script src="https://cdn.bootcss.com/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="/assets/js/require.js" data-main="/assets/js/require-frontend.js"></script>

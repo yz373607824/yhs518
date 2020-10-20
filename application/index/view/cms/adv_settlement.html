@@ -1,0 +1,36 @@
+{include file="public/head" isMember="0"/}
+
+    <div class="common-page-content">
+        <div class="wp1200">
+            <?php $banner = get_banner(19,1);?>
+            {volist name='banner' id='item'}
+            <a href="{$item.url}" target="_blank" class="article-banner-wrap">
+                <img src="{$item.pic}" alt="{$item.name}">
+            </a>
+            {/volist}
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/channel/teamwork_win')}" class="bread-hover">合作共赢</a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/archives/' . $__ARCHIVES__.id)}" class="bread-hover">{$__ARCHIVES__.title}</a>
+            </div>
+            <div class="tab-filter-wrap">
+                <div class="tab-list">
+                    {cms:channellist id="item" typeid="64" type="son" model="4" orderby="id" orderway="asc" }
+                    <div class="tab-item"><a style="width: 120px;" href="{:url($item.url)}" class="{if $item.id == $__CHANNEL__.id}on{/if}">{$item.name}</a></div>
+                    {/cms:channellist}
+                </div>
+            </div>
+            <div class="adv-settlement-wrap">
+                <div class="inner-adv-settlement">
+                    <h2>{$__ARCHIVES__.description}</h2>
+                    {$__ARCHIVES__.content}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{include file="public/footer"  /}

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="baidu-site-verification" content="YnGepbi9vz"/>
+    <!-- 以下meta不需要响应式的删掉 -->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">-->
+    <!--<meta name="wap-font-scale" content="no" />-->
+    <!--<meta name="apple-mobile-web-app-capable" content="yes" />-->
+    <!--<meta name="format-detection" content="telephone=no" />-->
+
+    <meta name="copyright" content="Copyright 2014-2018 - www.uweb.net.cn">
+    <meta name="Author" content="广州网站建设-优网科技 www.uweb.net.cn">
+    <meta name="Robots" content="all">
+    <meta name="Keywords" content="{$seo_keywords}">
+    <meta name="Description" content="{$seo_description}">
+    <meta name="renderer" content="webkit">
+    <meta name="360-site-verification" content="3df2bb08a5e6b857772a0441b5431e39"/>
+
+    <title>{$seo_title}</title>
+    <link rel="icon" href="/assets/static/images/logo_icon.png" sizes="32x32">
+    <link rel="stylesheet" href="/assets/static/style/core.css"/>
+    <link rel="stylesheet" href="/assets/static/style/style.css"/>
+    <script type="text/javascript" src="/assets/static/script/jquery.js"></script>
+    <script>
+        var showmsg = function (msg, url) {
+            $('.tips-wrap-p').text(msg);
+            if (url == undefined) {
+                $('.tips-wrap-btn').click(function () {
+                    $('.tips-wrap').removeClass('md-show')
+                })
+            } else {
+                $('.tips-wrap-btn').click(function () {
+                    if (url == 'refresh') {
+                        location.reload()  //刷新当前页
+                    } else {
+                        location.href = url
+                    }
+                })
+            }
+            $('.tips-wrap').addClass('md-show')
+            // alert(msg)
+        }
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?df0aba6f40e6904f5a71fa768fbc0409";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <script>
+        (function (b, a, e, h, f, c, g, s) {
+            b[h] = b[h] || function () {
+                (b[h].c = b[h].c || []).push(arguments)
+            };
+            b[h].s = !!c;
+            g = a.getElementsByTagName(e)[0];
+            s = a.createElement(e);
+            s.src = "//s.union.360.cn/" + f + ".js";
+            s.defer = !0;
+            s.async = !0;
+            g.parentNode.insertBefore(s, g)
+        })(window, document, "script", "_qha", 325096, false);
+    </script>
+    <script>
+        (function () {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            } else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+</head>
+
+<body>
+<div class="modal-wrap tips-wrap">
+    <div class="tips-content">
+        <h2>提示</h2>
+        <div class="p tips-wrap-p"></div>
+        <div class="btn-box">
+            <button type="button" class="tips-wrap-btn">确 定</button>
+        </div>
+    </div>
+</div>
+
+{if condition="[isMember] eq 1"}
+<div class="member-header">
+    <div class="member-nav-wrap">
+        <div class="wp1200">
+            <div class="inner-member-nav clearfloat">
+                <ul class="left-nav-block">
+                    <li class="left-nav-list">
+                        <a href="/" class="left-nav-item">首页</a>
+                    </li>
+                    <li class="left-nav-list">
+                        <a href="{:url('/expert/index')}" class="left-nav-item">专家在线</a>
+                    </li>
+                    <li class="left-nav-list">
+                        <a href="{:url('/channel/formula')}" class="left-nav-item">配方</a>
+                    </li>
+                    <li class="left-nav-list">
+                        <a href="{:url('/channel/konwledge')}" class="left-nav-item">知识·经验</a>
+                    </li>
+                    <li class="left-nav-list">
+                        <a href="{:url('enterprise/index')}" class="left-nav-item">联盟企业</a>
+                    </li>
+                    <li class="left-nav-list">
+                        <a href="{:url('enterprise/excellent')}" class="left-nav-item">王者供应商</a>
+                    </li>
+                    <li class="left-nav-list">
+                        <a href="{:url('/channel/industry_headline_hytt')}" class="left-nav-item">信息风向标</a>
+                    </li>
+                    <li class="left-nav-list">
+                        <a href="{:url('/channel/encyclopedias')}" class="left-nav-item">化工百科</a>
+                    </li>
+                </ul>
+                <div class="right-nav-block clearfloat">
+                    <div class="news-item" style="display: none;">
+                        <div class="news-txt">新消息<span class="span animated flash">*</span></div>
+                        <ul>
+                        </ul>
+                    </div>
+                    <div class="right-nav-list">
+                        <div class="inner-right-nav">
+                            <a href="{:url('user/index')}">
+                                <i class="iconfont icon-age"></i>
+                                <span class="username orange">用户中心</span>
+                                <i class="iconfont icon-jiantouxia"></i>
+                            </a>
+                        </div>
+                        <div class="sub">
+                            <a href="{:url('/user/logout')}" class="sub-href">退出登录</a>
+                        </div>
+                    </div>
+                    <a href="{:url('/user/formula')}" class="right-nav-a-list">
+                        <i class="iconfont icon-wenben"></i>
+                        <span class="orange">发布</span>
+                    </a>
+                    <a href="{:url('/user/takecash')}" class="right-nav-a-list">
+                        <i class="iconfont icon-jinbi"></i>
+                        <span class="orange">金豆</span>
+                    </a>
+                    <a href="{:url('/user/myArticle')}" class="right-nav-a-list">
+                        <i class="iconfont icon-dingdanyichenggong"></i>
+                        <span class="orange">订单</span>
+                    </a>
+                    <!--                    <a href="{:url('/mobile')}" target="_blank" class="func-mobile">-->
+                    <!--                        <i class="iconfont icon-shouji"></i>-->
+                    <!--                        <span class="name">手机版</span>-->
+                    <!--                    </a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="member-logo-wrap">
+        <div class="wp1200">
+            <div class="inner-member-logo clearfloat">
+                <div class="logo-block">
+                    <a href="/" class="logo--href">
+                        <?php $banner = get_banner(38, 1);?>
+                        {volist name="banner" id="v"}
+                        <img src="{$v.pic}" alt="">
+                        {/volist}
+                    </a>
+                </div>
+                <div class="search-block">
+                    <div class="inner-search-box">
+                        <div class="input-box">
+                            <input type="text" id="all_keywords" name="all_keywords" placeholder="请输入标题或名称">
+                        </div>
+                        <a href="javascript:location.href = '/search?keywords=' + $('#all_keywords').val();"
+                           class="search-btn">搜索</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{else}
+<div class="header">
+    <div class="header-nad-wrap">
+        <?php $banner = get_banner(21, 1);?>
+        {volist name="banner" id="v"}
+        <a href="{$v.url}" target="_blank" class="inner-img-box">
+            <img src="{$v.pic}" class="header-nad-img" alt="{$v.name}">
+        </a>
+        {/volist}
+        <span class="js-icon-close" title="关闭"></span>
+    </div>
+    <div class="header-func-wrap">
+        <div class="wp1200 clearfloat">
+            <div class="inner-func-left clearfloat">
+                <span class="txt">公告：</span>
+                <div class="swiper-container func-swiper-box">
+                    <div class="swiper-wrapper">
+                        <?php $banner = get_banner(22);?>
+                        {volist name="banner" id="v" key='i'}
+                        <a href="{$v.url}" class="swiper-slide" target="_blank">{$i}.{$v.name}</a>
+                        {/volist}
+                    </div>
+                </div>
+            </div>
+            <div class="inner-func-right clearfloat">
+                {if $user}
+                <div class="news-item" style="display: none;">
+                    <div class="news-txt">新消息<span class="span animated flash">*</span></div>
+                    <ul>
+
+                    </ul>
+                </div>
+                {/if}
+                <div class="outer-func-item clearfloat">
+                    <a href="{if $user}{:url('/user/index')}{else}{:url('/user/login')}{/if}" class="func-item">
+                        <i class="iconfont icon-age"></i>
+                        <span class="name orange">{if $user}用户中心{else}登录{/if}</span>
+                    </a>
+                    {if $user}
+                    <a href="{:url('/user/logout')}" class="exit-login">退出登录</a>
+                    {/if}
+                </div>
+                {if !$user}
+                <a href="{:url('/user/register')}" class="func-item">
+                    <i class="iconfont icon-caidan"></i>
+                    <span class="name orange">注册</span>
+                </a>
+                {/if}
+                <a href="{:url('/user/formula')}" class="func-item">
+                    <i class="iconfont icon-wenben"></i>
+                    <span class="name orange">发布</span>
+                </a>
+                <a href="{:url('/user/takecash')}" class="func-item">
+                    <i class="iconfont icon-jinbi"></i>
+                    <span class="name orange">金豆</span>
+                </a>
+                <a href="{:url('/user/myArticle')}" class="func-item">
+                    <i class="iconfont icon-dingdanyichenggong"></i>
+                    <span class="name orange">订单</span>
+                </a>
+                <!--                <a href="{:url('/mobile')}" class="func-mobile" target="_blank">-->
+                <!--                    <i class="iconfont icon-shouji"></i>-->
+                <!--                    <span class="name">手机版</span>-->
+                <!--                </a>-->
+            </div>
+        </div>
+    </div>
+    <div class="header-logo-wrap">
+        <div class="wp1200 clearfloat">
+            <h1 class="logo">
+                <a href="/" class="inner-logo">
+                    <?php $banner = get_banner(38, 1);?>
+                    {volist name="banner" id="v"}
+                    <img src="{$v.pic}" alt="">
+                    {/volist}
+                </a>
+            </h1>
+            <div class="search-box">
+                <div class="input-box">
+                    <input type="text" id="all_keywords" name="all_keywords" placeholder="输入关键词后，点击搜索按钮或按回车进行搜索">
+                </div>
+                <a href="javascript:location.href = '/search?keywords=' + $('#all_keywords').val();" class="search-btn">搜索</a>
+            </div>
+        </div>
+    </div>
+    <div class="header-nav-wrap">
+        <div class="wp1200">
+            <ul class="nav-box">
+                <li class="nav-list{if request()->controller() == 'Index'} on{/if}">
+                    <a href="/" class="nav-item">首页</a>
+                    <div class="parallelogram">
+                        <div class="triangle"></div>
+                    </div>
+                </li>
+                <li class="nav-list{if $Request.controller == 'Expert'} on{/if}">
+                    <a target="_blank" href="{:url('/expert/index')}" class="nav-item">专家在线</a>
+                    <div class="parallelogram">
+                        <div class="triangle"></div>
+                    </div>
+                </li>
+                <li class="nav-list{if (isset($__CHANNEL__.diyname) && $__CHANNEL__.diyname == 'formula') || ($Request.path == 'channel/formula' || $Request.path == 'channel/analysis')} on{/if}">
+                    <a target="_blank" href="{:url('/channel/formula')}" class="nav-item">配方</a>
+                    <div class="parallelogram">
+                        <div class="triangle"></div>
+                    </div>
+                </li>
+                <li class="nav-list{if (isset($__CHANNEL__.diyname) && $__CHANNEL__.diyname == 'konwledge') ||  $Request.path == 'channel/konwledge'} on{/if}">
+                    <a target="_blank" href="{:url('/channel/konwledge')}" class="nav-item">知识·经验</a>
+                    <div class="parallelogram">
+                        <div class="triangle"></div>
+                    </div>
+                </li>
+                <li class="nav-list{if (request()->controller() == 'Enterprise' and request()->action() != 'excellent') or ((input('action') == 'supply' or input('action') == 'purchase') and !input('excellent'))} on{/if}">
+                    <a target="_blank" href="{:url('enterprise/index')}" class="nav-item">联盟企业</a>
+                    <div class="parallelogram">
+                        <div class="triangle"></div>
+                    </div>
+                </li>
+                <li class="nav-list{if request()->action() == 'excellent' || input('excellent')} on{/if}">
+                    <a target="_blank" href="{:url('enterprise/excellent')}" class="nav-item">王者供应商</a>
+                    <div class="parallelogram">
+                        <div class="triangle"></div>
+                    </div>
+                </li>
+                <li class="nav-list{if (isset($__CHANNEL__.diyname) && ($__CHANNEL__.diyname == 'industry_headline_hytt' || $__CHANNEL__.diyname == 'industry_headlines_hyzh')) || ($Request.path == 'channel/industry_headline_hytt' || $Request.path == 'channel/industry_headlines_hyzh')} on{/if}">
+                    <a target="_blank" href="{:url('/channel/industry_headline_hytt')}" class="nav-item">信息风向标</a>
+                    <div class="parallelogram">
+                        <div class="triangle"></div>
+                    </div>
+                </li>
+                <li class="nav-list{if (isset($__CHANNEL__.diyname) && $__CHANNEL__.diyname == 'encyclopedias') ||  $Request.path == 'channel/encyclopedias'} on{/if}">
+                    <a target="_blank" href="{:url('/channel/encyclopedias')}" class="nav-item">化工百科</a>
+                    <div class="parallelogram">
+                        <div class="triangle"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        adv_close();
+
+        var func_swiper_box = new Swiper('.func-swiper-box', {
+            direction: 'vertical',
+            simulateTouch: false,
+            speed: 1000,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            loop: true,
+            slidesPerView: 1,
+            slidesPerGroup: 1,
+        })
+        func_swiper_box.el.onmouseover = function () {
+            func_swiper_box.autoplay.stop()
+        }
+        func_swiper_box.el.onmouseout = function () {
+            func_swiper_box.autoplay.start()
+        }
+
+    })
+</script>
+{/if}
+
+{if $user}
+<script>
+    getTips();
+    setInterval("getTips()", 30000);
+
+    function getTips() {
+        $.post('/user/getTips', {}, function (data) {
+            if (data.code == 1) {
+                var html = '';
+                for (var i = 0; i < data.data.length; i++) {
+                    html += '<li><a href="' + data.data[i].url + '">' + data.data[i].msg + '</a></li>';
+                }
+                $(".news-item ul").html(html);
+                $('.news-item').css('display', 'block');
+            }
+        })
+    }
+</script>
+{/if}
+
+<script>
+    $('#all_keywords').keyup(function (e) {
+        var content = $('#all_keywords').val();
+        if (e.keyCode === 13)
+            location.href = '/search?keywords=' + content;
+    });
+</script>

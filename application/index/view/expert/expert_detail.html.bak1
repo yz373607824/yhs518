@@ -1,0 +1,570 @@
+{include file="public/head" isMember="0" /}
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+
+    <div class="common-page-content">
+        <div class="wp1200">
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/expert/index')}" class="bread-hover">专家在线</a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/expert/detail', ['id'=>$expert.id])}" class="bread-hover">{$expert.nickname}</a>
+            </div>
+            <div class="expert-detail-wrap clearfloat">
+                <div class="common-left-block">
+                    <div class="expert-info-wrap">
+                        <div class="expert-msg-box clearfloat">
+                            <div class="avatar-block">
+                                <img src="{$expert.avatar}" alt="">
+                            </div>
+                            <div class="expert-msg-inner">
+                                <div class="name-row">
+                                    <span class="txt1">{$expert.nickname}</span>
+                                    <span class="txt2">{$expert.leveltext}</span>
+<!--                                    <div class="prise-box">-->
+<!--                                        <span class="txt3">点赞等级：</span>-->
+<!--                                        {for start="0" end="$expert.level"}-->
+<!--                                        <img src="/assets/static/images/praise.png" class="prise-img" alt="">-->
+<!--                                        {/for}-->
+<!--                                    </div>-->
+                                    <div class="prise-box">
+                                        <span class="txt3 red">状态：{if $expert.online == 1}在线{else}休息中{/if}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <span class="txt3 red">好评数：{$expert.likes}</span>
+                                    </div>
+                                </div>
+                                <div class="other-row">
+                                    <span>{$expert.province}/{$expert.city}</span>
+                                    <span>学历：{$expert.education}</span>
+                                    <span>行业经验：{$expert.workage}年</span>
+                                </div>
+                                <div class="function-row clearfloat">
+                                    <img src="/assets/static/images/master.png" class="icon" alt="">
+                                    <p class="info">精通行业/领域：{$expert.technosphere}</p>
+                                </div>
+                                <div class="function-row clearfloat">
+                                    <img src="/assets/static/images/trade.png" class="icon" alt="">
+                                    <p class="info">专家擅长：{$expert.adept}</p>
+                                </div>
+                                <div class="function-row clearfloat">
+                                    <img src="/assets/static/images/time.png" class="icon" alt="">
+                                    <div class="info">
+                                        <div class="p">现场服务时间：{$expert.service_starttime} - {$expert.service_endtime}</div>
+                                        <div class="p">在线咨询时间：{$expert.advisory_starttime} - {$expert.advisory_endtime}</div>
+                                    </div>
+                                </div>
+<!--                                <a href="#" class="service-row" id="js_service_btn">查看服务协议</a>-->
+                                <div class="btn-row clearfloat">
+                                    {if strpos($expert.service,'online') !== false}
+                                    <a href="#" class="btn" id="ask_question">我要提问</a>
+                                    {/if}
+                                    {if strpos($expert.service,'locale') !== false}
+                                    <a href="#" class="btn" id="spot_service">我要现场服务</a>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="expert-detail-inner">
+                            {$expert.content|html_entity_decode}
+                        </div>
+                    </div>
+                    <div class="question-case-wrap">
+                        <div class="title-box">问题案例</div>
+                        <ul class="question-case-list">
+                            {volist name='questionList' id='item'}
+                            <li class="question-case-item">
+                                <a href="{:url('/expert/expertQuestionDetail', ['id'=>$item.id])}">
+                                    <div class="title">{$item.title}</div>
+                                    <div class="describe">{$item.question_description}</div>
+                                    <div class="info">
+                                        <!--<div class="info-img">
+                                            <img src="../../images/article_02.jpg" alt="">
+                                        </div>-->
+                                        <div class="info-p">
+                                            {$item.replycontent}
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <!--<li class="question-case-item">
+                                <div class="item-a">
+                                    <div class="item-a-title">
+                                        <div class="img-box">
+                                            <img src="/assets/static/images/question_mark.png" alt="">
+                                        </div>
+                                        <div class="title-p">{$item.title}</div>
+                                    </div>
+                                    <p>{$item.question_description}</p>
+                                </div>
+                            </li>-->
+                            {/volist}
+                        </ul>
+                        <div class="paged pt0">
+                            <!--<span class="show-btn">展开更多</span>-->
+                            {$questionList->render()}
+                        </div>
+                    </div>
+                    <!--<div class="comment-wrap">
+                        <div class="title-box">评论专区</div>
+                        <ul class="comment-list-block">
+                            {volist name='list' id='item'}
+                            <li class="comment-item clearfloat">
+                                <div class="avatar-box">
+                                    <img src="{$item.avatar}" alt="{$item.nickname}">
+                                </div>
+                                <div class="comment-inner">
+                                    <div class="header clearfloat">
+                                        <div class="comment-user">{$item.nickname}</div>
+                                        <div class="star-rate">
+                                            <span>星级评价：</span>
+                                            {for start="0" end="$item.star"}
+                                                <img src="/assets/static/images/star.jpg" alt="">
+                                            {/for}
+                                            {if $item.star == 0}
+                                            <img src="/assets/static/images/no_star.jpg" alt="">
+                                            {/if}
+                                        </div>
+                                        <div class="date">{$item.appraisetime|date='Y-m-d H:i', ###}</div>
+                                    </div>
+                                    <div class="content">
+                                        <p>{$item.appraise}</p>
+                                    </div>
+                                    {if !empty($item.replyappraise)}
+                                    <div class="footer">
+                                        <div class="triangle"></div>
+                                        <div class="footer-inner">
+                                            <div class="footer-inner-hd">
+                                                <span class="b-txt">专家回复</span>
+                                                <span class="s-txt">{$item.replytime|date='Y-m-d H:i', ###}</span>
+                                            </div>
+                                            <div class="footer-inner-bd">
+                                                <p>{$item.replyappraise}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/if}
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+                        <div class="paged pt0">
+                            {$list->render()}
+                        </div>
+                    </div>-->
+                </div>
+                {include file="public/expert_adv_sidebar" /}
+            </div>
+        </div>
+        <div class="modal-wrap service-modal" id="service_scroll">
+            <div class="service-modal-inner">
+                <div class="service-modal-content">
+                    <div class="service-close"><i class="iconfont icon-fork"></i></div>
+                    <h2>服务协议</h2>
+                    <div class="service-content"></div>
+                    <div class="checkbox-block">
+                        <input type="checkbox" class="ifAgree" id="ifAgree1" value="agree" name="">
+                        <label class="mark" for="ifAgree1">我已阅读，并同意本协议内容</label>
+                    </div>
+                    <div class="next-btn">
+                        <a href="#" id="nextBtn">下一步</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-wrap ask-question">
+            <div class="ask-question-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>我要提问</h2>
+                <form id="form1" action="/expert/online" class="formId" method="post">
+                    {:token('online_token')}
+                    <input type="hidden" name="expert_id" value="{$expert.id}">
+                    <div class="input-box">
+                        <div class="fixed-left">
+                            <span class="red-star">*</span>
+                            <span class="input-span">标题：</span>
+                        </div>
+                        <div class="auto-right">
+                            <input type="text" name="row[title]" datatype="*" nullmsg="请填写标题" class="inp">
+                        </div>
+                    </div>
+                    <div class="ask-row">
+                        <span class="red-star">*</span><span class="txt">问题描述：</span>
+                    </div>
+                    <div class="text-area">
+                        <textarea class="textwrap" name="row[question_description]" datatype="*" nullmsg="请填写问题描述" rows="7" placeholder=""></textarea>
+                    </div>
+                    <div class="input-wrap">
+                        <div class="import-block clearfloat">
+                            <span class="input-span">附件上传：</span>
+                            <input type="text" name="row[file]" class="input-fileName1" readonly>
+                            <a href="#" class="a-upload">
+                                <input type="file" id="js_upload1">点击上传
+                            </a>
+                        </div>
+                        <div class="yzm-block clearfloat">
+                            <span class="red-star">*</span>
+                            <span class="input-span">验证码：</span>
+                            <input type="text" datatype="*" nullmsg="请填写验证码" name="captcha" class="input-yzm">
+                            <img style="margin-top: 0px;width: 130px;height: 50px;" src="{:captcha_src()}" onclick="this.src = '{:captcha_src()}?r=' + Math.random();" alt="验证码没能获取到，请刷新重试" class="yzm-img">
+                        </div>
+                    </div>
+                    <div class="note">备注：需要支付 <span class="money-red">{$onlinePrice}</span> 元 RMB</div>
+                    <div class="checkbox-block mt0">
+                        <input type="checkbox" class="ifAgree" id="ifAgree2" value="agree" name="ifAgree2" datatype="*" nullmsg="请阅读并接受协议内容">
+                        <label class="mark" for="ifAgree2">我已了解并同意</label>
+                        <a href="{:url('/archives/174')}" target="_blank" class="a--href">提问须知</a>
+                    </div>
+                    <div class="submit-btn-wrap">
+                        <button type="button" disabled class="js-btn" id="js_sub">确认提交及支付</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-wrap live-service">
+            <div class="live-service-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>我要现场服务</h2>
+                <form id="form2" action="/expert/locale" class="formId" method="post">
+                    {:token('locale_token')}
+                    <input type="hidden" name="expert_id" value="{$expert.id}">
+                    <div class="row-block">
+                        <div class="input-box">
+                            <span class="red-star">*</span>
+                            <span class="input-span">联系人：</span>
+                            <input type="text" name="row[linkman]" datatype="*" nullmsg="请填写联系人" class="input-text">
+                        </div>
+                        <div class="input-box">
+                            <span class="red-star">*</span>
+                            <span class="input-span">企业名称：</span>
+                            <input type="text" name="row[enterprise]" datatype="*" nullmsg="请填写企业名称" class="input-text">
+                        </div>
+                    </div>
+                    <div class="row-block">
+                        <div class="input-box">
+                            <span class="red-star">*</span>
+                            <span class="input-span">手机号码：</span>
+                            <input type="text" name="row[mobile]" datatype="*,/^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/" nullmsg="请填写手机" errormsg="手机格式错误" class="input-text">
+                        </div>
+                        <div class="input-box">
+                            <span class="red-star">*</span>
+                            <span class="input-span">预约时间：</span>
+                                <input type="text" name="row[reservation_time]" datatype="*" nullmsg="请选择预约时间" readonly="readonly" class="input-text w245" id="js_input_date">
+                            <img src="/assets/static/images/date.png" class="js-date-icon" alt="">
+                        </div>
+                    </div>
+                    <div class="row-block">
+                        <div class="input-box w100">
+                            <span class="red-star">*</span>
+                            <span class="input-span">预约地址：</span>
+                            <input type="text" name="row[reservation_address]" datatype="*" nullmsg="请填写预约地址" class="input-text">
+                        </div>
+                    </div>
+                    <div class="row-block">
+                        <div class="input-box w100">
+                            <span class="red-star">*</span>
+                            <span class="input-span">标题：</span>
+                            <input type="text" name="row[title]" datatype="*" nullmsg="请填写标题" class="input-text">
+                        </div>
+                    </div>
+                    <div class="text-area">
+                        <div class="placeholder">
+                            <span class="red-star">*</span><span class="txt">问题描述：</span>
+                        </div>
+                        <textarea class="textwrap" name="row[question_description]" datatype="*" nullmsg="请填写问题描述" rows="3" placeholder=""></textarea>
+                    </div>
+                    <div class="row-block">
+                        <div class="input-box clearfloat">
+                            <span class="input-span">附件上传：</span>
+                            <input type="text" name="row[file]" class="input-fileName2" readonly>
+                            <a href="#" class="a-upload">
+                                <input type="file" id="js_upload2">点击上传
+                            </a>
+                        </div>
+                        <div class="input-box clearfloat">
+                            <span class="red-star">*</span>
+                            <span class="input-span">验证码：</span>
+                            <input type="text" datatype="*" nullmsg="请填写验证码" name="captcha" class="input-yzm">
+                            <img style="margin-top: 0px;width: 130px;height: 50px;" src="{:captcha_src()}" onclick="this.src = '{:captcha_src()}?r=' + Math.random();" alt="验证码没能获取到，请刷新重试" class="yzm-img">
+                        </div>
+                    </div>
+                    <div class="note">备注：需要支付 <span class="money-red">{$localePrice}</span> 元 RMB</div>
+                    <div class="checkbox-block mt30">
+                        <input type="checkbox" class="ifAgree" id="ifAgree3" value="agree" name="ifAgree3" datatype="*" nullmsg="请阅读并接受协议内容">
+                        <label class="mark" for="ifAgree3">我已了解并同意</label>
+                        <a href="{:url('/archives/175')}" target="_blank" class="a--href">支付须知</a>
+                    </div>
+                    <div class="submit-btn-wrap">
+                        <button type="button" disabled class="js-btn" id="js_sub_pay">确认提交及支付</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-wrap pay-wrap">
+            <div class="pay-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>支付信息</h2>
+                <div class="pay-msg-box">
+                    <div class="row"><span>订单提交成功，请尽快付款！</span></div>
+                    <div class="row"><span>订单号：</span><span id="trade_sn">82515009626</span></div>
+                    <div class="row"><span>支付内容：</span><span class="txt-r" id="title">咨询费</span></div>
+                    <div class="row"><span>需支付金额：￥</span><span class="txt-r txt-b" id="price">50</span><span>元</span></div>
+                </div>
+                <div class="pay-methods-box">
+                    <p>选择支付方式</p>
+                    <div class="pay-methods-inner">
+                        <div class="block">
+                            <input type="radio" id="Alipay" class="input-radio" name="pay">
+                            <label for="Alipay" class="radio-label Alipay"></label>
+                        </div>
+                        <div class="block">
+                            <input type="radio" id="Wxpay" class="input-radio" name="pay">
+                            <label for="Wxpay" class="radio-label Wxpay"></label>
+                        </div>
+                    </div>
+                </div>
+                <a href="javascript:showmsg('请选择支付方式');" class="pay-btn">立即支付</a>
+            </div>
+        </div>
+        <div class="bg" id="overlay"></div>
+    </div>
+
+    <script src="/assets/static/laydate/laydate.js"></script>
+
+    <script>
+        var user = {if $user}{$user}{else}''{/if};
+        var online = '';
+        var locale = '';
+
+        function show(obj)
+        {
+            $('.service-modal').removeClass('md-show')
+            obj.addClass('md-show')
+        }
+
+        $(function() {
+            var LiLen = $('.question-case-list').children().length,
+                flodBtn = $('.show-btn')
+            if (LiLen > 3) {
+                $('.question-case-list').find('li:gt(3)').hide()
+            }
+            flodBtn.click(function() {
+                if (!$(this).hasClass('show')) {
+                    $(this).addClass('show').html('收起更多')
+                    $('.question-case-list').find('li').stop().slideDown('linear')
+                } else {
+                    $(this).removeClass('show').html('展开更多')
+                    $('.question-case-list').find('li:gt(3)').stop().slideUp('linear')
+                }
+            })
+
+            $('input[name=pay]').prop('checked', false);
+
+            var scroller01 = new IScroll('#service_scroll', {
+                scrollX: false,
+                scrollY: true,
+                scrollbars: true,
+                interactiveScrollbars: true,
+                preventDefault: false,
+                mouseWheel: true
+            })
+
+            $("#Alipay").click(function () {
+                $('.pay-btn').attr('href', '/user/aliPay?trade_sn=' + $('#trade_sn').text());
+            })
+
+            $("#Wxpay").click(function () {
+                $('.pay-btn').attr('href', '/user/wechatPay?trade_sn=' + $('#trade_sn').text());
+            })
+
+            $('#js_service_btn').on('click', function() {
+                $('.checkbox-block').css('display', 'none')
+                $('.next-btn').css('display', 'none')
+                $('.service-modal').addClass('md-show')
+            })
+            $('#ask_question').on('click', function() {
+                if (user == '') {
+                    showmsg('请先登录，再操作', "{:url('/user/login')}");
+                    return false;
+                }
+
+                show($(".ask-question"));
+                // $('.checkbox-block').css('display', 'block')
+                // $('.next-btn').css('display', 'block')
+                // $('#nextBtn').attr('href', 'javascript:show($(".ask-question"));')
+                // $('.service-content').html(online);
+                // $('.service-modal').addClass('md-show')
+                // scroller01.refresh()
+            })
+            $('#spot_service').on('click', function() {
+                if (user == '') {
+                    showmsg('请先登录，再操作', "{:url('/user/login')}");
+                    return false;
+                }
+
+                if (user.verify_id == null && user.expert_id == null && user.enterprise_id == null) {
+                    showmsg('请先进行个人身份认证或专家认证或企业认证', "{:url('/user/idAuthentication')}");
+                    return false;
+                }
+
+                show($(".live-service"));
+                // $('.checkbox-block').css('display', 'block')
+                // $('.next-btn').css('display', 'block')
+                // $('#nextBtn').attr('href', 'javascript:show($(".live-service"));')
+                // $('.service-content').html(locale);
+                // $('.service-modal').addClass('md-show')
+                // scroller01.refresh()
+            })
+            $('.modal-close, .service-close').on('click', function() {
+                $('.service-modal').removeClass('md-show')
+                $('.ask-question').removeClass('md-show')
+                $('.live-service').removeClass('md-show')
+                $('.pay-wrap').removeClass('md-show')
+                $('.js-btn').removeClass('isClick')
+                $('.ifAgree').prop('checked', false)
+                $(':input', '.formId')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+            })
+            $('.ifAgree').prop('checked', false)
+            $('#ifAgree1').on('click', function() {
+                if ($(this).is(':checked')) {
+                    $('#nextBtn').addClass('isClick')
+                } else {
+                    $('#nextBtn').removeClass('isClick')
+                }
+            })
+            $('#ifAgree2').on('click', function() {
+                if ($(this).is(':checked')) {
+                    $('#js_sub').addClass('isClick')
+                    $('#js_sub').attr('disabled', false)
+                } else {
+                    $('#js_sub').removeClass('isClick')
+                    $('#js_sub').attr('disabled', true)
+                }
+            })
+            $('#ifAgree3').on('click', function() {
+                if ($(this).is(':checked')) {
+                    $('#js_sub_pay').addClass('isClick')
+                    $('#js_sub_pay').attr('disabled', false)
+                } else {
+                    $('#js_sub_pay').removeClass('isClick')
+                    $('#js_sub_pay').attr('disabled', true)
+                }
+            })
+            $('#nextBtn').on('click', function() {
+                if ($(this).parent().prev().find('.ifAgree').is(':checked')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            $('#js_upload1').on('change', function(e) {
+                var file = e.currentTarget.files[0];
+                upload(file, $('.input-fileName1'))
+            })
+            $('#js_upload2').on('change', function(e) {
+                var file = e.currentTarget.files[0]
+                upload(file, $('.input-fileName2'))
+            })
+            laydate.render({
+                elem: '#js_input_date'
+                ,type: 'datetime'
+            });
+
+            $.Tipmsg.r = null;
+            $('#form1').Validform({
+                btnSubmit:"#js_sub",
+                tipSweep: true,
+                ajaxPost: true,
+                tiptype: function (msg, o, cssctl) {
+                    if (!o.obj.is("form")) {
+                        var objtip = o.obj.siblings(".checktip");
+                        cssctl(objtip, o.type);
+                        showmsg(msg);
+                        return false;
+                    }
+                },
+                callback:function(data){
+                    if (data.code == 1) {
+                        if (data.data.price == 0 ) {
+                            showmsg('支付成功', "{:url('/user/myAskquestion')}");
+                            return;
+                        }
+
+                        $('#trade_sn').text(data.data.trade_sn);
+                        $('#title').text(data.data.title);
+                        $('#price').text(data.data.price);
+                        $('.js-btn').closest('.modal-wrap').removeClass('md-show')
+                        $('.pay-wrap').addClass('md-show')
+                    } else {
+                        $("#form1 input[name=online_token]").val(data.data.token)
+                        showmsg(data.msg);
+                    }
+                }
+            });
+            $('#form2').Validform({
+                btnSubmit:"#js_sub_pay",
+                tipSweep: true,
+                ajaxPost: true,
+                tiptype: function (msg, o, cssctl) {
+                    if (!o.obj.is("form")) {
+                        var objtip = o.obj.siblings(".checktip");
+                        cssctl(objtip, o.type);
+                        showmsg(msg);
+                        return false;
+                    }
+                },
+                callback:function(data){
+                    if (data.code == 1) {
+                        if (data.data.price == 0 ) {
+                            showmsg('支付成功', "{:url('/user/myReservation')}");
+                            return;
+                        }
+
+                        $('#trade_sn').text(data.data.trade_sn);
+                        $('#title').text(data.data.title);
+                        $('#price').text(data.data.price);
+                        $('.js-btn').closest('.modal-wrap').removeClass('md-show')
+                        $('.pay-wrap').addClass('md-show')
+                    } else {
+                        $("#form2 input[name=locale_token]").val(data.data.token)
+                        showmsg(data.msg);
+                    }
+                }
+            });
+        })
+
+        var uploading = false;
+        function upload(file, obj) {
+            var formData = new FormData();
+            formData.append("file", file);
+            if(uploading){
+                return false;
+            }
+            $.ajax({
+                url : '/index/ajax/upload',
+                type : 'POST',
+                data : formData,
+                contentType: false,
+                processData: false,
+                dataType : 'json',
+                beforeSend: function(){
+                    uploading = true;
+                },
+                success : function(data){
+                    if (data.code == 1) {
+                        obj.val(data.data.url);
+                    } else {
+                        showmsg(data.msg)
+                    }
+                    uploading = false;
+                }
+            });
+        }
+    </script>
+
+{include file="public/footer"  /}

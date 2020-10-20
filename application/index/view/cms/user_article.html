@@ -1,0 +1,103 @@
+{include file="public/head" isMember="1"/}
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('/user/index')}" class="bread-hover">我的主页</a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('/channel/' . $__CHANNEL__.diyname)}" class="bread-hover">{$__CHANNEL__.name}</a>
+        </div>
+        <div class="common-problem-wrap clearfloat">
+            <div class="common-problem-nav">
+                {include file="public/member_left_nav" /}
+            </div>
+            <div class="common-problem-content">
+                <div class="news-detail-wrap">
+                    <div class="inner-news-detail">
+                        <div class="article-wrap">
+                            <div class="title-box">
+                                <h2>{$__ARCHIVES__.title}</h2>
+                            </div>
+                            <div class="con-box">
+                                {$__ARCHIVES__.content|html_entity_decode}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php $enterprise = getEnterprise($user['id']);?>
+                <form name="apply_level" action="{:url('index/user/apply_level')}" method="post">
+                    <div class="level-title">选择供应商的等级</div>
+                    <div class="level-box">
+                        <div class="level-radio-block">
+                            <input type="radio" name="level" class="radio" value="2" datatype="*" id="radio_01" nullmsg="请选择供应商等级"{if $enterprise.apply_level == '2'} checked{/if}>
+                            <label for="radio_01" class="radio-lable"><img src="/assets/static/images/level/level_2.png" alt=""></label>
+                        </div>
+                        <div class="level-radio-block">
+                            <input type="radio" name="level" class="radio" value="3" id="radio_02"{if $enterprise.apply_level == '3'} checked{/if}>
+                            <label for="radio_02" class="radio-lable"><img src="/assets/static/images/level/level_3.png" alt=""></label>
+                        </div>
+                        <div class="level-radio-block">
+                            <input type="radio" name="level" class="radio" value="4" id="radio_03"{if $enterprise.apply_level == '4'} checked{/if}>
+                            <label for="radio_03" class="radio-lable"><img src="/assets/static/images/level/level_4.png" alt=""></label>
+                        </div>
+                    </div>
+                    <div class="sub-box">
+                        <button class="btn">提 交</button>
+                    </div>
+                    <div class="tip-box">
+                        <div class="tip-txt">当前等级：<span class="red-t">{$enterprise.level_text}</span></div>
+                        <div class="tip-txt">期限：<span class="red-t">{if $enterprise.start_time && $enterprise.end_time}{$enterprise.start_time|date='Y-m-d', ###} 至 {$enterprise.end_time|date='Y-m-d', ###}{/if}</span></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="big-img-box">
+        <div class="big-img-content">
+            <div class="big-close-btn"><i class="iconfont icon-fork"></i></div>
+            <div class="show-wrap" id="show_wrap">
+                <div class="inner-show">
+                    <div class="show-img">
+                        <img src="" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="show-info">* 请使用鼠标滚轮放大图片或者移动图片位置</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        enlargeImg();
+        // $('.con-box').find('img').on('click', function () {
+        //     var img = $(this).attr('src')
+        //     $('.big-img-box').fadeIn('linear').find('.show-img img').attr('src', img)
+        // })
+        // $('.big-img-box').on('click', '.big-close-btn', function () {
+        //     $(this).parents('.big-img-box').fadeOut('linear')
+        // })
+
+        $.Tipmsg.r = null;
+        $('form[name="apply_level"]').Validform({
+            btnSubmit:".c--member-submit-btn",
+            tipSweep: true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+        });
+    });
+</script>
+
+{include file="public/footer"  /}

@@ -1,0 +1,166 @@
+
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+<div id="article">
+    <div class="recruitment-wrap">
+        <div class="common-tab-box">
+            <a href="{:getLink(0, $__CHANNEL__.diyname)}" class="on">人才需求</a>
+            <a href="{:getLink(96)}">人才供应</a>
+        </div>
+        <form class="recruitment-filter-box" action="" method="get" id="searchform">
+            <?php $ad = get_banner(36, 1);?>
+            {volist name="ad" id="v"}
+            <a class="recruitment-adv-box"><img src="{$v.picimg}" alt=""></a>
+            {/volist}
+            <div class="common-search-block">
+                <div class="common-search-icon"><i class="iconfont icon-sousuo1"></i></div>
+                <div class="input-box"><input type="text" class="input" name="keyword" placeholder="输入相关关键词" value="{:input('keyword')}"></div>
+                <a href="javascript:$('#searchform').submit()" class="common-serach-btn">搜索</a>
+            </div>
+            <!--<div class="common-filter-block">-->
+                <!--<dl class="filter-txt">-->
+                    <!--<dt>工作年限：</dt>-->
+                    <!--<dd>-->
+                        <!--<input type="text" readonly unselectable="on" onfocus="this.blur()" class="address-input" id="date_01" placeholder="全部">-->
+                        <!--<div class="filter-btn">选择年限 <i class="iconfont icon-jiantouyou"></i></div>-->
+                    <!--</dd>-->
+                <!--</dl>-->
+            <!--</div>-->
+            {volist name="__FILTERLIST__" id="v"}
+            <div class="common-filter-block">
+                <dl class="filter-txt">
+                    <dt>{$v.title}：</dt>
+                    <dd>
+                        <select class="select-box" onchange="location.href = $(this).val();">
+                            {volist name="$v.content" id="item"}
+                            <option value="{$item.url}" {$item.active?'selected':''}>{$item.title}</option>
+                            {/volist}
+                        </select>
+                        <div class="filter-btn">选择{$v.title} <i class="iconfont icon-jiantouyou"></i></div>
+                    </dd>
+                </dl>
+            </div>
+            {/volist}
+            <div class="common-filter-block">
+                <dl class="filter-txt">
+                    <dt>所在区域：</dt>
+                    <dd>
+                        <input type="text" readonly unselectable="on" onfocus="this.blur()" class="address-input" id="address01" placeholder="全部" value="{if input('province')}{:input('province')}{/if}{if input('city')},{:input('city')}{/if}{if input('area')},{:input('area')}{/if}">
+                        <input type="hidden" id="addressV01" value="">
+                        <input type="hidden" id="province" value="{:input('province')}" name="province">
+                        <input type="hidden" id="city" value="{:input('city')}" name="city">
+                        <input type="hidden" id="area" value="{:input('area')}" name="area">
+                        <div class="filter-btn">选择所在区域 <i class="iconfont icon-jiantouyou"></i></div>
+                    </dd>
+                </dl>
+            </div>
+            <div class="btn-box">
+                <button class="sub-btn">完成</button>
+            </div>
+        </form>
+        <ul class="recruitment-list-box">
+            {cms:pagelist id="item" channel="$__CHANNEL__.id" model="$__CHANNEL__.model_id" orderby="id" orderway="desc" addon="true"}
+            <li class="list-a">
+                <div class="item">
+                    <div class="title">{$item.title}</div>
+                    <div class="info">
+                        <div class="p"><span>地点：{$item.province}{$item.city}{$item.area}</span><span>人数：{$item.number}</span></div>
+                        <div class="p"><span class="company">公司：{$item.company}</span></div>
+                    </div>
+                    <div class="icon"><i class="iconfont icon-jiantouyou"></i></div>
+                </div>
+                <div class="sub-item">
+                    {$item.content|htmlspecialchars_decode}
+                    <a href="{:url('index/enterprise/detail', ['id' => $item.enterprise_id])}" class="more-btn">了解公司更多信息>></a>
+                </div>
+            </li>
+            {/cms:pagelist}
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var area1 = new LArea();
+
+        area1.init({
+            'trigger': '#address01', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+            'valueTo':'#addressV01', //选择完毕后id属性输出到该位置
+            'keys':{id:'name',name:'name'}, //绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+            'type': 1,//数据源类型
+            'data': LAreaData1, //数据源
+            'onClose': function (address) {
+                var addressArr = address.split(',')
+                $('#province').val(addressArr[0])
+                $('#city').val(addressArr[1])
+                $('#area').val(addressArr[2])
+            }
+        });
+
+        var date_01 = new rolldate.Date({
+            el: '#date_01',
+            format: 'YYYY-MM-DD',
+            beginYear: 1975,
+            endYear: 2200,
+            theme: '#db3733'
+        })
+
+        $('.list-a').on('click', function () {
+            if (!$(this).hasClass('on')) {
+                $(this).addClass('on').siblings().removeClass('on')
+                    .end().find('.sub-item').stop('true', 'true').slideDown('linear')
+                    .end().siblings().find('.sub-item').stop('true', 'true').slideUp('linear')
+            } else {
+                $(this).removeClass('on').find('.sub-item').stop('true', 'true').slideUp('linear')
+            }
+
+        })
+
+    })
+
+    // 加载更多
+    $(window).on('scroll', function() {
+        var windowHeight = $(window).height(),
+            scrollTop = $(window).scrollTop(),
+            docHeight = $(document).height()
+        if (scrollTop + windowHeight + 100 >= docHeight) {
+            loadData()
+        }
+    })
+
+    var page = 1;
+    var none = false;
+
+    // 加载更多事件
+    function loadData() {
+        page++;
+        let keywords = $("#keywords").val();
+        let param = {page:page, ajaxTpl:1};
+        $.get("", param, function(res){
+            if (res) {
+                $(".recruitment-list-box").append(res);
+
+                $('.list-a').on('click', function () {
+                    if (!$(this).hasClass('on')) {
+                        $(this).addClass('on').siblings().removeClass('on')
+                            .end().find('.sub-item').stop('true', 'true').slideDown('linear')
+                            .end().siblings().find('.sub-item').stop('true', 'true').slideUp('linear')
+                    } else {
+                        $(this).removeClass('on').find('.sub-item').stop('true', 'true').slideUp('linear')
+                    }
+
+                })
+
+            } else {
+                if (none === false) {
+                    none = true;
+                    showmsg('没有更多的内容')
+                }
+            }
+        });
+    }
+</script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

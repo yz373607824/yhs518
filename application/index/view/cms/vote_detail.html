@@ -1,0 +1,60 @@
+{include file="public/head" isMember="0" /}
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:getLink(0, $__CHANNEL__.diyname)}" class="bread-hover">我要投票</a>
+        </div>
+        <div class="vote-detail-wrap">
+            <div class="vote-detail-inner">
+                <div class="hd clearfloat">
+                    <div class="img"><img src="{$__ARCHIVES__.image}" alt="{$__ARCHIVES__.title}"></div>
+                    <div class="info">
+                        <div class="title">{$__ARCHIVES__.title}</div>
+                        {if $__ARCHIVES__.name}<div class="p">名称 ：{$__ARCHIVES__.name}</div>{/if}
+                        {if $__ARCHIVES__.address}<div class="p">地址 ：{$__ARCHIVES__.address}</div>{/if}
+                        {if $__ARCHIVES__.website}<div class="p">网址 ：<a rel="nofollow" target="_blank" href="{$__ARCHIVES__.website}">{$__ARCHIVES__.website}</a></div>{/if}
+                        <div class="vote-btn-box pt-15">
+                            <div class="vote-num">
+                                <span class="img-icon-01"><img src="/assets/static/images/vote_icon_01.png" alt=""></span>
+                                <span class="word">总票数</span>
+                                <span class="num">{$__ARCHIVES__.invent_vote + $__ARCHIVES__.real_vote}</span>
+                            </div>
+                            <a href="javascript:vote({$__ARCHIVES__.id})" class="vote-btn">
+                                <span class="img-icon-02"><img src="/assets/static/images/vote_icon_02.png" alt=""></span>
+                                <span class="word">{$__CHANNEL__.vote_button|default='我要投票'}</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="bd">
+                    {$__ARCHIVES__.content}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function vote(id) {
+        $.ajax({
+            url : '/index/ajax/vote',
+            type : 'POST',
+            data : {id:id},
+            dataType : 'json',
+            success : function(data){
+                if (data.code == 1) {
+                    showmsg(data.msg, data.url)
+                } else {
+                    showmsg(data.msg)
+                }
+            }
+        });
+    }
+</script>
+
+{include file="public/footer"  /}

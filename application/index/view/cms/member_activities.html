@@ -1,0 +1,79 @@
+{include file="public/head" isMember="0" /}
+
+    <div class="common-page-content">
+        <div class="wp1200">
+            <?php $banner = get_banner(20,1);?>
+            {volist name='banner' id='item'}
+            <a href="{$item.url}" target="_blank" class="article-banner-wrap">
+                <img src="{$item.pic}" alt="{$item.name}">
+            </a>
+            {/volist}
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/channel/' . $__CHANNEL__.diyname)}" class="bread-hover">{$__CHANNEL__.name}</a>
+            </div>
+            <div class="member-activities-wrap clearfloat">
+                <div class="header-wrap">
+                    <div class="swiper-container member-activities-swiper">
+                        <div class="swiper-wrapper">
+                            <?php $alist = get_list(17, $__CHANNEL__['id'], 10, 0, 'recommended_position');?>
+                            {volist name="alist" id="item"}
+                            <a href="{:url('/archives/' . $item.id)}" class="swiper-slide">
+                                <div class="img-box">
+                                    <img src="{$item.image}" alt="{$item.title}">
+                                    <div class="date-box">
+                                        <div class="s">{$item.publishtime|date='m-d',###}</div>
+                                        <div class="m">{$item.publishtime|date='Y', ###}</div>
+                                    </div>
+                                </div>
+                                <div class="msg-box">
+                                    <h3>{$item.title}</h3>
+                                    <p>{$item.description}</p>
+                                    <div class="date">时间：{$item.date}</div>
+                                    <div class="address">地点：{$item.address}</div>
+                                    <div class="more-btn">查看详细</div>
+                                </div>
+                            </a>
+                            {/volist}
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+                <ul class="member-activities-list">
+                    {volist name='$__PAGELIST__' id='item'}
+                    <li class="list-box">
+                        <a href="{:url($item.url)}" class="inner-list clearfloat">
+                            <div class="img-box"><img src="{$item.image}" alt="{$item.title}"></div>
+                            <div class="info-box">
+                                <div class="h2">{$item.title}</div>
+                                <p class="txt">{$item.description}</p>
+                                <div class="time-and-date">时间：{$item.date}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地点：{$item.address}</div>
+                                <div class="more-btn">查看详细</div>
+                            </div>
+                            <div class="date-box">
+                                <div class="inner-date">
+                                    <p class="s">{$item.publishtime|date='m-d',###}</p>
+                                    <p class="m">{$item.publishtime|date='Y', ###}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {/volist}
+                </ul>
+                <div class="paged">
+                    {$__PAGELIST__->render()}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            swiperArticleEvent();
+        })
+    </script>
+
+{include file="public/footer"  /}

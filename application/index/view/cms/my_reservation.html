@@ -1,0 +1,314 @@
+{include file="public/head" isMember="1" /}
+
+    <div class="common-member-wrap">
+        <div class="wp1200">
+            <div class="c--wrap clearfloat">
+
+                {include file="public/member_left_nav" /}
+
+                <div class="c--member-right-wrap">
+                    <div class="c--inner my-reservation-wrap">
+                        <h2 class="title">我的预约</h2>
+                        <ul class="my-reservation-list">
+                            {volist name='list' id='item'}
+                            <li>
+                                <div class="title-box clearfloat">
+                                    <h3>{$item.locale_title}</h3>
+                                    {if !empty($item.locale_file)}
+                                    <div class="download-btn">
+                                        <a href="{$item.locale_file}" class="a-btn" target="_blank">下载附件</a>
+                                    </div>
+                                    {/if}
+                                </div>
+                                <div class="info-box">
+                                    <div class="info-row clearfloat">
+                                        <p class="str-txt">专家姓名：</p>
+                                        <p class="nor-txt"><?php $expert = unserialize($item['locale_expert_info']); echo $expert['name']; ?></p>
+                                    </div>
+                                    <div class="info-row clearfloat">
+                                        <p class="str-txt">预约时间：</p>
+                                        <p class="nor-txt">{$item.locale_reservation_time|date='Y-m-d', ###}</p>
+                                    </div>
+                                    <div class="info-row clearfloat">
+                                        <p class="str-txt">预约地点：</p>
+                                        <p class="nor-txt">{$item.locale_reservation_address}</p>
+                                    </div>
+                                    <div class="info-row clearfloat">
+                                        <p class="str-txt">问题描述：</p>
+                                        <p class="nor-txt">{$item.locale_question_description}</p>
+                                    </div>
+                                </div>
+                                <div class="btn-box clearfloat">
+                                    <div class="ft-txt-box">
+                                        <span>姓 名：{$item.locale_linkman}</span>
+                                        <span>手 机：{$item.locale_mobile}</span>
+                                        <span>公 司：{$item.locale_enterprise}</span>
+                                    </div>
+                                    {if $item.confirm_finish == 1 && empty($item.appraise)}
+                                    <a href="javascript:;" data-id="{$item.id}" class="h-btn evaluate-btn">我要评价</a>
+                                    {elseif $item.confirm_finish == 1 && !empty($item.appraise)}
+                                    <a href="javascript:;" style="background-color: #ff900e;width: 120px;" data-star="{$item.star}" data-appraise="{$item.appraise}" class="h-btn evaluate-view-btn">查看评价内容</a>
+                                    {/if}
+                                    {if $item.locale_is_confirm == 1 && $item.confirm_finish == 0}
+                                    <a href="javascript:;" data-id="{$item.id}" style="width: 130px;" class="h-btn confirm-btn">确定完成此次服务</a>
+                                    {elseif $item.locale_is_confirm == 1 && $item.confirm_finish == 1}
+                                    <a href="javascript:;" style="background-color: #ff900e;width: 120px;" class="h-btn">已确认结束服务</a>
+                                    {/if}
+                                    {if $item.status == 1 && $item.locale_is_confirm == 0}
+                                    <a href="javascript:;" class="h-btn">待专家服务</a>
+                                    {/if}
+                                    {if $item.status == 0 && time() < strtotime('+1 hour', $item.createtime)}
+                                    <a href="javascript:;" data-id="{$item.id}" class="h-btn alter-btn">订单删除</a>
+                                    <a href="javascript:;" style="width: 170px;" data-trade_sn="{$item.trade_sn}" data-title="{$item.title}" data-price="{$item.totalprice}" class="h-btn pay_btn">剩余<?php echo ceil((strtotime('+1 hour', $item['createtime']) - time())/60); ?>分钟，请尽快支付</a>
+                                    {/if}
+                                    {if $item.status == 2 || ($item.status == 0 && time() > strtotime('+1 hour', $item.createtime))}
+                                    <a href="javascript:;" data-id="{$item.id}" class="h-btn alter-btn">订单删除</a>
+                                    <a href="javascript:;" class="h-btn">订单已过期</a>
+                                    {/if}
+                                    <a href="https://wpa.qq.com/msgrd?v=3&uin=779088800&site=qq&menu=yes" class="h-btn">联系客服</a>
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+                        <div class="paged">
+                            {$list->render()}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-wrap evaluate-wrap">
+            <div class="evaluate-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>我要评价</h2>
+                <form id="form2" action="/user/appraise" class="formId">
+                    {:token()}
+                    <input type="hidden" name="id" id="reply-id">
+                    <div class="form-row">
+                        <div class="star-rate" style="padding-left: 20px;">
+                            <div class="row-left">
+                                <span class="txt">星级评价：</span>
+                            </div>
+                            <div class="row-right">
+                                <input type="hidden" name="star" value="0" id="starCount">
+                                <a href="javascript:;" data-star="1" class="star-default click-star-1">
+                                    <img src="/assets/static/images/star.jpg" class="light" alt="">
+                                    <img src="/assets/static/images/no_star.jpg" class="dark" alt="">
+                                </a>
+                                <a href="javascript:;" data-star="2" class="star-default click-star-2">
+                                    <img src="/assets/static/images/star.jpg" class="light" alt="">
+                                    <img src="/assets/static/images/no_star.jpg" class="dark" alt="">
+                                </a>
+                                <a href="javascript:;" data-star="3" class="star-default click-star-3">
+                                    <img src="/assets/static/images/star.jpg" class="light" alt="">
+                                    <img src="/assets/static/images/no_star.jpg" class="dark" alt="">
+                                </a>
+                                <a href="javascript:;" data-star="4" class="star-default click-star-4">
+                                    <img src="/assets/static/images/star.jpg" class="light" alt="">
+                                    <img src="/assets/static/images/no_star.jpg" class="dark" alt="">
+                                </a>
+                                <a href="javascript:;" data-star="5" class="star-default click-star-5">
+                                    <img src="/assets/static/images/star.jpg" class="light" alt="">
+                                    <img src="/assets/static/images/no_star.jpg" class="dark" alt="">
+                                </a>
+                            </div>
+                            <a href="javascript:;" class="reset" id="reset">重 置</a>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="message-box">
+                            <div class="row-left">
+                                <span class="star">*</span>
+                                <span class="txt">评价内容：</span>
+                            </div>
+                            <textarea rows="6" datatype="*" nullmsg="请填写评价内容" name="appraise" class="message-area"></textarea>
+                        </div>
+                    </div>
+                    <div class="btn-box isSubmit-box">
+                        <button type="button" class="sub-btn">确认提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-wrap alter-wrap">
+            <div class="alter-content">
+                <h2>提示</h2>
+                <form id="form1" action="/user/deleteOL" method="post" class="formId">
+                    {:token()}
+                    <input type="hidden" name="id" id="id">
+                    <p class="tip-t">请确认是否删除该订单？</p>
+                    <div class="btn-box clearfloat">
+                        <button type="button" id="confirm">是</button>
+                        <button type="button" id="cancel">否</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-wrap confirm-wrap">
+            <div class="alter-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>提示</h2>
+                <form id="form3" action="/user/confirm_finish" method="post" class="formId">
+                    {:token()}
+                    <input type="hidden" name="id" id="id-2">
+                    <p class="tip-t">请确认是否确认结束？</p>
+                    <div class="btn-box clearfloat">
+                        <button type="button" id="confirm-2">是</button>
+                        <button type="button" id="cancel-2">否</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-wrap pay-wrap">
+            <div class="pay-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>支付信息</h2>
+                <div class="pay-msg-box">
+                    <div class="row"><span>订单号：</span><span id="trade_sn">82515009626</span></div>
+                    <div class="row"><span>支付内容：</span><span class="txt-r" id="title">咨询费</span></div>
+                    <div class="row"><span>需支付金额：￥</span><span class="txt-r txt-b" id="price">50</span><span>元</span></div>
+                </div>
+                <div class="pay-methods-box">
+                    <p>选择支付方式</p>
+                    <div class="pay-methods-inner">
+                        <div class="block">
+                            <input type="radio" id="Alipay" class="input-radio" name="pay">
+                            <label for="Alipay" class="radio-label Alipay"></label>
+                        </div>
+                        <div class="block">
+                            <input type="radio" id="Wxpay" class="input-radio" name="pay">
+                            <label for="Wxpay" class="radio-label Wxpay"></label>
+                        </div>
+                    </div>
+                </div>
+                <a href="javascript:showmsg('请选择支付方式');" class="pay-btn">立即支付</a>
+            </div>
+        </div>
+        <div class="bg" id="overlay"></div>
+    </div>
+    <script>
+        $(function () {
+            $('input[name=pay]').prop('checked', false);
+
+            starRate();
+            $('.evaluate-btn').on('click', function() {
+                $('.isSubmit-box').css('display', '');
+                $('#reset').css('display', '');
+                $('#reset').trigger('click');
+                $('textarea[name=appraise]').val('');
+                $('#reply-id').val($(this).attr('data-id'));
+                $('.evaluate-wrap').addClass('md-show')
+            })
+
+            $('.evaluate-view-btn').on('click', function() {
+                $('.isSubmit-box').css('display', 'none');
+                $('#reset').css('display', 'none');
+                $('.click-star-' + $(this).attr('data-star')).trigger('click');
+                $('textarea[name=appraise]').val($(this).attr('data-appraise'));
+                $('.evaluate-wrap').addClass('md-show')
+            })
+
+            $("#Alipay").click(function () {
+                $('.pay-btn').attr('href', '/user/aliPay?trade_sn=' + $('#trade_sn').text());
+            })
+
+            $("#Wxpay").click(function () {
+                $('.pay-btn').attr('href', '/user/wechatPay?trade_sn=' + $('#trade_sn').text());
+            })
+
+            $('.alter-btn').on('click', function() {
+                $('#id').val($(this).attr('data-id'));
+                $('.alter-wrap').addClass('md-show')
+            })
+
+            $('.confirm-btn').on('click', function() {
+                $('#id-2').val($(this).attr('data-id'));
+                $('.confirm-wrap').addClass('md-show')
+            })
+
+            $('.pay_btn').on('click', function() {
+                $('#trade_sn').text($(this).attr('data-trade_sn'));
+                $('#title').text($(this).attr('data-title'));
+                $('#price').text($(this).attr('data-price'));
+                $('.pay-wrap').addClass('md-show')
+            })
+
+            $('#confirm').on('click', function() {
+                $('.alter-wrap').removeClass('md-show')
+                $.ajax({
+                    type: 'post',
+                    data: $('#form1').serialize(),
+                    url: '/user/deleteOL',
+                    cache:false,
+                    dataType:'json',
+                    success: function (data) {
+                        showmsg(data.msg, 'refresh')
+                    },
+                    error: function () {
+                        showmsg('网络错误')
+                    }
+                })
+            })
+
+            $('#confirm-2').on('click', function() {
+                $('.confirm-wrap').removeClass('md-show')
+                $.ajax({
+                    type: 'post',
+                    data: $('#form3').serialize(),
+                    url: '/user/confirm_finish',
+                    cache:false,
+                    dataType:'json',
+                    success: function (data) {
+                        showmsg(data.msg, 'refresh')
+                    },
+                    error: function () {
+                        showmsg('网络错误')
+                    }
+                })
+            })
+
+            $('#cancel').on('click', function() {
+                $('.alter-wrap').removeClass('md-show')
+            })
+            $('#cancel-2').on('click', function() {
+                $('.confirm-wrap').removeClass('md-show')
+            })
+
+            $('.modal-close').on('click', function() {
+                $('.alter-wrap').removeClass('md-show')
+                $('.ask-question').removeClass('md-show')
+                $('.confirm-wrap').removeClass('md-show')
+                $('.evaluate-wrap').removeClass('md-show')
+                $('.pay-wrap').removeClass('md-show')
+                $(':input', '.formId')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+            })
+
+            $.Tipmsg.r = null;
+            $('#form2').Validform({
+                btnSubmit:".sub-btn",
+                tipSweep: true,
+                ajaxPost:true,
+                tiptype: function (msg, o, cssctl) {
+                    if (!o.obj.is("form")) {
+                        var objtip = o.obj.siblings(".checktip");
+                        cssctl(objtip, o.type);
+                        showmsg(msg);
+                        return false;
+                    }
+                },
+                callback:function(data){
+                    if (data.code == 1) {
+                        showmsg(data.msg, 'refresh');
+                    } else {
+                        showmsg(data.msg);
+                    }
+                }
+            });
+        })
+    </script>
+
+{include file="public/footer" footer="0" /}

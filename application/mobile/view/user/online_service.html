@@ -1,0 +1,69 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="article">
+        <ul class="online-service-wrap">
+            {volist name='list' id='item'}
+            <li class="list">
+                <div class="hd">
+                    <div class="top">
+                        <div class="title">{$item.title}</div>
+                        <div class="top-btn">
+                            <span class="date">时间：{$item.createtime|date='Y-m-d', ###}</span>
+                            {if !empty($item.file)}
+                            <a href="{$item.file}" class="download" target="_blank">下载附件</a>
+                            {/if}
+                        </div>
+                    </div>
+                    <p class="center">{$item.question_description}</p>
+                </div>
+                <div class="bd"><span class="word">提问者：{$item.user}</span></div>
+                <div class="ft">
+                    {if $item.is_reply == 1}
+                    <a href="{:url('/mobile/user/replyService', ['id' => $item['id']])}" class="btn">查看回复</a>
+                    {elseif $item.is_rollback == 0 || $item.is_commit == 1}
+                    <a href="{:url('/mobile/user/replyService', ['id' => $item['id']])}" class="btn">回复留言</a>
+                    {/if}
+                    {if $item.is_reply == 0 && $item.is_commit == 0 && $item.is_rollback == 0 }
+                    <a href="{:url('/mobile/user/rollbackService', ['id' => $item['id']])}" class="btn">驳回重写</a>
+                    {elseif $item.is_reply == 0 && $item.is_commit == 0 && $item.is_rollback == 1}
+                    <a href="javascript:;" class="btn">已驳回</a>
+                    {/if}
+                    {if empty($item.appraise) && $item.confirm_finish == 1}
+                    <a href="javascript:;" class="btn">待评价</a>
+                    {elseif empty($item.replyappraise) && $item.confirm_finish == 1}
+                    <a href="{:url('/mobile/user/replyAppraise', ['id' => $item['orderid']])}" class="btn">查看并评价</a>
+                    {elseif !empty($item.replyappraise) && $item.confirm_finish == 1}
+                    <a href="{:url('/mobile/user/replyAppraise', ['id' => $item['orderid']])}" class="btn">查看评价</a>
+                    {/if}
+                </div>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+    <script>
+        $(function() {
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+
+        let page = 1;
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let param = {page:page};
+            $.get("{:url('/mobile/user/onlineService')}", param, function(res){
+                $(".online-service-wrap").append(res.data);
+            });
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

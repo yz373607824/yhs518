@@ -1,0 +1,63 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="article">
+        <ul class="common-problems-wrap knowledge-library">
+            {volist name='list' id='item'}
+            <li>
+                <div class="hd">
+                    <a href="{:url('/mobile/archives/'.$item.id)}"><h3 class="title">{$item.title}</h3></a>
+                    <p class="info">{$item.description}</p>
+                </div>
+                <div class="ft">
+                    <p class="time">{$item.ordercreatetime|date='Y-m-d H:i', ###}</p>
+                    <a href="javascript:;" onclick="cancel({$item.orderid});" class="btn">删除</a>
+                    {if $item.paystatus == 0 && time() < strtotime('+1 hour', $item.ordercreatetime)}
+                    <a href="{:url('/mobile/user/pay', ['trade_sn' => $item['ordertrade_sn']])}" style="width: 150px;" class="btn">剩余<?php echo ceil((strtotime('+1 hour', $item['ordercreatetime']) - time())/60); ?>分钟，请尽快支付</a>
+                    {/if}
+                    {if $item.paystatus == 2 || ($item.paystatus == 0 && time() > strtotime('+1 hour', $item.ordercreatetime))}
+                    <a href="javascript:;" class="btn" style="background-color: #909090;">已过期</a>
+                    {/if}
+                </div>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+    <script>
+        $(function() {
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+
+        let page = 1;
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let param = {page:page};
+            $.get("{:url('/mobile/user/myKonwledge')}", param, function(res){
+                $(".common-problems-wrap").append(res.data);
+            });
+        }
+
+        function cancel(id) {
+            if (confirm('确定要该订单吗？')) {
+                $.post('/mobile/user/deleteAK', {id:id}, function (data) {
+                    if (data.code == 1) {
+                        showmsg(data.msg, 'refresh');
+                    } else {
+                        showmsg(data.msg);
+                    }
+                })
+            }
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

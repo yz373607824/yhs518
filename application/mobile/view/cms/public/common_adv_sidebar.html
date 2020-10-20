@@ -1,0 +1,14 @@
+<div class="common-adv-sidebar">
+    <?php $banner = get_banner(17, 2);?>
+    {volist name="banner" id="v"}
+    <a href="{$v.url}" target="_blank" class="special-adv-wrap">
+        <img src="{$v.pic}" alt="{$v.name}">
+    </a>
+    {/volist}
+    <div class="adv-banner-box">
+        <?php $banner = get_banner(18, 5);?>
+        {volist name="banner" id="v"}
+        <a href="{$v.url}" target="_blank"><img src="{$v.pic}" alt="{$v.name}"></a>
+        {/volist}
+    </div>
+</div>

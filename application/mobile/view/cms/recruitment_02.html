@@ -1,0 +1,125 @@
+
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+<div id="article">
+    <div class="recruitment-wrap">
+        <div class="common-tab-box">
+            <a href="{:getLink(71)}">人才需求</a>
+            <a href="{:getLink(0, $__CHANNEL__.diyname)}" class="on">人才供应</a>
+        </div>
+        <div class="recruitment-filter-box">
+            <?php $ad = get_banner(35, 1);?>
+            {volist name="ad" id="v"}
+            <a class="recruitment-adv-box"><img src="{$v.picimg}" alt=""></a>
+            {/volist}
+            <form action="" method="get" id="searchform" class="common-search-block">
+                <div class="common-search-icon"><i class="iconfont icon-sousuo1"></i></div>
+                <div class="input-box"><input type="text" class="input" name="keyword" placeholder="输入相关关键词" value="{:input('keyword')}"></div>
+                <a href="javascript:$('#searchform').submit()" class="common-serach-btn">搜索</a>
+            </form>
+            {volist name="__FILTERLIST__" id="v"}
+            <div class="common-filter-block">
+                <dl class="filter-txt">
+                    <dt>{$v.title}：</dt>
+                    <dd>
+                        <select class="select-box" onchange="location.href = $(this).val();">
+                            {volist name="$v.content" id="item"}
+                            <option value="{$item.url}" {$item.active?'selected':''}>{$item.title}</option>
+                            {/volist}
+                        </select>
+                        <div class="filter-btn">选择{$v.title} <i class="iconfont icon-jiantouyou"></i></div>
+                    </dd>
+                </dl>
+            </div>
+            {/volist}
+
+            <!--<div class="btn-box">-->
+                <!--<button type="button" class="sub-btn">完成</button>-->
+            <!--</div>-->
+        </div>
+        <ul class="recruitment-list-box">
+            {cms:pagelist id="item" channel="$__CHANNEL__.id" model="$__CHANNEL__.model_id" orderby="id" orderway="desc" addon="true"}
+            <li class="list-a">
+                <div class="item">
+                    <div class="title">{$item.title}</div>
+                    <div class="info">
+                        <div class="p"><span>姓名：{$item.name}</span></div>
+                        <div class="p"><span class="company">工作年限：{$item.term}</span></div>
+                    </div>
+                    <div class="icon"><i class="iconfont icon-jiantouyou"></i></div>
+                </div>
+                <div class="sub-item">
+                    {$item.content|htmlspecialchars_decode}
+                </div>
+            </li>
+            {/cms:pagelist}
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        var date_01 = new rolldate.Date({
+            el: '#date_01',
+            format: 'YYYY-MM-DD',
+            beginYear: 1975,
+            endYear: 2200,
+            theme: '#db3733'
+        })
+
+        $('.list-a').on('click', function () {
+            if (!$(this).hasClass('on')) {
+                $(this).addClass('on').siblings().removeClass('on')
+                    .end().find('.sub-item').stop('true', 'true').slideDown('linear')
+                    .end().siblings().find('.sub-item').stop('true', 'true').slideUp('linear')
+            } else {
+                $(this).removeClass('on').find('.sub-item').stop('true', 'true').slideUp('linear')
+            }
+
+        })
+    })
+
+    // 加载更多
+    $(window).on('scroll', function() {
+        var windowHeight = $(window).height(),
+            scrollTop = $(window).scrollTop(),
+            docHeight = $(document).height()
+        if (scrollTop + windowHeight + 100 >= docHeight) {
+            loadData()
+        }
+    })
+
+    var page = 1;
+    var none = false;
+
+    // 加载更多事件
+    function loadData() {
+        page++;
+        let param = {page:page, ajaxTpl:1};
+        $.get("", param, function(res){
+            if (res) {
+                $(".recruitment-list-box").append(res);
+                $('.list-a').on('click', function () {
+                    if (!$(this).hasClass('on')) {
+                        $(this).addClass('on').siblings().removeClass('on')
+                            .end().find('.sub-item').stop('true', 'true').slideDown('linear')
+                            .end().siblings().find('.sub-item').stop('true', 'true').slideUp('linear')
+                    } else {
+                        $(this).removeClass('on').find('.sub-item').stop('true', 'true').slideUp('linear')
+                    }
+
+                })
+            } else {
+                if (none === false) {
+                    none = true;
+                    showmsg('没有更多的内容')
+                }
+            }
+        });
+    }
+</script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

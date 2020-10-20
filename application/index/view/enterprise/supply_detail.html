@@ -1,0 +1,20 @@
+<div class="content">
+    <div class="product-box clearfloat">
+        <div class="img-box"><img src="{$read.image}" alt="{$read.title}"></div>
+        <div class="info-box">
+            <div class="h3">{$read.title}</div>
+            <div class="msg">价 格：¥ <span class="red">{$read.price}</span> 元/{$read.unit}</div>
+            <div class="msg">起订量： {$read.number} {$read.unit}</div>
+            <ul class="attr-block">
+                {volist name="read.tags" id="tag"}
+                <li>{$tag}</li>
+                {/volist}
+            </ul>
+            <a href="{:url('enterprise/contact', ['id' => $info['id']])}" class="contact-btn">联系方式</a>
+        </div>
+    </div>
+    <div class="prodect-detail-box">
+        <div class="h3">产品介绍</div>
+        {$read.content}
+    </div>
+</div>

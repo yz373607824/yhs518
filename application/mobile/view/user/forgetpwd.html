@@ -1,0 +1,102 @@
+{include file="public/head" isIndex="0" /}
+
+<div class="lg-rg-header">
+    <a href="javascript:window.history.back();" class="close-btn"><i class="iconfont icon-fork"></i></a>
+    <a href="{:url('/mobile/user/login')}" class="lg-rg-title">登录</a>
+</div>
+
+<div id="member">
+    <div class="lg-rg-wrap">
+        <h2>忘记密码</h2>
+        <form id="form1" action="{:url('api/user/resetpwd')}" method="post" class="form-box">
+            {:token()}
+            <input type="hidden" name="type" value="mobile">
+            <div class="input-box">
+                <input type="text" datatype="*,/^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/" nullmsg="请填写手机" errormsg="手机格式错误" name="mobile" class="input" placeholder="手机/邮箱/用户名注册">
+            </div>
+            <div class="input-box">
+                <input type="password" datatype="/^(?![^a-zA-Z]+$)(?!\D+$)/,*6-30" nullmsg="请填写密码" errormsg="密码必须是数字和字母，长度在6-30中" name="newpassword" class="input" placeholder="新密码：英文字母加数字">
+            </div>
+            <div class="half-box">
+                <div class="yzm-box">
+                    <input type="text" datatype="*" nullmsg="请填写短信验证码" name="captcha" class="input" placeholder="短信验证码">
+                </div>
+                <a href="javascript:sendCode();" id="btn-code" class="get-yzm">获取验证码</a>
+            </div>
+            <div class="btn-box">
+                <button type="button" class="button">立即注册</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+<script>
+    $(function() {
+        $.Tipmsg.r = null;
+        $('#form1').Validform({
+            btnSubmit: ".button",
+            tipSweep: true,
+            ajaxPost:true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            callback:function(data){
+                if (data.code == 1) {
+                    showmsg('修改成功', 'jump', '/mobile/user/login.html');
+                } else {
+                    showmsg('修改失败');
+                }
+            }
+        });
+    })
+
+    function sendCode() {
+        var mobile = $.trim($("input[name='mobile']").val());
+        //手机验证
+        var mobileStr = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/;
+        if( mobile == '' ){
+            alert("手机号码不能为空！");
+            return false;
+        }
+        if( !mobileStr.test(mobile) ){
+            alert("手机号码不正确！");
+            return false;
+        }
+
+        $.post("{:url('api/sms/send')}", {mobile:mobile, event:'resetpwd'}, function(result){
+            if( result.code == 1 ){
+                var obj = $("#btn-code");
+                settime(obj);
+            }
+            showmsg(result.msg);
+        });
+    }
+
+    //发送验证码倒计时
+    var countdown = 60;
+    function settime(obj) {
+        console.log(countdown);
+        if (countdown == 0) {
+            obj.attr('disabled',false);
+            obj.css("pointer-events","auto");
+            obj.text("获取验证码");
+            countdown = 60;
+            return;
+        } else {
+            obj.attr('disabled',true);
+            obj.css("pointer-events","none");
+            obj.text("重新发送(" + countdown + ")");
+            countdown--;
+        }
+        setTimeout(function(){
+            settime(obj);
+        },1000);
+    }
+</script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

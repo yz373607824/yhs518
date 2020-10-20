@@ -1,0 +1,161 @@
+{include file="public/head" isMember="1" /}
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+
+            {include file="public/member_left_nav" /}
+
+            <div class="c--member-right-wrap">
+                <div class="c--inner my-message-wrap">
+                    <h2 class="title">我{if request()->action() == 'enterprise_order'}收到{/if}的活动订单</h2>
+                    <ul class="my-message-list">
+                        {volist name="list" id="v"}
+                        <li>
+                            <div class="tilte">
+                                <span class="txt">联系人：{$v.name}</span>
+                                <span class="txt">企业名称：{$v.company}</span>
+                                <span class="txt">电话：{$v.tel}</span>
+                                <span class="txt">地址：{$v.address}</span>
+                            </div>
+                            <p class="info">{$v.memo}</p>
+                            <div class="con-box">
+                                <p class="name">产品名称：{$v.product}</p>
+                                <p class="prop"><span class="prop-txt">数量：{$v.number}</span><span class="prop-txt">规格：{$v.format}</span><span class="prop-txt">总价：<b>¥{$v.total}</b>元</span></p>
+                            </div>
+                            <div class="btn-box clearfloat">
+                                <div class="time">下单时间：{$v.createtime|date='Y-m-d H:i',###}</div>
+                                <a href="javascript:;" data-id="{$v.id}" class="btn alter-btn">订单删除</a>
+<!--                                <a href="javascript:del({$v.id})" class="btn">删除</a>-->
+                                {if $v.paystatus == 0 && time() < strtotime('+1 hour', $v.ordercreatetime)}
+                                    <a href="javascript:;" style="width: 170px;" data-trade_sn="{$v.ordertrade_sn}"
+                                       data-title="{$v.ordertitle}" data-price="{$v.ordertotalprice}"
+                                       class="btn pay_btn">剩余<?php echo ceil((strtotime('+1 hour', $v['ordercreatetime']) - time())/60); ?>
+                                        分钟，请尽快支付</a>
+                                {/if}
+                                {if $v.paystatus == 2 || ($v.paystatus == 0 && time() > strtotime('+1 hour', $v.ordercreatetime))}
+                                    <a href="javascript:;" class="btn">订单已过期</a>
+                                {/if}
+<!--                                <a href="{:url('/archives/'.$v.id)}" class="btn">查看详细</a>-->
+                            </div>
+                        </li>
+                        {/volist}
+                    </ul>
+                    <div class="paged">
+                        {$list->render()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-wrap alter-wrap">
+        <div class="alter-content">
+            <h2>提示</h2>
+            <form id="form1" action="/user/{:request()->action()}_del" method="post" class="formId">
+                {:token()}
+                <input type="hidden" name="id" id="id">
+                <p class="tip-t">请确认是否删除该订单？</p>
+                <div class="btn-box clearfloat">
+                    <button type="button" id="confirm">是</button>
+                    <button type="button" id="cancel">否</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-wrap pay-wrap">
+        <div class="pay-content">
+            <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+            <h2>支付信息</h2>
+            <div class="pay-msg-box">
+                <div class="row"><span>订单号：</span><span id="trade_sn">82515009626</span></div>
+                <div class="row"><span>支付内容：</span><span class="txt-r" id="title">咨询费</span></div>
+                <div class="row price-row"><span>需支付金额：￥</span><span class="txt-r txt-b" id="price">50</span><span>元</span></div>
+                <div class="row other-row" style="display: none;"></div>
+            </div>
+            <div class="pay-methods-box">
+                <p>选择支付方式</p>
+                <div class="pay-methods-inner">
+                    <div class="block">
+                        <input type="radio" id="Alipay" class="input-radio" name="pay">
+                        <label for="Alipay" class="radio-label Alipay"></label>
+                    </div>
+                    <div class="block">
+                        <input type="radio" id="Wxpay" class="input-radio" name="pay">
+                        <label for="Wxpay" class="radio-label Wxpay"></label>
+                    </div>
+                </div>
+            </div>
+            <a href="javascript:showmsg('请选择支付方式');" class="pay-btn">立即支付</a>
+        </div>
+    </div>
+    <div class="bg" id="overlay"></div>
+</div>
+
+<script>
+    /*function del(id) {
+        if (confirm('删除后不可恢复，确定要删除吗？')) {
+            location.href = "/index/user/{:request()->action()}_del/id/" + id;
+        }
+
+    }*/
+    $(function () {
+        $('input[name=pay]').prop('checked', false);
+
+        $("#Alipay").click(function () {
+            $('.other-row').css('display', 'none');
+            $('.price-row').css('display', '');
+            $('.pay-btn').attr('href', '/user/aliPay?trade_sn=' + $('#trade_sn').text());
+        })
+
+        $("#Wxpay").click(function () {
+            $('.other-row').css('display', 'none');
+            $('.price-row').css('display', '');
+            $('.pay-btn').attr('href', '/user/wechatPay?trade_sn=' + $('#trade_sn').text());
+        })
+
+        $('.alter-btn').on('click', function() {
+            $('#id').val($(this).attr('data-id'));
+            $('.alter-wrap').addClass('md-show')
+        })
+
+        $('.pay_btn').on('click', function() {
+            $('#trade_sn').text($(this).attr('data-trade_sn'));
+            $('#title').text($(this).attr('data-title'));
+            $('#price').text($(this).attr('data-price'));
+            $('.pay-wrap').addClass('md-show')
+        })
+
+        $('#confirm').on('click', function() {
+            $('.alter-wrap').removeClass('md-show')
+            $.ajax({
+                type: 'post',
+                data: $('#form1').serialize(),
+                url: '/user/{:request()->action()}_del',
+                cache:false,
+                dataType:'json',
+                success: function (data) {
+                    showmsg(data.msg, 'refresh')
+                },
+                error: function () {
+                    showmsg('网络错误')
+                }
+            })
+        })
+
+        $('#cancel').on('click', function() {
+            $('.alter-wrap').removeClass('md-show')
+        })
+
+        $('.modal-close').on('click', function() {
+            $('.alter-wrap').removeClass('md-show')
+            $('.pay-wrap').removeClass('md-show')
+            $(':input', '.formId')
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .removeAttr('checked')
+                .removeAttr('selected');
+        })
+    })
+</script>
+
+{include file="public/footer"  /}

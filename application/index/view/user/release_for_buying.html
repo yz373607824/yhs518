@@ -1,0 +1,217 @@
+{include file="public/head" isMember="1" /}
+
+<script type="text/javascript">
+    var require = {
+        config: {$config|json_encode}
+    };
+</script>
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+            {include file="public/member_left_nav" /}
+            <div class="c--member-right-wrap">
+                <div class="c--inner release-form-wrap">
+                    <h2 class="title rsbl-hd clearfloat">
+                        <p class="tt">发布求购</p>
+                        <a href="{:url('index/user/purchase')}" class="href">返回发布列表>></a>
+                    </h2>
+                    <form name="purchase" action="{:url('index/user/release_purchase')}" method="post">
+                        <input type="hidden" name="id" value="{$read.id}">
+                        {if !$read}
+                        <input type="hidden" name="returnUrl" value="{$returnUrl}">
+                        {/if}
+                        {:token('release_purchase_token')}
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">产品类别：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="multse-select-wrap">
+                                <input type="hidden" id="category" name="row[category]" value="{$read.category}" datatype="*" nullmsg="请选择产品类别">
+                                <span class="view">
+                                    <span class="placeholder">{if $read.category != ''}{$read.category}{else}请选择产品类别{/if}</span>
+                                <div class="js-view"></div>
+                                </span>
+                                <div class="select-scroller" data-scroller="01" id="scroller01">
+                                    <div class="select-list">
+                                        <?php $list = getFields(243);?>
+                                        {volist name='list' id='v'}
+                                        <a class="select-item {if strpos($read.category,$v.value) !== false}checked{/if}" data-option="{$v.value}" data-val="{$v.value}">{$v.title}</a>
+                                        {/volist}
+                                    </div>
+                                </div>
+                                <i class="iconfont icon-jiantouxia arrow"></i>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">产品名称：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="c--member-input-box-w100">
+                                <input type="text" class="c--member--inner-input" name="row[title]"  datatype="*" nullmsg="请填写产品名称" value="{$read.title}">
+                            </div>
+                        </div>
+                        <div class="form-row mb0 clearfloat">
+                            <div class="c--member-row-tt label-self">
+                                <span class="row-txt">自定义<br>标签：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="form-row-input w680">
+                                <input type="text" class="c--member--inner-input" maxlength="15" onchange="this.value = this.value.substring(0,15)" onkeydown="this.value = this.value.substring(0,15)" onkeyup="this.value = this.value.substring(0,15)" id="text" name="row[tags]"  datatype="*" nullmsg="请填写自定义标签" value="{$read.tags}" placeholder="为了更精准找到您的文章，请填写自定义标签">
+                            </div>
+                            <div class="form-row-txt">
+                                <span class="js-row-txt"><i>{:mb_strlen($read.tags,'UTF8')}</i>/15个汉字</span>
+                            </div>
+                        </div>
+                        <p class="instr">多个以 , 隔开。例如：辛酸,十二烷基伯胺,帕唑帕尼</p>
+                        <div class="form-row clearfloat">
+                            <div class="inner-form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">数 量：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="form-row-input w320">
+                                    <input type="text" class="c--member--inner-input" name="row[number]"  datatype="*" nullmsg="请填写数量" value="{$read.number}" placeholder="如：100">
+                                </div>
+                            </div>
+                            <div class="inner-form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">单 位：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="form-row-input w320">
+                                    <input type="text" class="c--member--inner-input" name="row[unit]"  datatype="*" nullmsg="请填写单位" value="{$read.unit}" placeholder="如：kg">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="inner-form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">产品规格：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="form-row-input w320">
+                                    <input type="text" class="c--member--inner-input" name="row[standard]"  datatype="*" nullmsg="请填写产品规格" value="{$read.standard}" placeholder="如：按桶出售">
+                                </div>
+                            </div>
+                            <div class="inner-form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">联 系 人：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="form-row-input w320">
+                                    <input type="text" class="c--member--inner-input" name="row[contacts]"  datatype="*" nullmsg="请填写联系人" value="{if $read.contacts}{$read.contacts}{else}{$info.contact_name}{/if}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="inner-form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">联系电话：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="form-row-input w320">
+                                    <input type="text" class="c--member--inner-input" name="row[tel]"  datatype="*" nullmsg="请填写联系电话" value="{if $read.tel}{$read.tel}{else}{$info.contact_tel}{/if}">
+                                </div>
+                            </div>
+                            <div class="inner-form-row clearfloat">
+                                <div class="c--member-row-tt s--member-row-tt">
+                                    <span class="row-txt">采购截止日期：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="form-row-input w320 por">
+                                    <input type="text" id="date1" class="c--member--inner-input inp" name="row[end_time]" datatype="*" nullmsg="请填写采购截止日期" value="{if $read.end_time}{$read.end_time}{/if}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">详细描述：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="form-row-textarea">
+                                <p class="instr-p">此处填写，务必详细！</p>
+                                <div class="c--member-textarea-box no-float" style="height: 420px;">
+                                    <textarea class="form-control editor" name="content" datatype="*" nullmsg="请填写详细描述">{$read.content}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row clearfloat">
+                            <div class="c--member-row-tt">
+                                <span class="row-txt">验证码：</span>
+                                <span class="red-star">*</span>
+                            </div>
+                            <div class="c--member-yam-box">
+                                <div class="yam-inner">
+                                    <input type="text" class="c--member--inner-input" name="imgcaptcha" datatype="*" nullmsg="请填写验证码">
+                                </div>
+                                <img src="{:captcha_src()}" width="140" height="42" class="yzm-img" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
+                            </div>
+                        </div>
+                        <div class="form-btn">
+                            <div class="checkbox-block">
+                                <input type="checkbox" class="ifAgree" id="ifAgree1" name="ifAgree1" value="agree" datatype="*" nullmsg="请承诺发布的信息真实有效"{if $read} checked{/if}>
+                                <label class="mark take-cash-mark" for="ifAgree1"><span class="txt">我承诺发布的信息真实有效</span></label>
+                            </div>
+                            <div class="btn-box">
+                                <button class="c--member-submit-btn">发布采购</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/static/script/multsel.js"></script>
+<script src="/assets/static/laydate/laydate.js"></script>
+<script>
+    $(function () {
+        var scroller01 = new IScroll('#scroller01', {
+            scrollX: false,
+            scrollY: true,
+            scrollbars: true,
+            interactiveScrollbars: true,
+            preventDefault: false,
+            mouseWheel: true
+        })
+        var scrollerArr = [scroller01]
+        multsel(scrollerArr)
+
+        $.Tipmsg.r = null;
+        $('form[name="purchase"]').Validform({
+            btnSubmit:".c--member-submit-btn",
+            tipSweep: true,
+            ajaxPost:true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            callback:function(data){
+                if (data.code == 1) {
+                    showmsg(data.msg, "{:url('user/purchase')}")
+                } else {
+                    showmsg(data.msg);
+                    $('input[name=release_purchase_token]').val(data.data.token);
+                    $('.yzm-img').trigger('click');
+                }
+            }
+        });
+
+        laydate.render({
+            elem: '#date1'
+        });
+    })
+</script>
+
+{include file="public/footer"  /}
+<script src="https://cdn.bootcss.com/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="/assets/js/require.js" data-main="/assets/js/require-frontend.js"></script>

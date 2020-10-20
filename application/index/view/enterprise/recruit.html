@@ -1,0 +1,26 @@
+<ul class="recruitment-list">
+    {volist name="list" id="v"}
+    <li>
+        <div class="inner-recruitment clearfloat">
+            <div class="col w195">{$v.title}</div>
+            <div class="col w500">地址：{$v.location}</div>
+            <div class="col">人数：{$v.number}</div>
+            <div class="arrow"><i class="iconfont icon-jiantouxia"></i></div>
+        </div>
+        <div class="sub">
+            <div class="block">
+                {$v.content|htmlspecialchars_decode}
+            </div>
+        </div>
+    </li>
+    {/volist}
+</ul>
+<div class="paged pt40">
+    {$paged}
+</div>
+
+<script>
+    $(function () {
+        recruitmentEvent();
+    })
+</script>

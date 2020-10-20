@@ -1,0 +1,258 @@
+{include file="public/head" isIndex="1" /}
+
+<div id="index">
+    <div class="swiper-container index-banner-wrap">
+        <div class="swiper-wrapper">
+            <?php $banner = get_banner(23, 10);?>
+            {volist name="banner" id="v"}
+            <div class="swiper-slide">
+                <img src="{$v.picimg}" alt="{$v.name}">
+            </div>
+            {/volist}
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <section>
+        <ul class="index-tab-list-wrap">
+            <?php $banner = get_banner(54, 100);?>
+            {volist name="banner" id="v"}
+            <li class="list">
+                <a href="{$v.m_url}" class="item">
+                    <div class="icon-box"><img src="{$v.pic}" alt="{$v.name}"></div>
+                    <div class="icon-title">{$v.name}</div>
+                </a>
+            </li>
+            {/volist}
+        </ul>
+    </section>
+    <section>
+        <div class="index-swiper-wrap-01">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <?php $banner = get_banner(24, 4);?>
+                    {volist name="banner" id="v"}
+                    <a href="{$v.m_url}" class="swiper-slide">
+                        <img src="{$v.picimg}" alt="{$v.name}">
+                    </a>
+                    {/volist}
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+    <section>
+        <div class="index-expert-ask-wrap">
+            <div class="expert-title-box">
+                <div class="index-title">
+                    <div class="b-t">E</div>
+                    <div class="s-t">
+                        <p class="cn">专家在线</p>
+                        <p class="en">Expert online</p>
+                    </div>
+                </div>
+                <div class="p">全国行业顶尖技术专家，定时在线为您服务！</div>
+                <div class="p">为行业企业提供技术支持与服务，致力于成为创业企业的专用工程师！</div>
+                <div class="btn-block"><a href="{:url('/mobile/expert/index')}" class="href-btn">全网提问>></a></div>
+            </div>
+            <ul class="expert-list">
+                <?php $alist = get_expert(10, 0, 'mobile_index_recommend');?>
+                {volist name="alist" id="item"}
+                <li class="list">
+                    <a href="{:url('/mobile/expert/detail', ['id'=>$item.id])}" class="left-box"><img src="{$item.avatar}" alt=""></a>
+                    <div class="right-box">
+                        <a href="{:url('/mobile/expert/detail', ['id'=>$item.id])}" class="expert-name"><span class="b-name">{$item.nickname}</span><span class="s-name">{$item.level}</span></a>
+                        <div class="expert-info"><span class="txt">学历：{$item.education}</span><span class="txt">工作年限：{$item.workage}年</span></div>
+                        <div class="expert-info"><span class="txt">精通行业/领域：{$item.technosphere}</span></div>
+                        <div class="btn-box">
+                            {if strpos($item.service,'online') !== false}
+                            <a href="{:url('/mobile/expert/detail', ['id'=>$item.id])}" class="ask-btn">我要提问</a>
+                            {/if}
+                            {if strpos($item.service,'locale') !== false}
+                            <a href="{:url('/mobile/expert/detail', ['id'=>$item.id])}" class="ask-btn">我要现场服务</a>
+                            {/if}
+                        </div>
+                    </div>
+                </li>
+                {/volist}
+            </ul>
+            <div class="more-btn">
+                <a href="{:url('/mobile/expert/index')}">了解更多>></a>
+            </div>
+            <div class="index-swiper-wrap-02">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <?php $banner = get_banner(25, 10);?>
+                        {volist name="banner" id="v"}
+                        <a href="{$v.m_url}" class="swiper-slide"><img src="{$v.picimg}" alt="{$v.name}"></a>
+                        {/volist}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="index-news-wrap">
+            <div class="news-title-box">
+                <div class="left-block">
+                    <div class="b-en">R</div>
+                    <div class="s-cn">
+                        <p class="s-cn-01">从这里走向成功</p>
+                        <p class="s-cn-02">配方索取</p>
+                        <p class="s-cn-03">Recipe request</p>
+                    </div>
+                </div>
+                <div class="right-block"><a href="{:url('/mobile/channel/formula')}" class="more-btn">更多</a></div>
+            </div>
+            <div class="news-content-box">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <?php $banner = get_banner(55, 10);?>
+                        {volist name="banner" id="v"}
+                        <a href="{$v.m_url}" class="swiper-slide"><img src="{$v.pic}" alt="{$v.name}"></a>
+                        {/volist}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                <div class="content-inner">
+                    <?php $alist = get_list(11, 70, 1, 0, 'index_recommend');?>
+                    {volist name="alist" id="item"}
+                    <a href="{:url('/mobile/archives/' . $item.id)}" class="title">
+                        <h4>{$item.title}</h4>
+                        <p class="info">{$item.description}</p>
+                    </a>
+                    {/volist}
+                    <ul class="con-list">
+                        <?php $alist = get_list(11, 70, 4, 0, 'index_list_recommend');?>
+                        {volist name="alist" id="item" key="k"}
+                        <li>
+                            <a href="{:url('/mobile/archives/' . $item.id)}">
+                                <span class="icon">{$k}</span>
+                                <span class="txt">{$item.title}</span>
+                                {if $item.flag == 'hot'}<span class="hot">hot~</span>{/if}
+                            </a>
+                        </li>
+                        {/volist}
+                    </ul>
+                </div>
+            </div>
+            <div class="index-swiper-wrap-03">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <?php $banner = get_banner(26, 3);?>
+                        {volist name="banner" id="v"}
+                        <a href="{$v.m_url}" class="swiper-slide"><img src="{$v.picimg}" alt="{$v.name}"></a>
+                        {/volist}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+            <div class="news-title-box">
+                <div class="left-block">
+                    <div class="b-en">K</div>
+                    <div class="s-cn">
+                        <p class="s-cn-01">从这里学习行业知识</p>
+                        <p class="s-cn-02">知识·经验</p>
+                        <p class="s-cn-03">Industry Knowledge Base</p>
+                    </div>
+                </div>
+                <div class="right-block"><a href="{:url('/mobile/channel/konwledge')}" class="more-btn">更多</a></div>
+            </div>
+            <div class="news-content-box">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <?php $banner = get_banner(56, 10);?>
+                        {volist name="banner" id="v"}
+                        <a href="{$v.m_url}" class="swiper-slide"><img src="{$v.pic}" alt="{$v.name}"></a>
+                        {/volist}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                <div class="content-inner">
+                    <?php $alist = get_list(15, 74, 1, 0, 'index_hot_recommend');?>
+                    {volist name="alist" id="item"}
+                    <a href="{:url('/mobile/archives/' . $item.id)}" class="title">
+                        <h4>{$item.title}</h4>
+                        <p class="info">{$item.description}</p>
+                    </a>
+                    {/volist}
+                    <ul class="con-list">
+                        <?php $alist = get_list(15, 74, 4, 0, 'index_hot_list_recommend');?>
+                        {volist name="alist" id="item" key="k"}
+                        <li>
+                            <a href="{:url('/mobile/archives/' . $item.id)}">
+                                <span class="icon">{$k}</span>
+                                <span class="txt">{$item.title}</span>
+                                {if $item.flag == 'hot'}<span class="hot">hot~</span>{/if}
+                            </a>
+                        </li>
+                        {/volist}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="index-recruitment-wrap">
+            <div class="recruitment-title-box">
+                <div class="index-title">
+                    <div class="b-t">B</div>
+                    <div class="s-t">
+                        <p class="cn">表面人才</p>
+                        <p class="en">Biaomainrencai</p>
+                    </div>
+                </div>
+                <div class="p">行业顶尖各类精英在此汇聚，为您挑选更合适的优秀人才！<br/>打造高端行业平台需要诚信，拼搏的您一起加入！</div>
+                <div class="recruit-tab-box">
+                    <div class="slide-down-btn">更多职位>></div>
+                    <div class="sub-box">
+                        <?php $tags = getTags(71, 12);?>
+                        {volist name="tags" id="v"}
+                        <a href="{:getLink(71)}?keyword={$v.name}">{$v.name}</a>/
+                        {/volist}
+                    </div>
+                </div>
+            </div>
+            <div class="recruitment-list-wrap">
+                <ul class="recruitment-list-box">
+                    <?php $list = indexRecruit(10);?>
+                    {volist name="list" id="v"}
+                    {if ($key % 2 == 0 && isset($list[$key + 1]) || $key % 2 == 1)}
+                    <li>
+                        <a href="{:url('index/enterprise/recruit', ['id' => $v['id']])}" class="item">
+                            <div class="top">
+                                <div class="img"><img src="{$v.logo}" alt="{$v.company}"></div>
+                                <div class="info">
+                                    <div class="name">{$v.company}</div>
+                                    <div class="msg">{$v.supplier_type}</div>
+                                </div>
+                            </div>
+                            <div class="bottom">
+                                <span class="red">{$v.sum}</span>个热招职位
+                            </div>
+                        </a>
+                    </li>
+                    {/if}
+                    {/volist}
+                </ul>
+            </div>
+            <div class="btn-box">
+                <a href="{:getLink(71)}" class="more-btn">了解更多>></a>
+            </div>
+            <?php $banner = get_banner(27, 1);?>
+            {volist name="banner" id="v"}
+            <a href="{$v.m_url}" class="advs-img-box">
+                <img src="{$v.picimg}" alt="{$v.name}">
+            </a>
+            {/volist}
+
+        </div>
+    </section>
+</div>
+
+<script>
+    $(function () {
+        indexEvent();
+    })
+</script>
+
+{include file="public/footer" isIndex="1" footerBar="1"/}

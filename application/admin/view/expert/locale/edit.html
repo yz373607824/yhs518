@@ -1,0 +1,102 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('User_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-user_id" data-rule="required" data-source="user/user/index" data-field="nickname" class="form-control selectpage form-control" name="row[user_id]" type="text" value="{$row.user_id}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Expert_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-expert_id" data-rule="required" data-source="user/expert/index" class="form-control selectpage form-control" name="row[expert_id]" type="text" value="{$row.expert_id}">
+        </div>
+    </div>
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Expert_basic')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <textarea id="c-expert_basic" data-rule="required" class="form-control  form-control" rows="5" name="row[expert_basic]" cols="50">{$row.expert_basic}</textarea>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Expert_info')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <textarea id="c-expert_info" data-rule="required" class="form-control  form-control" rows="5" name="row[expert_info]" cols="50">{$row.expert_info}</textarea>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Linkman')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-linkman" data-rule="required" class="form-control form-control" name="row[linkman]" type="text" value="{$row.linkman}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Enterprise')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-enterprise" data-rule="required" class="form-control form-control" name="row[enterprise]" type="text" value="{$row.enterprise}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Mobile')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-mobile" data-rule="required" class="form-control form-control" name="row[mobile]" type="text" value="{$row.mobile}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Reservation_time')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-reservation_time" data-rule="required" class="form-control datetimepicker form-control" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[reservation_time]" type="text" value="{$row.reservation_time|datetime}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Reservation_address')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-reservation_address" data-rule="required" class="form-control form-control" name="row[reservation_address]" type="text" value="{$row.reservation_address}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Title')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-title" data-rule="required" class="form-control form-control" name="row[title]" type="text" value="{$row.title}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Question_description')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-question_description" data-rule="required" class="form-control  form-control" rows="5" name="row[question_description]" cols="50">{$row.question_description}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('File')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-file" class="form-control form-control" size="50" name="row[file]" type="text" value="{$row.file}">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="plupload-file" class="btn btn-danger plupload" data-input-id="c-file" data-multiple="false"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-file" class="btn btn-primary fachoose" data-input-id="c-file" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-file"></span>
+            </div>
+            
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">用户评价:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-appraise" class="form-control  form-control" rows="5" cols="50">{$row.appraise}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">专家评价:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-replyappraise" class="form-control  form-control" rows="5" cols="50">{$row.replyappraise}</textarea>
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

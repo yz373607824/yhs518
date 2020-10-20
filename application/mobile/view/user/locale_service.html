@@ -1,0 +1,84 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="article">
+        <ul class="online-service-wrap">
+            {volist name='list' id='item'}
+            <li class="list">
+                <div class="hd">
+                    <div class="top">
+                        <div class="title">{$item.title}</div>
+                        <div class="top-btn">
+                            <span class="date">时间：{$item.createtime|date='Y-m-d', ###}</span>
+                            {if !empty($item.file)}
+                            <a href="{$item.file}" class="download" target="_blank">下载附件</a>
+                            {/if}
+                        </div>
+                    </div>
+                    <p class="center">{$item.question_description}</p>
+                </div>
+                <div class="bd"><span class="word">提问者：{$item.user}</span></div>
+                <div class="bd"><span class="word">姓名：{$item.linkman}</span></div>
+                <div class="bd"><span class="word">手机：{$item.mobile}</span></div>
+                <div class="bd"><span class="word">公司：{$item.enterprise}</span></div>
+                <div class="bd"><span class="word">预约服务时间：{$item.reservation_time|date='Y-m-d H:i:s', ###}</span></div>
+                <div class="bd"><span class="word">地址：{$item.reservation_address}</span></div>
+                <div class="ft">
+                    {if $item.is_confirm == '1' }
+                    <a href="javascript:;" class="btn">已确认</a>
+                    {else}
+                    <a href="javascript:;" onclick="confirmServer({$item.id})" class="btn">待确定</a>
+                    {/if}
+                    {if empty($item.appraise) }
+                    <a href="javascript:;" class="btn">待评价</a>
+                    {elseif empty($item.replyappraise)}
+                    <a href="{:url('/mobile/user/replyAppraise', ['id' => $item['orderid']])}" class="btn">查看并评价</a>
+                    {else}
+                    <a href="{:url('/mobile/user/replyAppraise', ['id' => $item['orderid']])}" class="btn">查看评价</a>
+                    {/if}
+                </div>
+            </li>
+            {/volist}
+        </ul>
+        {:token()}
+    </div>
+    <script>
+        $(function() {
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+
+        // let page = 1;
+        // // 加载更多事件
+        // function loadData() {
+        //     page++;
+        //     let param = {page:page};
+        //     $.get("{:url('/mobile/user/myArticle')}", param, function(res){
+        //         $(".common-problems-wrap").append(res.data);
+        //     });
+        // }
+
+        function confirmServer(id) {
+            if (confirm('请确定是否确认服务？')) {
+                let token = $('input[name=__token__]').val();
+                $.post('/mobile/user/confirmService', {id:id, __token__:token}, function (data) {
+                    if (data.code == 1) {
+                        showmsg(data.msg, 'refresh');
+                    } else {
+                        showmsg(data.msg);
+                        $('input[name=__token__]').val(data.data.token);
+                    }
+                })
+            }
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

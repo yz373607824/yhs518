@@ -1,0 +1,55 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="article">
+        <ul class="collection-lists-wrap">
+            {volist name="list" id="vo"}
+            <li class="list">
+                <a href="{:url('/mobile/archives/' . $vo.aid)}"><div class="title">{$vo.title}</div></a>
+                <div class="msg">
+                    <div class="date">{$vo.createtime|date='Y-m-d H:i',###}</div>
+                    <a href="javascript:cancel({$vo.id});" class="btn">取消收藏</a>
+                </div>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+
+    <script>
+        $(function() {
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+
+        let page = 1;
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let param = {page:page};
+            $.get("{:url('/mobile/user/myCollect')}", param, function(res){
+                $(".collection-lists-wrap").append(res.data);
+            });
+        }
+
+        function cancel(id) {
+            if (confirm('确定要取消收藏吗？')) {
+                $.post('/mobile/user/myCollect', {id:id}, function (data) {
+                    if (data.code == 1) {
+                        showmsg(data.msg, 'refresh');
+                    } else {
+                        showmsg(data.msg);
+                    }
+                })
+            }
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

@@ -1,0 +1,10 @@
+
+{if (isset($isExcellent) && $isExcellent) || input('excellent')}
+<div class="tab-item"><a target="_blank" href="{:url('enterprise/excellent')}"{if request()->controller() == 'Enterprise'} class="on"{/if}>王者供应商</a></div>
+<div class="tab-item"><a target="_blank" href="{:getLink(69)}?excellent=1"{if request()->controller() == 'Channel' && $__CHANNEL__.id == 69} class="on"{/if}>王者供应产品</a></div>
+<div class="tab-item"><a target="_blank" href="{:getLink(67)}?excellent=1"{if request()->controller() == 'Channel' && $__CHANNEL__.id == 67} class="on"{/if}>王者求购产品</a></div>
+{else}
+<div class="tab-item"><a target="_blank" href="{:url('enterprise/index')}"{if request()->controller() == 'Enterprise'} class="on"{/if}>联盟企业</a></div>
+<div class="tab-item"><a target="_blank" href="{:getLink(69)}"{if request()->controller() == 'Channel' && $__CHANNEL__.id == 69} class="on"{/if}>供应产品</a></div>
+<div class="tab-item"><a target="_blank" href="{:getLink(67)}"{if request()->controller() == 'Channel' && $__CHANNEL__.id == 67} class="on"{/if}>求购产品</a></div>
+{/if}

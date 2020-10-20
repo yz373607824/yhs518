@@ -1,0 +1,587 @@
+
+{include file="public/head" isMember="1" /}
+<script type="text/javascript">
+    var require = {
+        config: {$config|json_encode}
+    };
+</script>
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+<script src="/assets/static/script/pca.js"></script>
+<script src="/assets/static/script/multsel.js"></script>
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+
+            {include file="public/member_left_nav" /}
+
+            <div class="c--member-right-wrap">
+                <div class="enterprise-message-wrap">
+                    <h2 class="title id-check">
+                        <span class="id-t">企业信息</span>
+                        {if $read}
+                        <span class="id-state">{$status}</span>
+                        {/if}
+                    </h2>
+                    <form name="enterprise" action="{:url('index/user/enterprise')}" method="post">
+                        {:token('enterprise_token')}
+                        <div class="box">
+                            <div class="row-wrap clearfloat">
+                                <div class="cilp pl107">请进行裁剪后上传，推荐<a href="http://xiuxiu.web.meitu.com/main.html" class="cilp" target="_blank" rel="nofollow">http://xiuxiu.web.meitu.com/main.html</a></div>
+                                <div class="row-txt-block">
+                                    <span class="txt">企业LOGO：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="upload-img-block">
+                                    <input type="hidden" name="row[logo]" value="{$read.logo}" datatype="*" nullmsg="请上传企业logo">
+                                    <div class="files-img-box js-show-upload-img{if $read.logo} on{/if}" data-upload-img="{$read.logo}">
+                                        <img src="{$read.logo|default='/assets/static/images/upload_bg.png'}" alt="">
+                                    </div>
+                                    <span class="instr">logo图片（尺寸：150*150）</span>
+                                    <div class="js-example" data-example-img="/assets/static/images/qi-logo.jpg">示例</div>
+                                    <a href="javascript:void(0)" class="js-upload"><input type="file" class="file-btn" onchange="upload(this)"><span>{if $read.logo}重新{/if}上传</span></a>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-txt-block">
+                                    <span class="txt">banner：</span>
+                                </div>
+                                <div class="upload-img-block">
+                                    <input type="hidden" name="row[banner]" value="{$read.banner}">
+                                    <div class="files-img-box js-show-upload-img{if $read.banner} on{/if}" data-upload-img="{$read.banner}">
+                                        <img src="{$read.banner|default='/assets/static/images/upload_bg.png'}" alt="">
+                                    </div>
+                                    <span class="instr">主页banner（白银：1200*195，其他：1920*450）</span>
+                                    <div class="js-example" data-example-img="/assets/static/images/qi-banner.jpg">示例</div>
+                                    <a href="javascript:void(0)" class="js-upload"><input type="file" class="file-btn" onchange="upload(this)"><span>{if $read.banner}重新{/if}上传</span></a>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-txt-block">
+                                    <span class="txt">企业二维码：</span>
+                                </div>
+                                <div class="upload-img-block">
+                                    <input type="hidden" name="row[qrcode]" value="{$read.qrcode}">
+                                    <div class="files-img-box js-show-upload-img{if $read.qrcode} on{/if}" data-upload-img="{$read.qrcode}">
+                                        <img src="{$read.qrcode|default='/assets/static/images/upload_bg.png'}" alt="">
+                                    </div>
+                                    <span class="instr">企业二维码（尺寸：160*160）</span>
+                                    <div class="js-example" data-example-img="/assets/static/images/qi-ewm.jpg">示例</div>
+                                    <a href="javascript:void(0)" class="js-upload"><input type="file" class="file-btn" onchange="upload(this)"><span>{if $read.qrcode}重新{/if}上传</span></a>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-txt-block">
+                                    <span class="txt">企业类型：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="row-select-block">
+                                    <select class="select-wrap" name="row[enterprise_type]" datatype="*" nullmsg="请选择企业类型">
+                                        <option value="">请选择类型</option>
+                                        {foreach name="enterprise.enterprise_type" item="vo"}
+                                        <option value="{$key}"{if $read.enterprise_type == $key} selected{/if}>{$vo}</option>
+                                        {/foreach}
+                                    </select>
+                                    <i class="iconfont icon-jiantouxia"></i>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-txt-block">
+                                    <span class="txt">商家类别：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="row-select-block">
+                                    <select class="select-wrap" name="row[business_type]" datatype="*" nullmsg="请选择商家类型">
+                                        <option value="">请选择类型</option>
+                                        {foreach name="enterprise.business_type" item="vo"}
+                                        <option value="{$key}"{if $read.business_type == $key} selected{/if}>{$vo}</option>
+                                        {/foreach}
+                                    </select>
+                                    <i class="iconfont icon-jiantouxia"></i>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-txt-block">
+                                    <span class="txt">经营类别：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="multse-select-wrap w-100" data-placeholder="请选择经营类别">
+                                    <input type="hidden" name="row[supplier_type]" datatype="*" nullmsg="请选择经营类别" value="{$read.supplier_type}">
+                                    <div class="view">
+                                        <span class="placeholder">请选择经营类别</span>
+                                        <div class="js-view"></div>
+                                    </div>
+                                    <div class="select-scroller" data-scroller="01" id="scroller01">
+                                        <div class="select-list">
+                                            {volist name="enterprise.supplier_type" id="vo"}
+                                            <a class="select-item {if strpos($read.supplier_type,$vo) !== false}checked{/if}" data-option="{$vo}" data-val="{$vo}">{$vo}</a>
+                                            {/volist}
+                                        </div>
+                                    </div>
+                                    <i class="iconfont icon-jiantouxia arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="row-wrap clearfloat">
+                                <div class="cilp pl107">请进行裁剪后上传，推荐<a href="http://xiuxiu.web.meitu.com/main.html" class="cilp" target="_blank" rel="nofollow">http://xiuxiu.web.meitu.com/main.html</a></div>
+                                <div class="row-txt-block">
+                                    <span class="txt">营业执照：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <!--<div class="row-select-block w205">-->
+                                    <!--<select class="select-wrap" name="row[certificate_type]" datatype="*" nullmsg="请选择证件类型">-->
+                                        <!--<option value="">请选择类型</option>-->
+                                        <!--{foreach name="enterprise.certificate_type" item="vo"}-->
+                                        <!--<option value="{$key}"{if $read.certificate_type == $key} selected{/if}>{$vo}</option>-->
+                                        <!--{/foreach}-->
+                                    <!--</select>-->
+                                    <!--<i class="iconfont icon-jiantouxia"></i>-->
+                                <!--</div>-->
+                                <div class="upload-img-block">
+                                    <input type="hidden" name="row[license_image]" value="{$read.license_image}" datatype="*" nullmsg="请选上传营业执照">
+                                    <div class="files-img-box js-show-upload-img{if $read.license_image} on{/if}" data-upload-img="{$read.license_image}">
+                                        <img src="{$read.license_image|default='/assets/static/images/upload_bg.png'}" alt="">
+                                    </div>
+                                    <span class="instr">营业执照</span>
+                                    <div class="js-example" data-example-img="/assets/static/images/yyzz.jpg">示例</div>
+                                    <a href="javascript:void(0)" class="js-upload"><input onchange="upload(this)" type="file" class="file-btn"><span>{if $read.license_image}重新{/if}上传</span></a>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-txt-block">
+                                    <span class="txt lhn">一般纳税人 资质：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="row-radio-block">
+                                    <input type="radio" name="row[is_aptitude]" id="radio-01" value="1" datatype="*" nullmsg="请选择纳税人资质" {if $read.is_aptitude == 1} checked{/if}>
+                                    <label for="radio-01">是</label>
+                                    <input type="radio" name="row[is_aptitude]" id="radio-02" value="0" datatype="*" nullmsg="请选择纳税人资质" {if $read.is_aptitude == 0} checked{/if}>
+                                    <label for="radio-02">否</label>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt">企业名称：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="row[company]" datatype="*" nullmsg="请填写企业名称" value="{$read.company}" placeholder="请填写公司全称">
+                                    </div>
+                                </div>
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt">企业性质：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="row[nature]" datatype="*" nullmsg="请填写企业性质" value="{$read.nature}" placeholder="民营/国企">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt lhn">企业信用统一代码：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="row[code]" datatype="*" nullmsg="请填写企业信用统一代码" value="{$read.code}" placeholder="请按营业执照填写">
+                                    </div>
+                                </div>
+                                <!--<div class="row-input-block clearfloat">-->
+                                    <!--<div class="row-txt-block">-->
+                                        <!--<span class="txt">营业执照：</span>-->
+                                        <!--<span class="red-star">*</span>-->
+                                    <!--</div>-->
+                                    <!--<div class="input-box">-->
+                                        <!--<input type="text" class="inp" name="row[license]" datatype="*" nullmsg="请填写营业执照" value="{$read.license}">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt">成立时间：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box por">
+                                        <input type="text" id="date1" class="inp" name="row[establish_time]" datatype="*" nullmsg="请填写成立时间" value="{$read.establish_time|date='Y-m-d',###}">
+                                        <img src="/assets/static/images/date_1.png" class="date-img" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt">注册资本：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="row[capital]" datatype="*" nullmsg="请填写注册资本" value="{$read.capital}" placeholder="如：1000万">
+                                    </div>
+                                </div>
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt">法人姓名：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="row[corporation]" datatype="*" nullmsg="请填写法人姓名" value="{$read.corporation}" placeholder="请填写法人姓名">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="row-wrap clearfloat">
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt lhn">企业入驻联系人：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="row[contact_name]" datatype="*" nullmsg="请填写企业入驻联系人" value="{$read.contact_name}" placeholder="请填写姓名">
+                                    </div>
+                                </div>
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt lhn w80">企业入驻联系电话：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="row[contact_tel]" datatype="m" errormsg="请填写正确的手机号码" nullmsg="请填写企业入驻联系电话" value="{$read.contact_tel}" placeholder="请填写正式手机号码">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt lhn">传真：</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="row[fax]" value="{$read.fax}" placeholder="示例：0755-8000 0000">
+                                    </div>
+                                </div>
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt lhn w80">网址：</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="row[website]" value="{$read.website}" placeholder="示例：http://...">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt lhn">企业入驻人身份证号码：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="row[id_number]" datatype="*18-18" errormsg="请填写正确的身份证号" nullmsg="请填写企业入驻人身份证号码" value="{$read.id_number}" placeholder="请填写正确身份证号码">
+                                    </div>
+                                </div>
+                                <div class="row-input-block clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt">电子邮箱：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="text" class="inp" name="row[email]" datatype="*" nullmsg="请填写电子邮箱" value="{$read.email}" placeholder="请填写真实邮箱地址">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-wrap pl107 mb0 clearfloat">
+                                <div class="cilp pl107">请进行裁剪后上传，推荐<a href="http://xiuxiu.web.meitu.com/main.html" class="cilp" target="_blank" rel="nofollow">http://xiuxiu.web.meitu.com/main.html</a></div>
+                                <div class="upload-img-block">
+                                    <input type="hidden" name="row[id_just_image]" value="{$read.id_just_image}" datatype="*" nullmsg="请上传企业入驻人身份证正面">
+                                    <div class="files-img-box js-show-upload-img{if $read.id_just_image} on{/if}" data-upload-img="{$read.id_just_image}">
+                                        <img src="{$read.id_just_image|default='/assets/static/images/upload_bg.png'}" alt="">
+                                    </div>
+                                    <span class="instr">企业入驻人身份证正面</span>
+                                    <div class="js-example" data-example-img="/assets/static/images/sfzzm.jpg">示例</div>
+                                    <a href="javascript:void(0)" class="js-upload"><input type="file" class="file-btn" onchange="upload(this)"><span>{if $read.id_just_image}重新{/if}上传</span></a>
+                                </div>
+                                <div class="upload-img-block pl40">
+                                    <input type="hidden" name="row[id_back_image]" value="{$read.id_back_image}" datatype="*" nullmsg="请上传企业入驻人身份证反面">
+                                    <div class="files-img-box js-show-upload-img{if $read.id_back_image} on{/if}" data-upload-img="{$read.id_back_image}">
+                                        <img src="{$read.id_back_image|default='/assets/static/images/upload_bg.png'}" alt="">
+                                    </div>
+                                    <span class="instr">企业入驻人身份证反面</span>
+                                    <div class="js-example" data-example-img="/assets/static/images/sfzfm.jpg">示例</div>
+                                    <a href="javascript:void(0)" class="js-upload"><input type="file" class="file-btn" onchange="upload(this)"><span>{if $read.id_back_image}重新{/if}上传</span></a>
+                                </div>
+                            </div>
+                            <div class="row-wrap pl107 clearfloat">
+                                <div class="upload-img-block">
+                                    <input type="hidden" name="row[id_hand_image]" value="{$read.id_hand_image}" datatype="*" nullmsg="请上传企业入驻人手持身份证正面照片">
+                                    <div class="files-img-box js-show-upload-img{if $read.id_hand_image} on{/if}" data-upload-img="{$read.id_hand_image}">
+                                        <img src="{$read.id_hand_image|default='/assets/static/images/upload_bg.png'}" alt="">
+                                    </div>
+                                    <span class="instr">企业入驻人手持身份证正面照片</span>
+                                    <div class="js-example" data-example-img="/assets/static/images/scsfz.jpg">示例</div>
+                                    <a href="javascript:void(0)" class="js-upload"><input type="file" class="file-btn" onchange="upload(this)"><span>{if $read.id_hand_image}重新{/if}上传</span></a>
+                                </div>
+                                <a href="http://www.yhs518.com/public/archives/463.html" title="模板和注意事项点击查看" target="_blank" class="upload-info">注：为了企业信息安全和审核身份证是否是您本人使用，请上传本人手持照。</a>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-txt-block">
+                                    <span class="txt">详细地址：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="row-select-block w150">
+                                    <select class="select-wrap" datatype="*" nullmsg="请选择省份" id="province" name="row[province]"></select>
+                                    <i class="iconfont icon-jiantouxia"></i>
+                                </div>
+                                <div class="row-select-block w150">
+                                    <select class="select-wrap" datatype="*" nullmsg="请选择城市" id="city" name="row[city]"></select>
+                                    <i class="iconfont icon-jiantouxia"></i>
+                                </div>
+                                <div class="row-select-block w150">
+                                    <select class="select-wrap" datatype="*" nullmsg="请选择地区" id="area" name="row[area]">
+                                    </select>
+                                    <i class="iconfont icon-jiantouxia"></i>
+                                </div>
+                                <div class="row-input-block address-detail">
+                                    <div class="input-box w-auto">
+                                        <input type="text" class="inp" placeholder="请完整填写营业执照的地址" datatype="*" nullmsg="请填写详细地址" name="row[address]" value="{$read.address}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="row-wrap clearfloat">
+                                <div class="row-input-block w100 clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt">主要品牌：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box w100">
+                                        <input type="text" class="inp" name="row[brand]" datatype="*" nullmsg="请填写主要品牌" value="{$read.brand}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-input-block w100 clearfloat">
+                                    <div class="row-txt-block">
+                                        <span class="txt">主营产品：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="input-box w100">
+                                        <input type="text" class="inp" name="row[product]" datatype="*" nullmsg="请填写主营产品" value="{$read.product}">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="row-wrap clearfloat">-->
+                                <!--<div class="cilp pl107">请进行裁剪后上传，推荐<a href="http://xiuxiu.web.meitu.com/main.html" class="cilp" target="_blank" rel="nofollow">http://xiuxiu.web.meitu.com/main.html</a></div>-->
+                                <!--<div class="row-txt-block">-->
+                                    <!--<span class="txt">产品资料：</span>-->
+                                    <!--<span class="red-star">*</span>-->
+                                <!--</div>-->
+                                <!--<div class="upload-img-block">-->
+                                    <!--<input type="hidden" name="row[product_image]" value="{$read.product_image}" datatype="*" nullmsg="请上传产品资料">-->
+                                    <!--<div class="files-img-box js-show-upload-img{if $read.product_image} on{/if}" data-upload-img="{$read.product_image}">-->
+                                        <!--<img src="{$read.product_image|default='/assets/static/images/upload_bg.png'}" alt="">-->
+                                    <!--</div>-->
+                                    <!--<span class="instr">产品图片</span>-->
+                                    <!--<div class="js-example" data-example-img="/assets/static/images/adv_1.jpg">示例</div>-->
+                                    <!--<a href="javascript:void(0)" class="js-upload"><input type="file" class="file-btn" onchange="upload(this)"><span>{if $read.product_image}重新{/if}上传</span></a>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="row-wrap clearfloat">
+                                <div class="row-txt-block">
+                                    <span class="txt">公司介绍：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="c--member-textarea-box w107" style="height: 420px;">
+                                    <textarea class="form-control editor" name="introduce" datatype="*" nullmsg="请填写公司介绍">{$read.introduce}</textarea>
+                                </div>
+                            </div>
+                            <div class="row-wrap clearfloat">
+                                <div class="row-txt-block">
+                                    <span class="txt">验证码：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="c--member-yam-box w107">
+                                    <div class="yam-inner">
+                                        <input type="text" class="c--member--inner-input" name="imgcaptcha" datatype="*" nullmsg="请填写验证码">
+                                    </div>
+                                    <img src="{:captcha_src()}" width="140" height="42" class="yzm-img" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
+                                </div>
+                            </div>
+                            <div class="form-btn">
+                                <div class="checkbox-block mt0">
+                                    <input type="checkbox" class="ifAgree" id="ifAgree1" name="ifAgree1" value="agree" datatype="*" nullmsg="请阅读并接受协议内容"{if $read} checked{/if}>
+                                    <label class="mark take-cash-mark" for="ifAgree1"><span class="txt">我确认阅读并接受</span></label>
+                                    <a href="/archives/178.html" target="_blank" class="a-href">《有化说网会员注册协议》</a>
+                                    <a href="/archives/179.html" target="_blank" class="a-href">《有化说网隐私政策条款》</a>
+                                </div>
+                                <div class="btn-box">
+                                    <button class="c--member-submit-btn">{if $read}重新提交{else}立即上传{/if}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="images-fixed-box">
+        <div class="inner-box">
+            <div class="close-btn"><i class="iconfont icon-fork"></i></div>
+            <div class="con">
+                <div class="img-box"><img src="" alt=""></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/static/laydate/laydate.js"></script>
+<script>
+    var uploading = false;
+    function upload(file)
+    {
+        if(uploading){
+            return false;
+        }
+        var box = $(file).parent().parent();
+        var formData = new FormData();
+        formData.append("file", file.files[0]);
+        $.ajax({
+            url : '/index/ajax/upload',
+            type : 'POST',
+            data : formData,
+            contentType: false,
+            processData: false,
+            dataType : 'json',
+            beforeSend: function(){
+                uploading = true;
+            },
+            success : function(data){
+                if (data.code == 1) {
+                    $(box).find('input[type="hidden"]').val(data.data.url);
+                    $(box).find('img').attr('src', data.data.url);
+                    $(box).find('.files-img-box').addClass('on');
+                    $(box).find('.files-img-box').attr('data-upload-img', data.data.url);
+                    $(box).find('.js-upload span').text('重新上传');
+                    //清空file值
+                    $(file).val('');
+                    uploading = false;
+                } else {
+                    showmsg(data.msg)
+                }
+            }
+        });
+    }
+
+    $(function () {
+
+        newPCA('{$read.province}', '{$read.city}', '{$read.area}');
+
+        $("#province").change(function () {
+            changeCity($(this).val());
+            //改变区县
+            changeArea(null, null);
+        });
+
+        $("#city").change(function () {
+            var province = $("#province").val();
+            changeArea(province, $(this).val());
+        });
+
+        //要把这个拿出来，样式有冲突
+        function changeArea(province, city, area) {
+            //遍历区县
+            var areaOption = '<option value="">请选择区县</option>';
+
+            if (province != undefined && province != '' && city != undefined && city != '') {
+                for (var i = 0; i < pcaJson[province][city].length; i++) {
+                    var a = pcaJson[province][city][i];
+                    if (a == area) {
+                        areaOption += '<option value="' + a + '" selected>' + a + '</option>';
+                    } else {
+                        areaOption += '<option value="' + a + '">' + a + '</option>';
+                    }
+                }
+            }
+
+            $("#area").html(areaOption);
+        }
+
+        $.Tipmsg.r = null;
+        $('form[name="enterprise"]').Validform({
+            btnSubmit:".c--member-submit-btn",
+            tipSweep: true,
+            ajaxPost:true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            callback:function(data){
+                if (data.code == 1) {
+                    showmsg(data.msg, "{:url('user/index')}")
+                } else {
+                    showmsg(data.msg);
+                    $('input[name=enterprise_token]').val(data.data.token);
+                    $('.yzm-img').trigger('click');
+                }
+            }
+        });
+
+        $('.js-example').on('click', function () {
+            var img = $(this).attr('data-example-img')
+            $('.images-fixed-box').find('.img-box img').attr('src', img).end().fadeIn('linear')
+        })
+        $('.js-show-upload-img').on('click', function () {
+            var img = $(this).attr('data-upload-img')
+            $('.images-fixed-box').find('.img-box img').attr('src', img).end().fadeIn('linear')
+        })
+        $('.close-btn').click(function () {
+            $('.images-fixed-box').fadeOut('linear')
+        })
+
+        // $('.file-btn').on('change', function () {
+        //     var file = $(this).get(0).files[0]
+        //     var hiddenInp = $(this).closest('.upload-img-block').find('.file-hidden')
+        //     var showUploadImg = $(this).closest('.upload-img-block').find('.js-show-upload-img')
+        //
+        //     if(file.type.indexOf('image') === 0) {
+        //         var reader = new FileReader()
+        //         reader.readAsDataURL(file)
+        //         reader.onload = function () {
+        //             var newUrl = this.result
+        //             showUploadImg.attr('data-upload-img', newUrl)
+        //             hiddenInp.val(newUrl)
+        //         }
+        //
+        //         $(this).parents('.upload-img-block').find('.files-img-box').addClass('on')
+        //     }else {
+        //         alert('请选择图片!')
+        //         $(this).parents('.upload-img-block').find('.files-img-box').removeClass('on')
+        //     }
+        // })
+
+        var scroller01 = new IScroll('#scroller01', {
+            scrollX: false,
+            scrollY: true,
+            scrollbars: true,
+            interactiveScrollbars: true,
+            preventDefault: false,
+            mouseWheel: true
+        })
+        var scrollerArr = [scroller01]
+        multsel(scrollerArr)
+
+        laydate.render({
+            elem: '#date1'
+        });
+    })
+</script>
+
+{include file="public/footer"  /}
+<script src="https://cdn.bootcss.com/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="/assets/static/script/require.js" defer data-main="/assets/static/script/require-frontend.js"></script>

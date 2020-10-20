@@ -1,0 +1,28 @@
+<div class="common-adv-sidebar">
+    <?php $banner = get_banner(2, 1);?>
+    {volist name="banner" id="v"}
+    <a href="{$v.url}" target="_blank" class="special-adv-wrap">
+            <img src="{$v.pic}" alt="{$v.name}">
+    </a>
+    {/volist}
+    <div class="usual-adv-wrap">
+        <div class="usual-adv-banner clearfloat">
+            <div class="h2">常见问题</div>
+            <a href="{:url('/channel/expert_common_problems')}" target="_blank" class="ahref">从这里了解更多常见问题</a>
+        </div>
+        <ul class="question-list-box">
+            <?php $alist = get_list(9, 129, 10, 0, 'recommended_position');?>
+            {volist name="alist" id="item"}
+            <li class="list">
+                <a href="{$item.link}" target="_blank" class="item">{$item.title|mb_substr=0,20}{if mb_strlen($item.title) > 20}...{/if}</a>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+    <div class="adv-banner-box">
+        <?php $banner = get_banner(9, 5);?>
+        {volist name="banner" id="v"}
+        <a href="{$v.url}" target="_blank"><img src="{$v.pic}" alt="{$v.name}"></a>
+        {/volist}
+    </div>
+</div>

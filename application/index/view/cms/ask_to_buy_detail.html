@@ -1,0 +1,81 @@
+{include file="public/head" isMember="0" /}
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('enterprise/index')}" class="bread-hover">联盟企业</a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:getLink(0, $__CHANNEL__.diyname)}" class="bread-hover">{$__CHANNEL__.name}</a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('enterprise/detail', ['id' => $enterprise['id']])}" class="bread-hover">{$enterprise.company}</a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a class="bread-hover">{$__ARCHIVES__.title}</a>
+        </div>
+        <div class="supply-product-detail-wrap clearfloat">
+            <div class="spdw-left-block">
+                <div class="spdw-hd-wrap">
+                    <div class="spdw-hd-info">
+                        <h2 class="tt">{$__ARCHIVES__.title}</h2>
+                        <div class="intro">
+                            <div class="intro-con">{$enterprise.company}</div>
+                            <img src="/assets/static/images/level/level_{$enterprise.level}.png" class="intro-icon" alt="">
+                        </div>
+                        <div class="info-row"><span class="s">产品规格：</span><span class="m">{$__ARCHIVES__.standard}</span></div>
+                        <div class="info-row"><span class="s">数量：</span><span class="m">{$__ARCHIVES__.number} {$__ARCHIVES__.unit}</span></div>
+                        <div class="info-row"><span class="s">联系人：</span><span class="m">{$__ARCHIVES__.contacts}</span></div>
+                        <div class="info-row"><span class="s">电话：</span><span class="m">{$__ARCHIVES__.tel}</span></div>
+                        <div class="info-row"><span class="s">截止日期：</span><span class="m">{$__ARCHIVES__.end_time}</span></div>
+                    </div>
+                </div>
+                <div class="spdw-con-wrap">
+                    <div class="spdw-con-title">产品要求</div>
+                    <div class="content">
+                        {$__ARCHIVES__.content|}
+                    </div>
+                </div>
+                <div class="spdw-ft-wrap">
+                    <?php list($prev, $next) = get_prev_next($__ARCHIVES__['id']);?>
+                    {if $prev}
+                    <div class="spdw-ft-list"><a href="/archives/{$prev.id}.html" title="{$prev.title}"><i class="iconfont icon-jiantouzuo"></i><span>上一条</span></a></div>
+                    {else}
+                    <div class="spdw-ft-list"><a><i class="iconfont icon-jiantouzuo"></i><span>上一条</span></a></div>
+                    {/if}
+                    <div class="spdw-ft-list"><a href="{:getLink(0, $__CHANNEL__.diyname)}"><i class="iconfont icon-caidan"></i><span>返回列表</span></a></div>
+                    {if $next}
+                    <div class="spdw-ft-list"><a href="/archives/{$next.id}.html" title="{$next.title}"><span>下一条</span><i class="iconfont icon-jiantouyou"></i></a></div>
+                    {else}
+                    <div class="spdw-ft-list"><a><span>下一条</span><i class="iconfont icon-jiantouyou"></i></a></div>
+                    {/if}
+                </div>
+            </div>
+            <div class="spdw-right-block">
+                <div class="spdw-right-hd clearfloat">
+                    <div class="img"><img src="{$enterprise.logo}" alt="{$enterprise.company}"></div>
+                    <div class="company-title">
+                        {if $enterprise.online == 1}
+                        <div class="h2">
+                            <span class="h2-txt orange">{$enterprise.company}</span>
+                            <img src="/assets/static/images/service_icon.png" class="h2-icon" alt="">
+                        </div>
+                        {else}
+                        <div class="h2">
+                            <span class="h2-txt">{$enterprise.company}</span>
+                        </div>
+                        {/if}
+                        <img src="/assets/static/images/level/level_{$enterprise.level}.png" class="tt-img" alt="">
+                    </div>
+                </div>
+                <div class="spdw-right-con">
+                    <p><span>所在地区：</span> {$enterprise.area}</p>
+                    <p><span>企业介绍：</span>{$enterprise.introduce|htmlspecialchars_decode|strip_tags}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="public/footer"  /}

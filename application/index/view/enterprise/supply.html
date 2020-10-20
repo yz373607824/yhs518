@@ -1,0 +1,48 @@
+<div class="tab-filter-wrap mt-20">
+    <div class="filter-block">
+        <form action="" method="get" id="searchform">
+            <div class="supply-search-block clearfloat">
+                <div class="input-box">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <input type="text" name="keyword" placeholder="输入相关关键词" value="{:input('keyword')}">
+                </div>
+                <div class="btn"><a href="javascript:$('#searchform').submit()">搜索</a></div>
+            </div>
+        </form>
+        <div class="filter-list pt20">
+            <dl class="clearfloat bt1">
+                <dt>产品类别：</dt>
+                <dd>
+                    {cms:pagefilter id="filter" exclude=""}
+                    {volist name="$filter.content" id="item"}
+                    <a href="{$item.url}" class="{$item.active?'on':''}">{$item.title}</a>
+                    {/volist}
+                    {/cms:pagefilter}
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<ul class="list-wrap clearfloat">
+    {volist name="list" id="v"}
+    <li>
+        <div class="inner-list">
+            <a href="{:url('enterprise/supply_detail', ['id' => $info['id'], 'itemid' => $v['id']])}" class="img-box"><img src="{$v.image}" alt="{$v.title}"></a>
+            <div class="info-box">
+                <h4 class="h4">{$v.title}</h4>
+                <div class="price-p">价格：¥ <span class="red">{$v.price}</span> 元/{$v.unit}</div>
+                <div class="attr-block">
+                    {volist name="v.tags" id="tag"}
+                    <div class="block">{$tag}</div>
+                    {/volist}
+                </div>
+                <p class="p">{$v.description}</p>
+            </div>
+            <a href="{:url('enterprise/supply_detail', ['id' => $info['id'], 'itemid' => $v['id']])}" class="contact-btn">查看详情</a>
+        </div>
+    </li>
+    {/volist}
+</ul>
+<div class="paged">
+    {$paged}
+</div>

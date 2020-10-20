@@ -1,0 +1,309 @@
+{include file="public/head" isMember="0" /}
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="/" class="bread-hover">供应商活动</a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a class="bread-hover">{$__ARCHIVES__.title}</a>
+        </div>
+        <div class="scare-buying-wrap">
+            <div class="inner-scare-buying">
+                <div class="header-block clearfloat">
+                    <div class="left-info-box">
+                        <div class="company-title">
+                            <a href="{:url('enterprise/detail', ['id' => $enterprise['id']])}" class="tt">{$enterprise.company}</a>
+                            <img class="tt-img" src="/assets/static/images/level/level_{$enterprise.level}.png" alt="">
+                        </div>
+                        <h3>{$__ARCHIVES__.title}</h3>
+                        <div class="goods-info">规格：{$__ARCHIVES__.format}</div>
+                        <div class="goods-info">剩余：<span class="orange">{$__ARCHIVES__.number}</span> {$__ARCHIVES__.unit}</div>
+                        <div class="goods-info">价格：<span class="mark">¥</span><span class="money">{$__ARCHIVES__.unit_price}</span>/{$__ARCHIVES__.unit}</div>
+                        <div class="goods-info fz0">
+                            <span class="txt">购买数量：</span>
+                            <div class="num-box clearfloat">
+                                <div class="add-del" id="del-btn">-</div>
+                                <div class="input"><input type="text" class="inp sinp" name="num" id="num" value="1" onchange="total($(this).val())"></div>
+                                <div class="add-del brn" id="add-btn">+</div>
+                            </div>
+                            <!--<span class="txt">{$__ARCHIVES__.unit}</span>-->
+                            <span class="txt ill">（{$__ARCHIVES__.format}）</span>
+                            <!--<span class="txt ill" style="color: #db3733">每人限购:{if $__ARCHIVES__.limit == 0}不限购{else}{$__ARCHIVES__.limit}{/if}</span>-->
+                        </div>
+                        <div class="goods-info">总重量：<span class="orange" id="format_total">{:intval($__ARCHIVES__.format)}</span>{$__ARCHIVES__.unit}</div>
+                        <div class="goods-info">货仓地址：{$__ARCHIVES__.location}</div>
+                        <div class="goods-info">总&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：<span class="mark">¥</span><span class="money b-txt total">{$__ARCHIVES__.price}</span></div>
+                        <div class="js-pay-btn">立即订购</div>
+                    </div>
+
+                    <div class="right-image-box">
+                        <div class="swiper-container scare-buying-swiper">
+                            <div class="swiper-wrapper">
+                                <?php $images = explode(',', $__ARCHIVES__['images']);?>
+                                {volist name="images" id="v"}
+                                <div class="swiper-slide">
+                                    <img src="{$v}" alt="">
+                                </div>
+                                {/volist}
+                            </div>
+                            <div class="button-prev"><i class="iconfont icon-jiantouzuo"></i></div>
+                            <div class="button-next"><i class="iconfont icon-jiantouyou"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-block">
+                    <h3>产品详细介绍</h3>
+                    <div class="inner-content">
+                        {$__ARCHIVES__.content|htmlspecialchars_decode}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-wrap goods-confirm-wrap">
+        <div class="goods-confirm-content">
+            <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+            <h2>提交货品信息</h2>
+            <div class="goods-wrap clearfloat">
+                <div class="img"><img src="{$__ARCHIVES__.image}" alt=""></div>
+                <div class="goods-info-box">
+                    <p>产品名称：{$__ARCHIVES__.title}</p>
+                    <p>数量： <span id="pay_num">1</span></p>
+                    <p>规格：{$__ARCHIVES__.format}</p>
+                    <p>总价：<span class="red">¥<span class="total">{$__ARCHIVES__.price}</span></span>元</p>
+                </div>
+            </div>
+            <form name="activity" action="/diyform/post.html" method="post">
+                {:token('activity_token')}
+                <input type="hidden" name="__diyname__" value="activity">
+                <input type="hidden" name="row[enterprise_id]" value="{$enterprise.id}">
+                <input type="hidden" name="row[enterprise]" value="{$enterprise.company}">
+                <input type="hidden" name="row[product]" value="{$__ARCHIVES__.title}">
+                <input type="hidden" name="row[number]" value="1" id="number">
+                <input type="hidden" name="row[format]" value="{$__ARCHIVES__.format}">
+                <input type="hidden" name="row[total]" value="{$__ARCHIVES__.price}" id="price">
+                <input type="hidden" name="activity_id" value="{$__ARCHIVES__.id}">
+                <div class="row">
+                    <div class="input-block">
+                        <div class="txt-box">
+                            <span class="red-star">*</span>
+                            <span class="txt">联系人：</span>
+                        </div>
+                        <input type="text" class="inp" name="row[name]" datatype="*" nullmsg="请填写联系人">
+                    </div>
+                    <div class="input-block">
+                        <div class="txt-box">
+                            <span class="red-star">*</span>
+                            <span class="txt">企业名称：</span>
+                        </div>
+                        <input type="text" class="inp" name="row[company]" datatype="*" nullmsg="请填写企业名称">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-block">
+                        <div class="txt-box">
+                            <span class="red-star">*</span>
+                            <span class="txt">手机号码：</span>
+                        </div>
+                        <input type="text" class="inp" name="row[tel]" datatype="*,m" nullmsg="请填写手机号码" errormsg="手机号码错误">
+                    </div>
+                    <div class="input-block">
+                        <div class="txt-box">
+                            <span class="red-star">*</span>
+                            <span class="txt">收货地址：</span>
+                        </div>
+                        <input type="text" class="inp" name="row[address]" datatype="*" nullmsg="请填写地址">
+                    </div>
+                </div>
+                <div class="text-area">
+                    <div class="tt-box">
+                        <span class="txt">备注：</span>
+                    </div>
+                    <textarea class="textarea" rows="2" name="row[memo]"></textarea>
+                </div>
+                <div class="yzm">
+                    <div class="yzm-input">
+                        <div class="txt-box">
+                            <span class="red-star">*</span>
+                            <span class="txt">验证码：</span>
+                        </div>
+                        <input type="text" class="inp" name="captcha" datatype="*" nullmsg="请填写验证码">
+                    </div>
+                    <img src="{:captcha_src()}" onclick="this.src = '{:captcha_src()}?r=' + Math.random();"/>
+                </div>
+                <div class="instructions"><a href="/archives/362.html" target="_blank">订货须知 >> </a></div>
+                <div class="checkbox-block mt30">
+                    <input type="checkbox" class="ifAgree" id="ifAgree3" value="agree" name="ifAgree3" datatype="*" nullmsg="请阅读并接受协议内容">
+                    <label class="mark" for="ifAgree3">我已了解并同意</label>
+                    <a href="{:url('/archives/175')}" target="_blank" class="a--href">支付须知</a>
+                </div>
+                <div class="btn-wrap">
+                    <button class="js-sub-btn">确认提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-wrap pay-wrap">
+        <div class="pay-content">
+            <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+            <h2>支付信息</h2>
+            <div class="pay-msg-box">
+                <div class="row"><span>订单提交成功，请尽快付款！</span></div>
+                <div class="row"><span>订单号：</span><span id="trade_sn">82515009626</span></div>
+                <div class="row"><span>支付内容：</span><span class="txt-r" id="title">咨询费</span></div>
+                <div class="row"><span>需支付金额：￥</span><span class="txt-r txt-b" id="priceNeed">50</span><span>元</span></div>
+            </div>
+            <div class="pay-methods-box">
+                <p>选择支付方式</p>
+                <div class="pay-methods-inner">
+                    <div class="block">
+                        <input type="radio" id="Alipay" class="input-radio" name="pay">
+                        <label for="Alipay" class="radio-label Alipay"></label>
+                    </div>
+                    <div class="block">
+                        <input type="radio" id="Wxpay" class="input-radio" name="pay">
+                        <label for="Wxpay" class="radio-label Wxpay"></label>
+                    </div>
+                    {if $__ARCHIVES__.is_offline == 1}
+                    <div class="block">
+                        <input type="radio" id="Offlinepay" class="input-radio" name="pay">
+                        <label for="Offlinepay" class="radio-label Offlinepay"></label>
+                    </div>
+                    {/if}
+                </div>
+            </div>
+            <a href="javascript:showmsg('请选择支付方式');" class="pay-btn">立即提交</a>
+        </div>
+    </div>
+    <div class="bg" id="overlay"></div>
+</div>
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+<script>
+    var user = {if $user}{$user}{else}''{/if};
+    function total(num) {
+        var total = num * {$__ARCHIVES__.price};
+        $('.total').text(total);
+        $('#price').val(total);
+        $('#pay_num').text(num);
+        $('#number').val(num);
+        $('#format_total').text(num * {:intval($__ARCHIVES__.format)})
+    }
+    $(function () {
+
+        $.Tipmsg.r = null;
+        $('form[name="activity"]').Validform({
+            btnSubmit:".js-sub-btn",
+            tipSweep: true,
+            ajaxPost:true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            callback:function(data){
+                if (data.code == 1) {
+                    $('#trade_sn').text(data.data.trade_sn);
+                    $('#title').text(data.data.title);
+                    $('#priceNeed').text(data.data.price);
+                    $('.js-sub-btn').closest('.modal-wrap').removeClass('md-show')
+                    $('.pay-wrap').addClass('md-show')
+                    // showmsg(data.msg, "{:url('index/index')}")
+                } else {
+                    showmsg(data.msg);
+                    $('input[name=activity_token]').val(data.data.token);
+                    $('.yzm img').trigger('click');
+                }
+            }
+        });
+
+        $('.add-del').click(function () {
+            var num = parseInt($('#num').val());
+            if ($(this).text() == '-') {
+                if (num != 0) {
+                    num--;
+                }
+            } else {
+                num++;
+            }
+            total(num)
+        });
+
+        articleEvent();
+        swiperArticleEvent();
+
+        $('.js-pay-btn').on('click', function () {
+
+            //判断库存
+            if (parseInt($('#num').val()) * {:intval($__ARCHIVES__.format)} > {$__ARCHIVES__.number}) {
+                showmsg('库存不足');
+                return false;
+            }
+            if (parseInt($('#num').val()) <= 0) {
+                showmsg('购买数量有误，请重新选择！');
+                return false;
+            }
+            if (user == '') {
+                showmsg('请先登录，再操作', "{:url('/user/login')}");
+                return false;
+            }
+            //判断限购
+            /*if ( {$__ARCHIVES__.limit} > 0 && parseInt($('#num').val()) > {$__ARCHIVES__.limit}) {
+                showmsg('购买数量超过限购数量，请重新选择！');
+                return false;
+            }*/
+            $('.goods-confirm-wrap').addClass('md-show')
+        })
+        // $('.js-sub-btn').on('click', function () {
+        //     $(this).closest('.modal-wrap').removeClass('md-show')
+        //     setTimeout(function () {
+        //         $('.pay-wrap').addClass('md-show')
+        //     },500)
+        // })
+        $('#overlay').on('click', function () {
+            $('.pay-wrap').removeClass('md-show')
+            $('.goods-confirm-wrap').removeClass('md-show')
+        })
+
+        $('#overlay,.modal-close').on('click', function () {
+            $('.pay-wrap').removeClass('md-show')
+            $('.goods-confirm-wrap').removeClass('md-show')
+            $(':input','.formId')
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .removeAttr('checked')
+                .removeAttr('selected');
+            window.location.reload();
+        })
+
+        $('#ifAgree3').on('click', function() {
+            if ($(this).is(':checked')) {
+                $('#js_sub_pay').addClass('isClick')
+                $('#js_sub_pay').attr('disabled', false)
+            } else {
+                $('#js_sub_pay').removeClass('isClick')
+                $('#js_sub_pay').attr('disabled', true)
+            }
+        })
+        $('input[name=pay]').prop('checked', false);
+        $("#Alipay").click(function () {
+            $('.pay-btn').attr('href', '/user/aliPay?trade_sn=' + $('#trade_sn').text());
+        })
+
+        $("#Wxpay").click(function () {
+            $('.pay-btn').attr('href', '/user/wechatPay?trade_sn=' + $('#trade_sn').text());
+        })
+        $("#Offlinepay").click(function () {
+            $('.pay-btn').attr('href', '/user/Offlinepay?trade_sn=' + $('#trade_sn').text());
+        })
+    })
+</script>
+{include file="public/footer"  /}

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <!-- 以下meta不需要响应式的删掉 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="wap-font-scale" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <meta name="copyright" content="Copyright 2014-2018 - www.uweb.net.cn">
+    <meta name="Author" content="广州网站建设-优网科技 www.uweb.net.cn">
+    <meta name="Robots" content="all">
+    <meta name="Keywords" content="{$seo_keywords}">
+    <meta name="Description" content="{$seo_description}">
+    <meta name="renderer" content="webkit">
+
+    <title>{$seo_title}</title>
+
+    <link rel="stylesheet" href="/assets/static_mobile/style/core.css" />
+    <link rel="stylesheet" href="/assets/static_mobile/style/style.css" />
+    <script type="text/javascript" src="/assets/static_mobile/script/jquery.js"></script>
+    <script>
+        (function(b,a,e,h,f,c,g,s){b[h]=b[h]||function(){(b[h].c=b[h].c||[]).push(arguments)};
+        b[h].s=!!c;g=a.getElementsByTagName(e)[0];s=a.createElement(e);
+        s.src="//s.union.360.cn/"+f+".js";s.defer=!0;s.async=!0;g.parentNode.insertBefore(s,g)
+        })(window,document,"script","_qha",325096,false);
+    </script>
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+</head>
+
+
+<!--<body class="is-vote"> TODO 投票的body-->
+
+<body>
+
+
+{if condition="[isIndex] eq 1"}
+<div class="header">
+    <div class="menu-wrap" id="menu">
+        <i class="iconfont icon-ego-menu"></i>
+        <span class="txt">菜单</span>
+    </div>
+    <div class="logo-wrap">
+        <img src="/assets/static_mobile/images/logo.png" alt="">
+    </div>
+    <div class="search-wrap js-search">
+        <img src="/assets/static_mobile/images/search_icon.png" alt="">
+    </div>
+    <div class="search-box">
+        <form action="{:url('/mobile/index/search')}" method="post">
+            <div class="input-box">
+                <input type="text" name="keywords" class="search-input">
+            </div>
+            <input type="submit" class="search-btn" value="搜 索">
+        </form>
+    </div>
+    <div class="nav-wrap" id="nav_wrap">
+        <div class="bg" id="nav_bg"></div>
+        <div class="nav-top">
+            <div class="go-back-btn" id="back">
+                <i class="iconfont icon-xiangzuobold"></i>
+                <span>返回</span>
+            </div>
+        </div>
+        <div class="nav-list-wrap" id="nav_list_wrap">
+            <ul>
+                <li>
+                    <div class="nav-list-title">
+                        <a href="{:url('/mobile')}">首页</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-list-title">
+                        <div class="nav-list-btn">
+                            <a href="{:url('/mobile/expert/index')}">专家在线</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-list-title">
+                        <div class="nav-list-btn">
+                            <a href="{:url('/mobile/channel/formula')}">配方</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-list-title">
+                        <div class="nav-list-btn">
+                            <a href="{:url('/mobile/channel/konwledge')}">知识·经验</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-list-title">
+                        <div class="nav-list-btn">
+                            <a href="{:url('/mobile/channel/recruit')}">人才供需</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-list-title">
+                        <div class="nav-list-btn">
+                            <a href="javascript:void(0)">合作共享</a>
+                            <i class="iconfont icon-xiangzuobold-copy"></i>
+                        </div>
+                    </div>
+                    <ol class="sub">
+                        <li><a href="{:url('/mobile/user/register')}">新用户注册</a></li>
+                        <li><a href="{:url('/mobile/archives/293')}">加入我们</a></li>
+                        <li><a href="{:url('/mobile/archives/294')}">联系我们</a></li>
+                    </ol>
+                </li>
+                <li>
+                    <div class="nav-list-title">
+                        <div class="nav-list-btn">
+                            <a href="javascript:void(0)">关于我们</a>
+                            <i class="iconfont icon-xiangzuobold-copy"></i>
+                        </div>
+                    </div>
+                    <ol class="sub">
+                        <li><a href="{:url('/mobile/archives/202')}">说化有益</a></li>
+                        <li><a href="{:url('/mobile/archives/201')}">平台资源</a></li>
+                        <li><a href="{:url('/mobile/archives/203')}">工程师队伍</a></li>
+                    </ol>
+                </li>
+                <li>
+                    <div class="nav-list-title">
+                        <div class="nav-list-btn">
+                            <a href="javascript:void(0)">说化指引</a>
+                            <i class="iconfont icon-xiangzuobold-copy"></i>
+                        </div>
+                    </div>
+                    <ol class="sub">
+                        <li><a href="{:url('/mobile/archives/102')}">使用规则</a></li>
+                        <li><a href="{:url('/mobile/archives/101')}">使用流程</a></li>
+                        <li><a href="{:url('/mobile/channel/common_problems')}">常见问题</a></li>
+                    </ol>
+                </li>
+                <li>
+                    <div class="nav-list-title">
+                        <div class="nav-list-btn">
+                            <a href="javascript:void(0)">服务条款</a>
+                            <i class="iconfont icon-xiangzuobold-copy"></i>
+                        </div>
+                    </div>
+                    <ol class="sub">
+                        <li><a href="{:url('/mobile/channel/service_agreement')}">服务协议</a></li>
+                        <li><a href="{:url('/mobile/channel/legal_claim')}">法律申明</a></li>
+                        <li><a href="{:url('/mobile/channel/privacy_policy')}">隐私策略</a></li>
+                    </ol>
+                </li>
+                <li>
+                    <div class="nav-list-title">
+                        <div class="nav-list-btn">
+                            <a href="javascript:void(0)">企业服务</a>
+                            <i class="iconfont icon-xiangzuobold-copy"></i>
+                        </div>
+                    </div>
+                    <ol class="sub">
+                        <li><a href="{:url('/archives/204')}">王者供应商</a></li>
+                        <li><a href="{:url('/archives/206')}">钻石供应商</a></li>
+                        <li><a href="{:url('/archives/205')}">黄金供应商</a></li>
+                    </ol>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        headerEvent();
+    })
+</script>
+{/if}
+
+<script>
+    function showmsg(msg, type, url) {
+        alert(msg);
+        if (type == 'jump') {
+            window.location.href = url;
+        } else if(type == 'refresh') {
+            window.location.href = window.location.href+"?time="+10000*Math.random();
+        }
+    }
+</script>

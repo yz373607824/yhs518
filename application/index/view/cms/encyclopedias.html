@@ -1,0 +1,114 @@
+{include file="public/head" isMember="0" /}
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('/channel/encyclopedias')}" class="bread-hover">化工百科</a>
+            {if $encyclopediasKeyword != ''}
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('/channel/encyclopedias')}?encyclopediasKeyword={$encyclopediasKeyword}" class="bread-hover">{$encyclopediasKeyword}</a>
+            {/if}
+            {if $tag != ''}
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('/channel/encyclopedias')}?tag={$tag}" class="bread-hover">{$tag}</a>
+            {/if}
+        </div>
+        <div class="industry-headline-wrap clearfloat">
+            <div class="common-left-block">
+                <div class="dict-search">
+                    <form action="{:url('/channel/encyclopedias')}" method="get" class="dict-search-form">
+                        <div class="input">
+                            <input type="text" name="encyclopediasKeyword" value="{$encyclopediasKeyword}" placeholder="请输入CAS号、化合物名称、中文别名等">
+                        </div>
+                        <button>搜索</button>
+                    </form>
+                    <div class="dict-search-hot">
+                        <span class="title">热门搜索词:</span>
+                        <div class="list">
+                            {cms:arclist id="row" channel="133" orderby="views" orderway="desc" limit="27"}
+                            <a href="{$row.url}" title="{$row.title}">{$row.title}</a>
+                            {/cms:arclist}
+                        </div>
+                    </div>
+                </div>
+                <a class="dict-list-wp">
+                    {if $encyclopediasKeyword != ''}
+                    <div class="title">{$encyclopediasKeyword}</div>
+                    {/if}
+                    {if $tag != ''}
+                    <div class="title">{$tag}</div>
+                    {/if}
+                    <ul class="dict-list">
+                        {volist name='$__PAGELIST__' id='item'}
+                        <li>
+                            <a href="{:url($item.url)}" target="_blank" class="name">{$item.title}</a>
+                            <div class="info">
+                                <div class="info-left">
+                                    <p>中文别名：{$item.alias_name|htmlspecialchars_decode}</p>
+                                    <p>英文名：{$item.enname}</p>
+                                    <p>CAS号：{$item.cas_code}</p>
+                                    <p>化学式：{$item.chemical_formula|htmlspecialchars_decode}</p>
+                                </div>
+                                <div class="info-right">
+                                    <p>分子量：{$item.molecular_weight}</p>
+                                    <p>密度：{$item.density}</p>
+                                    <p>沸点：{$item.boiling_point}</p>
+                                    <p>熔点：{$item.melting_point}</p>
+                                </div>
+                            </div>
+                        </li>
+                        {/volist}
+                    </ul>
+                    <div class="paged">
+                        {$__PAGELIST__->render()}
+                    </div>
+                </div>
+            </div>
+            {include file="../application/index/view/cms/public/encyclopedias_right_nav.html" /}
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        let lastIndex = 0,
+            boxWidth = $('.dict-search-hot .list').width(),
+            countWidth = 0,
+            lastWidth = 0,
+            lastText = '';
+
+        for (let i = 0;i < $('.dict-search-hot .list a').length;i++) {
+            countWidth += $('.dict-search-hot .list a').eq(i).outerWidth(true)
+
+            if (countWidth - 16 >= boxWidth) {
+                countWidth -= $('.dict-search-hot .list a').eq(i).outerWidth(true)
+                lastIndex = i
+                lastText = $('.dict-search-hot .list a').eq(i).text()
+                break;
+            }
+        }
+
+        let lastA = $('.dict-search-hot .list a').eq(lastIndex);
+
+        for (let i = lastText.length;i > 0;i--) {
+            lastText = lastText.substring(0, i - 1);
+            lastA.text(lastText);
+            lastWidth = lastA.width()
+            if (lastWidth <= (boxWidth - countWidth)) {
+                if (i === 1) {
+                    let newnode = document.createElement('span');
+                    newnode.appendChild(document.createTextNode('...'));
+                    $('.dict-search-hot .list')[0].replaceChild(newnode, lastA[0])
+                } else {
+                    lastText = lastText.substring(0, i - 1) + '...';
+                    lastA.text(lastText);
+                }
+                break;
+            }
+        }
+    })
+</script>
+{include file="public/footer"  /}

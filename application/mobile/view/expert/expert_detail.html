@@ -1,0 +1,85 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="article">
+        <div class="expert-detail-wrap">
+            <div class="bg-img"><img src="/assets/static_mobile/images/article_01.jpg" alt=""></div>
+<!--            <a href="#" class="service-btn">查看服务协议</a>-->
+            <div class="expert-detail-con">
+                <div class="expert-detail-box">
+                    <div class="hd clearfloat">
+                        <div class="img-block"><img src="{$expert.avatar}" alt=""></div>
+                        <div class="h3"><span class="b-t">{$expert.nickname}</span><span class="s-t">{$expert.leveltext}</span></div>
+                        <div class="p color-red">状态：{if $expert.online == 1}在线{else}休息中{/if}</div>
+                        <div class="p color-red">好评数：{$expert.likes}</div>
+                        <div class="p">地区：{$expert.province}/{$expert.city}</div>
+                        <div class="p">学历：{$expert.education}</div>
+                        <div class="p">行业经验：{$expert.workage}年</div>
+                        <div class="p">专家擅长：{$expert.adept}</div>
+                        <div class="p">精通行业/领域：{$expert.technosphere}</div>
+                        <div class="p">现场服务时间：{$expert.service_starttime} - {$expert.service_endtime}</div>
+                        <div class="p">在线咨询时间：{$expert.advisory_starttime} - {$expert.advisory_endtime}</div>
+                        <div class="btn-block">
+                            {if strpos($expert.service,'online') !== false}
+                            <a href="{:url('/mobile/expert/online_page', ['id' => $expert['id'], 'level' => $expert['level']])}" class="btn orange">我要提问</a>
+                            {/if}
+                            {if strpos($expert.service,'locale') !== false}
+                            <a href="{:url('/mobile/expert/locale_page', ['id' => $expert['id'], 'level' => $expert['level']])}" class="btn green">我要现场服务</a>
+                            {/if}
+                        </div>
+                    </div>
+                    <div class="ft">
+                        {$expert.content|html_entity_decode}
+                    </div>
+                </div>
+                <div class="expert-case-box">
+                    <div class="title">问题案例</div>
+                    <ul class="case-list-block">
+                        {volist name='questionList' id='item'}
+                        <li class="case-item">
+                            <a href="javascript:;">
+                                <div class="question-box">
+                                    <div class="icon">?</div>
+                                    <div class="msg">{$item.title}</div>
+                                </div>
+                                <p class="question-info">
+                                    {$item.question_description}
+                                </p>
+                            </a>
+                        </li>
+                        {/volist}
+                    </ul>
+                </div>
+                <div class="expert-QA-box">
+                    <div class="title">评论专区</div>
+                    <ul class="QA-list-block">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            let page = 0;
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+            // 加载更多事件
+            function loadData() {
+                page++;
+                let param = {page:page, id:{$expert.id}};
+                $.post("{:url('/mobile/expert/detail')}", param, function(res){
+                    $(".QA-list-block").append(res.data);
+                });
+            }
+        })
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

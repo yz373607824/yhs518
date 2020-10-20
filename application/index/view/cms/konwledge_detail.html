@@ -1,0 +1,232 @@
+{include file="public/head" isMember="0" /}
+
+    <div class="common-page-content">
+        <div class="wp1200">
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/channel/konwledge')}" class="bread-hover">知识·经验</a>
+            </div>
+            <div class="recipe-detail-wrap clearfloat">
+                <div class="common-left-block">
+                    <div class="recipe-detail-hd">
+                        <div class="recipe-detail-title clearfloat">
+                            {if $__ARCHIVES__.price != 0}<div class="money-img"><img src="/assets/static/images/industry_2.png" alt=""></div>{/if}
+                            <h2>{$__ARCHIVES__.title}</h2>
+                            <a href="javascript:collect('{$__ARCHIVES__.id}');" class="collect-box {if $__ARCHIVES__.collect}on{/if}">
+                                <i class="iconfont icon-wujiaoxingkong"></i>
+                                <span>收藏</span>
+                            </a>
+                            <a href="javascript:like('{$__ARCHIVES__.id}');" class="like-box {if $__ARCHIVES__.like}on{/if}">
+                                <i></i>
+                                <span>喜欢</span>
+                            </a>
+                        </div>
+                        <div class="region"><span class="b-txt">发布者：</span><span class="s-txt">{$__ARCHIVES__.source}</span><span class="read-num">浏览数：{$__ARCHIVES__.views}</span>{if $__ARCHIVES__.price != 0}<span class="read-num">已付款：{$__ARCHIVES__.paynum}</span>{/if}</div>
+                        <p>知识简介：{$__ARCHIVES__.description}</p>
+                    </div>
+                    <div class="recipe-detail-con">
+                        <h2 class="title">详细内容</h2>
+                        <div class="inner-con">
+                            {if $__ARCHIVES__.price == 0 || (isset($__ORDER__) && $__ORDER__.status == 1) || $user.id == $__ARCHIVES__.user_id}
+                            <div class="con-block" style="display: block">
+                                {$__ARCHIVES__.content|html_entity_decode}
+                            </div>
+                            {else}
+                            <div class="con-block-overlay">
+                                <div class="tips">
+                                    <p class="tips-p">商业知识、需付费获取内容</p>
+                                    <a href="javascript:void(0)" data-id="{$__ARCHIVES__.id}" class="tips-btn">点击支付</a>
+                                </div>
+                            </div>
+                            {/if}
+                            <div class="statement-box">
+                                <strong>声明：</strong>本知识已通过工程师严格审核理论可行性，但由于行业知识的广泛性和不确定性；（作者可注明版权，原创等文字）；本平台不承担过失责任！如发现恶意发布不实内容收费阅读，可向说化有益·表面处理联盟+投诉，平台将严肃处理。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {include file="public/konwledge_adv_sidebar" /}
+            </div>
+        </div>
+        <div class="modal-wrap service-modal">
+            <div class="service-modal-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>服务协议</h2>
+                {:get_agreement(128)}
+                <div class="checkbox-block">
+                    <input type="checkbox" class="ifAgree" id="ifAgree1" value="agree" name="">
+                    <label class="mark" for="ifAgree1">我已阅读，并同意本协议内容</label>
+                </div>
+                <div class="next-btn">
+                    <a href="#" id="nextBtn">下一步</a>
+                </div>
+            </div>
+        </div>
+        <div class="modal-wrap pay-wrap">
+            <div class="pay-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>支付信息</h2>
+                <div class="pay-msg-box">
+                    <div class="row"><span>订单提交成功，请尽快付款！</span></div>
+                    <div class="row"><span>订单号：</span><span id="trade_sn">82515009626</span></div>
+                    <div class="row"><span>支付内容：</span><span class="txt-r" id="title">咨询费</span></div>
+                    <div class="row price-row"><span>需支付金额：￥</span><span class="txt-r txt-b" id="price">50</span><span>元</span></div>
+                    <div class="row other-row" style="display: none;"></div>
+                    <div class="checkbox-block mt30 text-left">
+                        <label class="mark recipe-mark" >支付前请仔细阅读</label>
+                        <a href="{:url('/archives/128')}" target="_blank" class="a--href">支付须知</a>
+                    </div>
+                </div>
+                <div class="pay-methods-box">
+                    {:token('order_token')}
+                    <p>选择支付方式</p>
+                    <div class="pay-methods-inner">
+                        <div class="block">
+                            <input type="radio" id="Alipay" class="input-radio" name="pay">
+                            <label for="Alipay" class="radio-label Alipay"></label>
+                        </div>
+                        <div class="block">
+                            <input type="radio" id="Wxpay" class="input-radio" name="pay">
+                            <label for="Wxpay" class="radio-label Wxpay"></label>
+                        </div>
+                        <div class="block">
+                            <input type="radio" id="Integral" class="input-radio" name="pay">
+                            <label for="Integral" class="radio-label Integral"></label>
+                        </div>
+                        <div class="block">
+                            <input type="radio" id="Monpay" class="input-radio" name="pay">
+                            <label for="Monpay" class="radio-label Monpay"></label>
+                        </div>
+                    </div>
+                </div>
+                <a href="javascript:showmsg('请选择支付方式');" class="pay-btn">立即支付</a>
+            </div>
+        </div>
+        <div class="bg" id="overlay"></div>
+    </div>
+
+    <script>
+        var user = '{$user}';
+        $(function() {
+            $('input[name=pay]').prop('checked', false);
+
+            $("#Alipay").click(function () {
+                $('.other-row').css('display', 'none');
+                $('.price-row').css('display', '');
+                $('.pay-btn').attr('href', '/user/aliPay?trade_sn=' + $('#trade_sn').text());
+            })
+
+            $("#Wxpay").click(function () {
+                $('.other-row').css('display', 'none');
+                $('.price-row').css('display', '');
+                $('.pay-btn').attr('href', '/user/wechatPay?trade_sn=' + $('#trade_sn').text());
+            })
+
+            $("#Monpay").click(function () {
+                var num = $('#price').text() * {$site.points_num};
+                $('.other-row').html('<span>需支付金币：</span><span class="txt-r txt-b">'+num+'</span><span>个</span>');
+                $('.other-row').css('display', '');
+                $('.price-row').css('display', 'none');
+                $('.pay-btn').attr('href', '/user/pointsPay?trade_sn=' + $('#trade_sn').text());
+            })
+            $("#Integral").click(function () {
+                var num = $('#price').text() * {$site.gold_num};
+                $('.other-row').html('<span>需支付金豆：</span><span class="txt-r txt-b">'+num+'</span><span>个</span>');
+                $('.other-row').css('display', '');
+                $('.price-row').css('display', 'none');
+                $('.pay-btn').attr('href', '/user/goldPay?trade_sn=' + $('#trade_sn').text());
+            })
+
+            //$('.get-recipe-btn').on('click', function() {
+            $('.tips-btn').on('click', function() {
+                if (user == '') {
+                    showmsg('请先登录，再操作', "{:url('/user/login')}");
+                    return false;
+                }
+                // $('.service-modal').addClass('md-show')
+                //var id = $('.get-recipe-btn').attr('data-id');
+                var id = $('.tips-btn').attr('data-id');
+                var token = $('input[name=order_token]').val();
+                $.post('/handleArchives/konwledge', {id:id, order_token:token}, function (data) {
+                    if (data.code == 1) {
+                        $('#trade_sn').text(data.data.trade_sn);
+                        $('#title').text(data.data.title);
+                        $('#price').text(data.data.price);
+                        $('.pay-wrap').addClass('md-show')
+                    } else {
+                        showmsg(data.msg);
+                    }
+                    $('input[name=order_token]').val(data.data.token);
+                })
+            })
+
+            $('#nextBtn').on('click', function() {
+                if ($(this).parent().prev().find('.ifAgree').is(':checked')) {
+                    $('.service-modal').removeClass('md-show')
+                    //var id = $('.get-recipe-btn').attr('data-id');
+                    var id = $('.tips-btn').attr('data-id');
+                    var token = $('input[name=order_token]').val();
+                    $.post('/handleArchives/konwledge', {id:id, order_token:token}, function (data) {
+                        if (data.code == 1) {
+                            $('#trade_sn').text(data.data.trade_sn);
+                            $('#title').text(data.data.title);
+                            $('#price').text(data.data.price);
+                            $('.pay-wrap').addClass('md-show')
+                        } else {
+                            showmsg(data.msg);
+                        }
+                        $('input[name=order_token]').val(data.data.token);
+                    })
+                } else {
+                    return false;
+                }
+            })
+
+            $('.ifAgree').prop('checked', false)
+            $('#ifAgree1').on('click', function() {
+                if ($(this).is(':checked')) {
+                    $('#nextBtn').addClass('isClick')
+                } else {
+                    $('#nextBtn').removeClass('isClick')
+                }
+            })
+
+            $('.modal-close').on('click', function() {
+                $('.service-modal').removeClass('md-show')
+                $('.pay-wrap').removeClass('md-show')
+                $('.ifAgree').prop('checked', false)
+                $(':input', '.formId')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+            })
+        })
+
+        function collect(id)
+        {
+            $.post('/handleArchives/collect', {id:id}, function (data) {
+                if (data.url) {
+                    showmsg(data.msg, data.url);
+                } else {
+                    showmsg(data.msg);
+                }
+            })
+        }
+
+        //点赞
+        function like(id) {
+            $.post('/handleArchives/like', {id:id}, function (data) {
+                if (data.url) {
+                    showmsg(data.msg, data.url);
+                } else {
+                    showmsg(data.msg);
+                }
+            })
+        }
+    </script>
+
+{include file="public/footer"  /}

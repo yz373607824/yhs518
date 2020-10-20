@@ -1,0 +1,150 @@
+{include file="public/head" isMember="0" /}
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+
+<div class="member-relo-wrapper">
+    <div class="wp1200">
+        <div class="re-login-wrap clearfloat">
+            <div class="swiper-container register-login">
+                <div class="swiper-wrapper">
+                    <?php $banner = get_banner(39);?>
+                    {volist name="banner" id="v"}
+                    <div class="swiper-slide"><img src="{$v.pic}" alt="{$v.name}"></div>
+                    {/volist}
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="login-right-region">
+                <div class="tab-list">
+                    <div class="t-list {if $Request.param.type != 'mobile'}on{/if}">账号登录</div>
+                </div>
+                <div class="tab-box">
+                    <div class="t-box">
+                        <form id="form1" action="{:url('/user/login')}" method="post" >
+                            <input type="hidden" name="backurl" value="{$backurl}">
+                            {:token('login_token')}
+                            <div class="t-row-block">
+                                <div class="input-box">
+                                    <img class="icon" src="/assets/static/images/login_user.png" alt="">
+                                    <input type="text" datatype="*" nullmsg="请填写手机/邮箱/用户名" name="account" class="inp" placeholder="手机/邮箱/用户名">
+                                </div>
+                            </div>
+                            <div class="t-row-block">
+                                <div class="input-box">
+                                    <img class="icon" src="/assets/static/images/login_password.png" alt="">
+                                    <input type="password" datatype="*" nullmsg="请填写密码" name="password" class="inp" placeholder="输入密码">
+                                </div>
+                            </div>
+                            <div class="t-row-block">
+                                <div class="input-box yzm">
+                                    <input type="text" datatype="*" nullmsg="请填写图形验证码" name="captcha" class="inp" placeholder="图形验证码">
+                                </div>
+                                <div class="yzm-box"><img src="{:captcha_src()}" onclick="this.src = '{:captcha_src()}?r=' + Math.random();" alt="验证码没能获取到，请刷新重试"></div>
+                            </div>
+                            <div class="forget-password">
+                                <input type="checkbox" class="checkbox-01" id="cb1" name="keeplogin">
+                                <label class="mark-01" for="cb1"><span>记住密码</span></label>
+                                <a href="{:url('/user/forgetpwd')}">忘记密码</a>
+                            </div>
+                            <div class="login-row-block">
+                                <button class="login-btn">马上登录</button>
+                            </div>
+                            <div class="href-login"><span class="txt">没有账号？</span><a href="{:url('/user/register')}" class="h-login">立即注册</a></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        loginRegisterEvent();
+        var tl = $('.tab-list')
+        var tb = $('.tab-box')
+        tabs(tl, tb)
+
+        $.Tipmsg.r = null;
+        $('#form1').Validform({
+            btnSubmit:".login-btn",
+            tipSweep: true,
+            ajaxPost:true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+            callback:function(data){
+            if (data.code == 1) {
+                window.location.href = data.data.url;
+            } else {
+                showmsg(data.msg);
+                $('input[name=login_token]').val(data.data.token);
+                $('.yzm-box img').trigger('click');
+            }
+        }
+        });
+
+        // $('#form2').Validform({
+        //     btnSubmit:".login-btn",
+        //     tipSweep: true,
+        //     tiptype: function (msg, o, cssctl) {
+        //         if (!o.obj.is("form")) {
+        //             var objtip = o.obj.siblings(".checktip");
+        //             cssctl(objtip, o.type);
+        //             showmsg(msg);
+        //             return false;
+        //         }
+        //     },
+        // });
+    })
+
+    // function sendCode() {
+    //     var mobile = $.trim($("input[name='mobile']").val());
+    //     //手机验证
+    //     var mobileStr = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/;
+    //     if( mobile == '' ){
+    //         alert("手机号码不能为空！");
+    //         return false;
+    //     }
+    //     if( !mobileStr.test(mobile) ){
+    //         alert("手机号码不正确！");
+    //         return false;
+    //     }
+    //
+    //     $.post("{:url('api/sms/send')}", {mobile:mobile, event:'mobilelogin'}, function(result){
+    //         if( result.code == 1 ){
+    //             var obj = $("#btn-code");
+    //             settime(obj);
+    //         }
+    //         showmsg(result.msg);
+    //     });
+    // }
+    //
+    // //发送验证码倒计时
+    // var countdown = 60;
+    // function settime(obj) {
+    //     console.log(countdown);
+    //     if (countdown == 0) {
+    //         obj.attr('disabled',false);
+    //         obj.css("pointer-events","auto");
+    //         obj.text("获取验证码");
+    //         countdown = 60;
+    //         return;
+    //     } else {
+    //         obj.attr('disabled',true);
+    //         obj.css("pointer-events","none");
+    //         obj.text("重新发送(" + countdown + ")");
+    //         countdown--;
+    //     }
+    //     setTimeout(function(){
+    //         settime(obj);
+    //     },1000);
+    // }
+</script>
+
+{include file="public/footer"  /}

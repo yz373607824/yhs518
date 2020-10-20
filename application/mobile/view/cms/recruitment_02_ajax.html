@@ -1,0 +1,15 @@
+{cms:pagelist id="item" channel="$__CHANNEL__.id" model="$__CHANNEL__.model_id" orderby="id" orderway="desc" addon="true"}
+<li class="list-a">
+    <div class="item">
+        <div class="title">{$item.title}</div>
+        <div class="info">
+            <div class="p"><span>姓名：{$item.name}</span></div>
+            <div class="p"><span class="company">工作年限：{$item.term}</span></div>
+        </div>
+        <div class="icon"><i class="iconfont icon-jiantouyou"></i></div>
+    </div>
+    <div class="sub-item">
+        {$item.content|htmlspecialchars_decode}
+    </div>
+</li>
+{/cms:pagelist}

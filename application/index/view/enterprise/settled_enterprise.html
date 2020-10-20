@@ -1,0 +1,166 @@
+{include file="public/head" isMember="0" /}
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <?php $banner = get_banner(3, 1);?>
+        {volist name="banner" id="v"}
+        <a href="{$v.url}" target="_blank" class="article-banner-wrap">
+            <img src="{$v.pic}" alt="{$v.name}">
+        </a>
+        {/volist}
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('enterprise/index')}" class="bread-hover">联盟企业</a>
+        </div>
+        <div class="settled-enterprise-wrap clearfloat">
+            <div class="common-left-block">
+                <div class="tab-filter-wrap">
+                    <div class="tab-list">
+
+                        {include file="public/enterprise_nav" /}
+
+                    </div>
+                </div>
+                <div class="search-banner-wrap clearfloat">
+                    <div class="img-box">
+                        <?php $ad = get_banner(37, 1);?>
+                        {volist name="ad" id="v"}
+                        <img src="{$v.pic}" alt="">
+                        {/volist}
+                    </div>
+                    <form class="search-region" method="get" action="">
+                        <div class="common-search-box w300">
+                            <div class="common-search-input-box w70">
+                                <input type="text" class="search--input" name="keywords" placeholder="请输入相关关键字" value="{:input('keywords')}">
+                                <i class="iconfont icon-sousuo1 search--icon"></i>
+                            </div>
+                            <a href="javascript:$('.search-region').submit();" class="search--btn w70">搜索</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="settled-tap-box">
+                    <div class="filter-box">
+                        <dl class="filter-list clearfloat">
+                            <dt>经营类别：</dt>
+                            <dd>
+                                <a href="{:url('enterprise/index')}"{if !input('supplierType')} class="on"{/if}>全部</a>
+                                {volist name="supplierType" key="k" id="v"}
+                                <a href="{:url('enterprise/' . request()->action(), ['supplierType' => $v])}"{if input('supplierType') == $v} class="on"{/if}>{$v}</a>
+                                {/volist}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <ul class="settled-enterprise-list-wrap">
+                    {volist name='list' id='v'}
+                    <li class="settled-enterprise-list">
+                        {if $v.level == 1 && $v.product_logo && $v.product_url}
+                        <a target="_blank" href="{$v.product_url}" class="left-block">
+                            <img src="{$v.product_logo}">
+                        </a>
+                        {elseif $v.level != 1 && $v.recommend}
+                        <a target="_blank" href="{:url('enterprise/supply_detail', ['id' => $v['id'], 'itemid' => $v['recommend'][0]['id']])}" class="left-block">
+                            <img src="{$v['recommend'][0]['image']}">
+                        </a>
+                        {else}
+                        <a target="_blank" href="{:url('enterprise/detail', ['id' => $v['id']])}" class="left-block">
+                            <img src="{$v.logo}" alt="{$v.company}">
+                        </a>
+                        {/if}
+                        <div class="right-block">
+                            <h3>
+                                <a target="_blank" href="{:url('enterprise/supply', ['id' => $v['id']])}" class="h3-txt">{$v.company}</a>
+                                <img class="tt-img" src="/assets/static/images/level/level_{$v.level}.png" alt="">
+                                {if $v.online == 1}
+                                <img class="service-person" src="/assets/static/images/service_icon.png" alt="">
+                                {/if}
+                            </h3>
+                            <div class="info-box">
+                                <div class="info-list">
+                                    {volist name='v.pro' id='p'}
+                                    <a target="_blank" href="{:url('enterprise/supply_detail', ['id' => $v['id'], 'itemid' => $p['id']])}" class="info-item">
+                                        <div class="img"><img src="{$p.image}" alt="{$p.title}"></div>
+                                        <div class="price">
+                                            <p class="p1">{$p.title}</p>
+                                            <p class="p2">价格: ￥<span>{$p.price}</span>元/{$p.unit}</p>
+                                        </div>
+                                    </a>
+                                    {/volist}
+                                </div>
+                                <div class="ahref-box">
+                                    <a target="_blank" href="{:url('enterprise/supply', ['id' => $v.id])}" class="a-btn">进入详情</a>
+                                    <!--<a href="{:url('enterprise/contact', ['id' => $v['id']])}" class="a-btn blue">联系方式</a>-->
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {/volist}
+                </ul>
+                <div class="paged">
+                    {$paged}
+                </div>
+                <div class="footer-swiper-wrap">
+                    <div class="hd-block clearfloat">
+                        <div class="left-t">
+                            <div class="title">供应商主推产品</div>
+                        </div>
+                        <div class="right-t"><a href="{:getLink(69)}">查看更多>></a></div>
+                    </div>
+                    <div class="con-block">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <?php $list = get_list(10, 69, 10, 0, 'is_footer');?>
+                                {volist name="list" id="v"}
+                                <a target="_blank" href="{:url('enterprise/supply_detail', ['id' => getEnterprise($v['user_id'], 'id'), 'itemid' => $v['id']])}" class="swiper-slide">
+                                    <div class="img-box"><img src="{$v.image}" alt="{$v.title}"></div>
+                                    <p class="tt">{$v.title}</p>
+                                </a>
+                                {/volist}
+                            </div>
+                        </div>
+                        <div class="button-prev"><i class="iconfont icon-jiantouzuo"></i></div>
+                        <div class="button-next"><i class="iconfont icon-jiantouyou"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="common-adv-sidebar">
+                <div class="adv-banner-box">
+                    <?php $banner = get_banner(4, 5);?>
+                    {volist name="banner" id="v"}
+                    <a href="{$v.url}" target="_blank"><img src="{$v.pic}" alt="{$v.name}"></a>
+                    {/volist}
+                </div>
+                <div class="usual-adv-wrap">
+                    <div class="usual-adv-banner clearfloat">
+                        <div class="h2">工程师推荐</div>
+                        <a target="_blank" href="{:getLink(69)}" class="ahref">从这里了解更多供应产品</a>
+                    </div>
+                    <ul class="recommend-list-box">
+                        <?php $list = get_list(10, 69, 15, 0, 'is_right');?>
+                        {volist name="list" id="v"}
+                        <li class="list">
+                            <a target="_blank" href="{:url('enterprise/supply_detail', ['id' => getEnterprise($v['user_id'], 'id'), 'itemid' => $v['id']])}" class="item">
+                                <div class="img-box"><img src="{$v.image}" alt="{$v.title}"></div>
+                                <div class="price-box clearfloat">
+                                    <p class="name">{$v.title}</p>
+                                    <p class="price-txt">价格: ￥<span>{$v.price}</span>元/{$v.unit}</p>
+                                </div>
+                            </a>
+                        </li>
+                        {/volist}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        swiperArticleEvent();
+    })
+</script>
+{include file="public/footer"  /}

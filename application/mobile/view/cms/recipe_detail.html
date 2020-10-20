@@ -1,0 +1,89 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="article">
+        <div class="recipe-detail-wrap">
+            <?php $banner = get_banner(10,1);?>
+            {volist name='banner' id='item'}
+            <div class="img"><img src="{$item.picimg}" alt="{$item.name}"></div>
+            {/volist}
+            <div class="content">
+                <div class="intro-box">
+                    <div class="hd">
+                        <div class="title">
+                            {if $__ARCHIVES__.price != 0}<div class="img-icon"><img src="/assets/static_mobile/images/industry_1.png" alt=""></div>{/if}
+                            <div class="tt">{$__ARCHIVES__.title}</div>
+                        </div>
+                        <!-- 收藏的效果，添加类名on -->
+                        <div class="fun-btn">
+                            <a href="javascript:;" onclick="collect('{$__ARCHIVES__.id}');" class="btn collect {if $collectStatus}on{/if}">
+                                <i></i>
+                                <span>收藏</span>
+                            </a>
+                            <a href="javascript:;" onclick="like('{$__ARCHIVES__.id}');" class="btn like {if $__ARCHIVES__.like}on{/if}">
+                                <i></i>
+                                <span>喜欢</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="region">
+                        <div class="tt">来源：</div>
+                        <div class="p">
+                            <p>{$__ARCHIVES__.source}</p>
+                            <p>浏览数：{$__ARCHIVES__.views}</p>
+                            {if $__ARCHIVES__.price > 0}<p>已付款：{$__ARCHIVES__.likes}</p>{/if}
+                        </div>
+                    </div>
+                    <div class="bd">
+                        <p>配方用途：{$__ARCHIVES__.purpose}</p>
+                        <p>配方简介：{$__ARCHIVES__.description}</p>
+                    </div>
+                </div>
+                <div class="detail-box">
+                    <div class="title">详细配方介绍</div>
+                    {if $__ARCHIVES__.price == 0 || (isset($__ORDER__) && $__ORDER__.status == 1) || $user.id == $__ARCHIVES__.user_id}
+                    <div class="con-box">
+                        {$__ARCHIVES__.content|html_entity_decode}
+                    </div>
+                    {else}
+                    <div class="info-img">
+                        <img src="/assets/static_mobile/images/article_08.jpg" alt="">
+                        <a href="{:url('/mobile/handleArchives/formula', ['id' => $__ARCHIVES__['id']])}" class="get-btn">点击此处获取配方</a>
+                    </div>
+                    {/if}
+                    <div class="btn-box">
+                        <a href="{:url('/mobile/handleArchives/formula_demand')}" class="btn">没有适合你要的配方吗？直接提交配方需求>></a>
+                    </div>
+                </div>
+                <div class="statement-box">
+                    <strong>声明：</strong>本配方内容已通过工程师严格审核理论可行性，但由于行业知识的广泛性和不确定性；本平台不承担过失责任！如发现恶意发布不实或不相关配方，欢迎投诉，平台将严肃处理！
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function collect(id)
+        {
+            $.post('/mobile/handleArchives/collect', {id:id}, function (data) {
+                if (data.code == 1) {
+                    showmsg(data.msg, 'jump', data.data.url);
+                } else {
+                    showmsg(data.msg);
+                }
+            })
+        }
+
+        //点赞
+        function like(id) {
+            $.post('/handleArchives/like', {id:id}, function (data) {
+                if (data.code == 1) {
+                    showmsg(data.msg, 'refresh');
+                } else {
+                    showmsg(data.msg);
+                }
+            })
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

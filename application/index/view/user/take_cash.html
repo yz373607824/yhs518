@@ -1,0 +1,183 @@
+{include file="public/head" isMember="1" /}
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+<?php $day = date('d', time());?>
+{if $day < 10 || $day > 15}
+<style>
+    .c--member-submit-btn:hover {
+        background-color: #dddddd;
+    }
+    .c--member-submit-btn {
+        background-color: #dddddd;
+    }
+</style>
+{/if}
+    <div class="common-member-wrap">
+        <div class="wp1200">
+            <div class="c--wrap clearfloat">
+                {include file="public/member_left_nav" /}
+                <div class="c--member-right-wrap">
+                    <div class="c--inner take-cash-wrap">
+                        <h2 class="title">{if !$read}我要提现<span style="color:red;">（每月10-15号开放提现窗口，31号之前到账！）</span>{else}查看详情{/if}<a style="font-size: 14px;color: #333;font-weight: normal;float: right;" href="{:url('index/user/takeCashList')}" class="href">返回列表>></a></h2>
+                        {if !$read}
+                        <div class="take-cash-hd clearfloat">
+                            <div class="left-block">
+                                <img src="/assets/static/images/cash_icon.png" class="cash-icon" alt="">
+                                <div class="cash-num-box">
+                                    <span>可用金额：¥</span>
+                                    <span class="cash-num">******</span>
+                                </div>
+                                <a href="javascript:void(0)" class="js-check-btn">查看金额</a>
+                            </div>
+                            <div class="right-block">
+                                <a href="{:url('/user/formula')}" class="more-btn">投稿赚金币 >></a>
+                            </div>
+                        </div>
+                        {/if}
+                        <div class="bank-card-box">
+                            <h3>{if !$read}可填写/修改银行卡信息{else}银行卡信息{/if}</h3>
+                            <form id="form1" action="/user/applyTaskCash" method="post">
+                                {:token('apply_task_cash_token')}
+                                <div class="bank-card-inner">
+                                    <div class="bank-form-tb">
+                                        <div class="bank-form-row clearfloat">
+                                            <div class="bank-form-row-td">
+                                                <div class="bank-form-row-txt">
+                                                    <span class="txt">开户行名称：</span>
+                                                    <span class="red-star">*</span>
+                                                </div>
+                                                <div class="bank-form-row-input"><input type="text" value="{if $read}{$read.name}{elseif isset($bank_info)}{$bank_info.name}{/if}" name="row[name]" datatype="*" nullmsg="请填写银行名称" class="inp" placeholder="填写开户银行分行完整详细名称
+"></div>
+                                            </div>
+                                            <div class="bank-form-row-td">
+                                                <div class="bank-form-row-txt">
+                                                    <span class="txt">账号类型：</span>
+                                                    <span class="red-star">*</span>
+                                                </div>
+                                                <div class="bank-form-row-input"><input type="text" value="{if $read}{$read.type}{elseif isset($bank_info)}{$bank_info.type}{/if}" name="row[type]" datatype="*" nullmsg="请填写账号类型" class="inp" placeholder="个人"></div>
+                                            </div>
+                                        </div>
+                                        <div class="bank-form-row clearfloat">
+                                            <div class="bank-form-row-td">
+                                                <div class="bank-form-row-txt">
+                                                    <span class="txt">银行卡号：</span>
+                                                    <span class="red-star">*</span>
+                                                </div>
+                                                <div class="bank-form-row-input"><input type="text" value="{if $read}{$read.cardno}{elseif isset($bank_info)}{$bank_info.cardno}{/if}" name="row[cardno]" datatype="*" nullmsg="请填写银行卡号" class="inp" placeholder="621722xxxxxx"></div>
+                                            </div>
+                                            <div class="bank-form-row-td">
+                                                <div class="bank-form-row-txt">
+                                                    <span class="txt">开户人姓名：</span>
+                                                    <span class="red-star">*</span>
+                                                </div>
+                                                <div class="bank-form-row-input"><input type="text" value="{if $read}{$read.username}{elseif isset($bank_info)}{$bank_info.username}{/if}" name="row[username]" datatype="*" nullmsg="请填写开户人姓名" class="inp" placeholder="xxx"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row clearfloat">
+                                    <div class="form-row-td">
+                                        <div class="form-row-td-txt">
+                                            <span class="txt">手机号码：</span>
+                                            <span class="red-star">*</span>
+                                        </div>
+                                        <div class="form-row-td-input">
+                                            <input type="text" value="{if $read}{$read.mobile}{/if}" name="row[mobile]" datatype="*,/^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/" nullmsg="请填写手机号码" errormsg="手机号码格式错误" class="c--member--inner-input">
+                                        </div>
+                                    </div>
+                                    <div class="form-row-td">
+                                        <div class="form-row-td-txt">
+                                            <span class="txt">提现金额：</span>
+                                            <span class="red-star">*</span>
+                                        </div>
+                                        <div class="form-row-td-input w195">
+                                            <input type="text" value="{if $read}{$read.amount}{/if}" name="row[amount]" datatype="*,/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/" nullmsg="请填写提现金额" errormsg="格式错误，不能为负数，保留两位小数" class="c--member--inner-input">
+                                        </div>
+                                        {if !$read}
+                                        <p class="ill-txt">（每次最多提现5000.00元）</p>
+                                        {/if}
+                                    </div>
+                                </div>
+                                {if !$read}
+                                <div class="form-row clearfloat">
+                                    <div class="c--member-row-tt">
+                                        <span class="row-txt">验证码：</span>
+                                        <span class="red-star">*</span>
+                                    </div>
+                                    <div class="c--member-yam-box">
+                                        <div class="yam-inner">
+                                            <input type="text" datatype="*" nullmsg="请填写验证码" name="captcha" class="c--member--inner-input">
+                                        </div>
+                                        <img src="{:captcha_src()}" onclick="this.src = '{:captcha_src()}?r=' + Math.random();" alt="验证码没能获取到，请刷新重试" class="yzm-img">
+                                    </div>
+                                </div>
+                                <div class="form-btn">
+                                    <div class="checkbox-block">
+                                        <input type="checkbox" class="ifAgree" id="ifAgree1" value="agree" name="ifAgree1" datatype="*" nullmsg="请确认填写是否信息正确">
+                                        <label class="mark take-cash-mark" for="ifAgree1"><span class="txt">确认填写信息正确</span></label>
+                                    </div>
+                                    <div class="btn-box">
+                                        <button class="c--member-submit-btn" {if $day < 10 || $day > 15}disabled{/if}>立即提交</button>
+                                    </div>
+                                </div>
+                                {/if}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-wrap check-card-wrap">
+            <div class="check-card-content">
+                <div class="modal-close"><i class="iconfont icon-fork"></i></div>
+                <h2>验证身份</h2>
+                <form action="">
+                    <div class="form-row"><input type="text" name="number" class="inp" placeholder="请输入身份证后六位"></div>
+                    <div class="btn-box"><button type="button" class="btn">确认提交</button></div>
+                </form>
+            </div>
+        </div>
+        <div class="bg" id="overlay"></div>
+    </div>
+
+    <script>
+        $(function() {
+            $('.js-check-btn').on('click', function() {
+                $('.check-card-wrap').addClass('md-show')
+            })
+            $('.modal-close').on('click', function() {
+                $('.check-card-wrap').removeClass('md-show')
+                $(':input', '.formId')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+            })
+
+            $('.btn').click(function () {
+                $.post('/user/getAmount', {number:$('input[name=number]').val()}, function (data) {
+                    if (data.code == 1) {
+                        $('.cash-num').html(data.data.amount);
+                        $('.check-card-wrap').removeClass('md-show')
+                    } else {
+                        showmsg(data.msg);
+                    }
+                })
+            })
+        })
+
+        $.Tipmsg.r = null;
+        $('#form1').Validform({
+            btnSubmit:".c--member-submit-btn",
+            tipSweep: true,
+            tiptype: function (msg, o, cssctl) {
+                if (!o.obj.is("form")) {
+                    var objtip = o.obj.siblings(".checktip");
+                    cssctl(objtip, o.type);
+                    showmsg(msg);
+                    return false;
+                }
+            },
+        });
+    </script>
+
+{include file="public/footer"  /}

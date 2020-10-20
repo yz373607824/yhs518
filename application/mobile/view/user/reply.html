@@ -1,0 +1,50 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="member">
+        <div class="rewrite-wrap">
+            <form id="form1" action="{:url('/mobile/user/replyService')}" method="post">
+                {:token()}
+                <input type="hidden" name="id" value="{$online.id}">
+                <div class="text-area">
+                    <div class="textarea-word">回复内容<span class="red-star">*</span>：</div>
+                    <textarea rows="8" class="textarea" name="replycontent" datatype="*" nullmsg="请填写回复内容">{$online.replycontent}</textarea>
+                </div>
+                {if empty($online.replycontent)}
+                <a href="javascript:;" class="btn">确认提交</a>
+                {/if}
+            </form>
+        </div>
+    </div>
+{if empty($online.replycontent)}
+    <script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+    <script>
+        $(function() {
+            $.Tipmsg.r = null;
+            $('#form1').Validform({
+                btnSubmit:".btn",
+                tipSweep: true,
+                ajaxPost: true,
+                tiptype: function (msg, o, cssctl) {
+                    if (!o.obj.is("form")) {
+                        var objtip = o.obj.siblings(".checktip");
+                        cssctl(objtip, o.type);
+                        showmsg(msg);
+                        return false;
+                    }
+                },
+                callback: function (data) {
+                    showmsg(data.msg);
+                    if (data.code == 1) {
+                        window.history.back();
+                    } else {
+                        $('input[name=__token__]').val(data.data.token);
+                    }
+                }
+            });
+        })
+    </script>
+{/if}
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

@@ -1,0 +1,182 @@
+{include file="public/head" isMember="1" /}
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+
+    <div class="common-member-wrap">
+        <div class="wp1200">
+            <div class="c--wrap clearfloat">
+
+                {include file="public/member_left_nav" /}
+
+                <div class="c--member-right-wrap">
+                    <div class="id-authentication-wrap">
+                        <h2 class="title id-check">
+                            <span class="id-t">身份认证</span>
+                            {if $verify}
+                            {if $verify.status == 1}
+                            <span class="id-state">(已审核)</span>
+                            {elseif $verify.status == 0}
+                            <span class="id-state">(审核中)</span>
+                            {else}
+                            <span class="id-state">(审核不通过，请联系管理员)</span>
+                            {/if}
+                            {/if}
+                        </h2>
+                        <form id="form1" action="/user/idAuthentication" method="post">
+                            {:token('idAuthentication_token')}
+                            <div class="box">
+                                <div class="p-info">注：请及时填写身份认证信息，认证后可提现在本平台赚取的金豆余额!</div>
+                                <div class="row-wrap clearfloat">
+                                    <div class="row-input-block clearfloat">
+                                        <div class="row-txt-block">
+                                            <span class="txt">姓名：</span>
+                                            <span class="red-star">*</span>
+                                        </div>
+                                        <div class="input-box">
+                                            <input type="text" datatype="*" nullmsg="请填写姓名" name="row[name]" value="{if isset($verify)}{$verify.name}{/if}" class="inp">
+                                        </div>
+                                    </div>
+                                    <div class="row-input-block clearfloat">
+                                        <div class="row-txt-block">
+                                            <span class="txt">身份证号：</span>
+                                            <span class="red-star">*</span>
+                                        </div>
+                                        <div class="input-box">
+                                            <input type="text" value="{if isset($verify)}{$verify.idcard}{/if}" datatype="*,/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/" nullmsg="请填写身份证号码" errormsg="身份证号码不正确" name="row[idcard]" class="inp">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-wrap pl107 clearfloat">
+                                    <div class="cilp">请进行裁剪后上传，推荐<a href="http://xiuxiu.web.meitu.com/main.html" class="cilp">http://xiuxiu.web.meitu.com/main.html</a></div>
+                                    <div class="upload-img-block h80">
+                                        <div class="outer">
+                                            <div class="inner-file-img">
+                                                {if isset($verify)}
+                                                <img class="c--member-upload-img" src="{$verify.idcardfrontimage}" alt="" />
+                                                {/if}
+                                            </div>
+                                        </div>
+                                        <input type="hidden" datatype="*" nullmsg="请上传个人身份证正面照片" class="file-hidden" name="row[idcardfrontimage]" value="{if isset($verify)}{$verify.idcardfrontimage}{/if}">
+                                        <div class="instr">
+                                            <div class="p">个人身份证正面照片</div>
+                                            <div class="attention">注：上传图片限制大小2M以内</div>
+                                        </div>
+                                        <div class="js-example" data-example-img="/assets/static/images/sfzzm.jpg">示例</div>
+                                        <a href="javascript:void(0)" class="js-upload"><input type="file" class="file-btn">{if isset($verify)}重新{/if}上传</a>
+                                    </div>
+                                    <div class="upload-img-block pl10 h80">
+                                        <div class="outer">
+                                            <div class="inner-file-img">
+                                                {if isset($verify)}
+                                                <img class="c--member-upload-img" src="{$verify.idcardversoimage}" alt="" />
+                                                {/if}
+                                            </div>
+                                        </div>
+                                        <input type="hidden" datatype="*" nullmsg="请上传个人身份证反面照片" class="file-hidden" name="row[idcardversoimage]" value="{if isset($verify)}{$verify.idcardversoimage}{/if}">
+                                        <span class="instr">
+                                            <div class="p">个人身份证反面照片</div>
+                                            <div class="attention">注：上传图片限制大小2M以内</div>
+                                        </span>
+                                        <div class="js-example" data-example-img="/assets/static/images/sfzfm.jpg">示例</div>
+                                        <a href="javascript:void(0)" class="js-upload"><input type="file" class="file-btn">{if isset($verify)}重新{/if}上传</a>
+                                    </div>
+                                </div>
+                                <div class="row-wrap pl107 clearfloat">
+                                    <div class="upload-img-block h80">
+                                        <div class="outer">
+                                            <div class="inner-file-img">
+                                                {if isset($verify)}
+                                                <img class="c--member-upload-img" src="{$verify.idcardhandimage}" alt="" />
+                                                {/if}
+                                            </div>
+                                        </div>
+                                        <input type="hidden" datatype="*" nullmsg="请上传个人手持身份证正面照片" class="file-hidden" name="row[idcardhandimage]" value="{if isset($verify)}{$verify.idcardhandimage}{/if}">
+                                        <div class="instr">
+                                            <div class="p">个人手持身份证正面照片</div>
+                                            <div class="attention">注：上传图片限制大小2M以内</div>
+                                        </div>
+                                        <div class="js-example" data-example-img="/assets/static/images/scsfz.jpg">示例</div>
+                                        <a href="javascript:void(0)" class="js-upload"><input type="file" class="file-btn">{if isset($verify)}重新{/if}上传</a>
+                                    </div>
+                                    <a target="_blank" href="http://www.yhs518.com/public/archives/463.html" title="模板和注意事项点击查看" class="upload-info">注：为了企业信息安全和审核身份证是否是您本人使用，请上传本人手持照。</a>
+                                </div>
+                                <div class="form-btn">
+                                    <div class="checkbox-block mt0">
+                                        <input type="checkbox" class="ifAgree" id="ifAgree1" name="ifAgree1" value="agree" datatype="*" nullmsg="请阅读并接受协议内容" {if isset($verify)} checked{/if}>
+                                        <label class="mark take-cash-mark" for="ifAgree1"><span class="txt">我确认阅读并接受</span></label>
+                                        <a href="{:url('/archives/176')}" class="a-href">《个人身份证认证同意书 （协议）》</a>
+                                    </div>
+                                    <div class="btn-box">
+                                        <button class="c--member-submit-btn">立即提交</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="images-fixed-box">
+            <div class="inner-box">
+                <div class="close-btn"><i class="iconfont icon-fork"></i></div>
+                <div class="con">
+                    <div class="img-box"><img src="" alt=""></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            $('.js-example').on('click', function() {
+                var img = $(this).attr('data-example-img')
+                $('.images-fixed-box').find('.img-box img').attr('src', img).end().fadeIn('linear')
+            })
+            $('.close-btn').click(function() {
+                $('.images-fixed-box').fadeOut('linear')
+            })
+            $('.file-btn').on('change', function() {
+                var innerFileImg = $(this).parents('.upload-img-block').find('.inner-file-img')
+                var hiddenInput = $(this).parents('.upload-img-block').find('.file-hidden')
+                var file = $(this).get(0).files[0]
+                var fileName = file.name
+                if (file.type.indexOf('image') === 0) {
+                    var reader = new FileReader()
+                    reader.readAsDataURL(file)
+                    reader.onload = function() {
+                        var newUrl = this.result
+                        var imgHtml = '<img class="c--member-upload-img" data-name="' + fileName + '" src="' + newUrl + '" alt="" />'
+                        if (innerFileImg.find('img').length <= 0) {
+                            innerFileImg.append(imgHtml)
+                        } else {
+                            innerFileImg.find('img').attr('src', newUrl).attr('data-name', fileName)
+                        }
+                        hiddenInput.val(newUrl)
+                    }
+
+                } else {
+                    alert('请选择图片!')
+                }
+            })
+            $('.inner-file-img').on('click', function() {
+                var img = $(this).find('img').attr('src')
+                $('.images-fixed-box').find('.img-box img').attr('src', img).end().fadeIn('linear')
+            })
+
+            $.Tipmsg.r = null;
+            $('#form1').Validform({
+                btnSubmit:".btn",
+                tipSweep: true,
+                tiptype: function (msg, o, cssctl) {
+                    if (!o.obj.is("form")) {
+                        var objtip = o.obj.siblings(".checktip");
+                        cssctl(objtip, o.type);
+                        showmsg(msg);
+                        return false;
+                    }
+                },
+            });
+        })
+    </script>
+
+{include file="public/footer"  /}

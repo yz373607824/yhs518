@@ -1,0 +1,50 @@
+
+{include file="public/head" isMember="1" /}
+
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+            {include file="public/member_left_nav" /}
+            <div class="c--member-right-wrap">
+                <div class="c--inner release-scare-buying-wrap">
+                    <h2 class="title rsbl-hd clearfloat">
+                        <p class="tt">收入支出明细 列表</p>
+                    </h2>
+                    <div class="common-table">
+                        <div class="common-table-row theader">
+                            <div class="common-table-cell tb-order">订单号</div>
+                            <div class="common-table-cell">订单类型</div>
+                            <div class="common-table-cell">类型</div>
+                            <div class="common-table-cell">数量/金额</div>
+                            <div class="common-table-cell tb-date">时间</div>
+                            <div class="common-table-cell tb-title">说明</div>
+                        </div>
+                        {volist name="list" id="vo"}
+                        <div class="common-table-row tbody">
+                            <div class="common-table-cell tb-order">{$vo.order_no}</div>
+                            <div class="common-table-cell">{$vo.order_type}</div>
+                            <div class="common-table-cell">{$vo.type}</div>
+                            <div class="common-table-cell">{if $vo.num > 0}+{$vo.num}{else}{$vo.num}{/if}</div>
+                            <div class="common-table-cell tb-date">{$vo.createtime|date='Y-m-d H:i',###}</div>
+                            <div class="common-table-cell tb-title">{:__($vo.detail)}</div>
+                        </div>
+                        {/volist}
+                        
+                    </div>
+                    <div class="paged">
+                        {$list->render()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        commonTable();
+    })
+</script>
+
+{include file="public/footer"  /}

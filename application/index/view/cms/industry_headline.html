@@ -1,0 +1,98 @@
+{include file="public/head" isMember="0"/}
+
+<div class="common-page-content">
+        <div class="wp1200">
+            <?php $banner = get_banner(16,1);?>
+            {volist name='banner' id='item'}
+            <a href="{$item.url}" target="_blank" class="article-banner-wrap h300">
+                <img src="{$item.pic}" alt="{$item.name}">
+            </a>
+            {/volist}
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                {cms:breadcrumb id="item"}
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{if $item.name == '首页'}/{else}{:url($item.url)}{/if}" class="bread-hover">{$item.name}</a>
+                {/cms:breadcrumb}
+            </div>
+            <div class="industry-headline-wrap clearfloat">
+                <div class="common-left-block">
+                    <div class="tab-filter-wrap">
+                        <div class="tab-list">
+                            {cms:channellist id="channel" type="son" typeid="$__CHANNEL__.parent_id" orderby="weigh" orderway="desc"}
+                            <div class="tab-item"><a href="{:url($channel.url)}" target="_blank" {if $__CHANNEL__.id == $channel.id}class="on"{/if}>{$channel.name}</a></div>
+                            {/cms:channellist}
+                        </div>
+                        <div class="filter-block">
+                            <div class="supply-search-block clearfloat">
+                                <div class="input-box">
+                                    <i class="iconfont icon-sousuo1"></i>
+                                    <input type="text" id="keywords" value="{$keywords}" placeholder="输入相关关键词">
+                                </div>
+                                <div class="btn"><a href="javascript:search();">搜索</a></div>
+                            </div>
+                            <div class="filter-list pt15">
+                                <dl class="clearfloat">
+                                    <dt>行业类别：</dt>
+                                    <dd>
+                                        {cms:pagefilter id="filter" exclude=""}
+                                            {volist name="$filter.content" id="item"}
+                                                <a href="{$item.url}" class="{$item.active?'on type-on':''}">{$item.title}</a>
+                                            {/volist}
+                                        {/cms:pagefilter}
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="headline-list-wrap">
+                        {volist name='$__PAGELIST__' id='item'}
+                        <li class="headline-list">
+                            <div  class="item clearfloat">
+                                <a href="{if $item.jumpurl}{$item.jumpurl}{else}{:url($item.url)}{/if}" target="_blank" class="img-box"><img src="{$item.image}" alt="{$item.title}"></a>
+                                <a href="{:url($item.url)}" target="_blank" class="headline-info">
+                                    <h2>{$item.title}</h2>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$item.description}</p>
+                                    {if !empty($item.date) && !empty($item.address)}<p>展览时间：{$item.date}&nbsp;&nbsp;&nbsp;&nbsp;展览地点：{$item.address}</p>{/if}
+                                    <div class="more-btn">查看详细</div>
+                                </a>
+                                <div class="date">
+                                    <div class="inner-date">
+                                        <p class="s-txt">{$item.publishtime|date='m-d',###}</p>
+                                        <p class="m-txt">{$item.publishtime|date='Y',###}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        {/volist}
+                    </ul>
+                    <div class="paged">
+                        {$__PAGELIST__->render()}
+                    </div>
+                </div>
+                {include file="../application/index/view/cms/public/common_adv_sidebar.html" /}
+            </div>
+        </div>
+
+        <script>
+            $(function() {
+                returnTop();
+            })
+
+            function search(){
+                var keywords = $("#keywords").val();
+                var url = $(".type-on").attr("href");
+                window.location.href = url + "&keywords=" + keywords;
+            }
+        </script>
+    </div>
+    <script>
+        $('#keywords').keyup(function (e) {
+            if (e.keyCode === 13)
+                search();
+        });
+    </script>
+
+{include file="public/footer"  /}

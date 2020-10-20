@@ -1,0 +1,68 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="article">
+        <ul class="common-problems-wrap">
+            {volist name='$__PAGELIST__' id='item'}
+            <li>
+                <div class="hd">
+                    <h3 class="title">{$item.title}</h3>
+                    <p class="info">{$item.description}</p>
+                </div>
+                <div class="ft">
+                    <p class="time">{$item.publishtime|date="Y-m-d", ###}</p>
+                    <a href="{:url('/mobile/archives/' . $item['id'])}" class="btn">查看详细>></a>
+                </div>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+    <script>
+        let page = 1;
+
+        $(function() {
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+
+        function timetrans(time) {      // 格式化日期
+            let date = new Date(time * 1000);
+            let YY = date.getFullYear() + '-';
+            let MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            let DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
+            return YY + MM + DD;
+        }
+
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let param = {page:page};
+            $.get("{:url('/mobile/channel/' . $__CHANNEL__['diyname'])}", param, function(res){
+                res.data = res.data.data;
+                let html = '';
+                for (let i = 0; i < res.data.length; i++) {
+                    html += '<li>\n' +
+                        '                <div class="hd">\n' +
+                        '                    <h3 class="title">'+res.data[i].title+'</h3>\n' +
+                        '                    <p class="info">'+res.data[i].description+'</p>\n' +
+                        '                </div>\n' +
+                        '                <div class="ft">\n' +
+                        '                    <p class="time">'+timetrans(res.data[i].publishtime)+'</p>\n' +
+                        '                    <a href="/mobile/archives/'+res.data[i].id+'" class="btn">查看详细>></a>\n' +
+                        '                </div>\n' +
+                        '            </li>';
+                }
+                $(".common-problems-wrap").append(html);
+            });
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

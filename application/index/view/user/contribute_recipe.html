@@ -1,0 +1,346 @@
+{include file="public/head" isMember="1" /}
+
+<script type="text/javascript" src="/assets/static/script/Validform_v5.3.2_min.js"></script>
+
+    <div class="common-member-wrap">
+        <div class="wp1200">
+            <div class="c--wrap clearfloat">
+                {include file="public/member_left_nav" /}
+                <div class="c--member-right-wrap">
+                    <div class="c--inner release-form-wrap">
+                        <h2 class="title rsbl-hd clearfloat">
+                            <p class="tt">发布配方</p>
+                            <a href="{:url('index/user/formula')}" class="href">返回列表>></a>
+                        </h2>
+                        <form id="form1" action="{:url('index/user/release_formula')}" method="post">
+                            <input type="hidden" name="id" value="{$read.id}">
+                            <input type="hidden" name="returnUrl" value="{$returnUrl}">
+                            {:token('release_formula_token')}
+                            <div class="form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">文章标题：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="c--member-input-box-w100">
+                                    <input type="text" name="row[title]"  datatype="*" nullmsg="请填写文章标题" value="{$read.title}" class="c--member--inner-input">
+                                </div>
+                            </div>
+                            <div class="form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">简 介：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="textarea-length-wrap">
+                                    <textarea class="area-wrap" name="row[description]"  datatype="*" nullmsg="请填写简介" maxlength="200" onchange="this.value = this.value.substring(0,100)" onkeydown="this.value = this.value.substring(0,100)" onkeyup="this.value = this.value.substring(0,100)" id="area" rows="6" placeholder="此部分介绍很重要，这是下载配方的招牌">{$read.description}</textarea>
+                                    <span class="t_h"><i>{if $read}{$read.description|mb_strlen}{else}0{/if}</i>/100个汉字</span>
+                                </div>
+                            </div>
+                            <div class="form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">用途：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="c--member-input-box-w100">
+                                    <input type="text" value="{$read.purpose}" name="row[purpose]"  datatype="*" nullmsg="请填写用途" class="c--member--inner-input">
+                                </div>
+                            </div>
+                            <div class="form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">产品图片：</span>
+                                </div>
+                                <div class="file-img-box">
+                                    <p class="file-instr">建议图片尺寸200*180，请添加图片，提高下载量。<span class="cilp">请进行裁剪后上传，推荐</span><a href="http://xiuxiu.web.meitu.com/main.html" class="cilp">http://xiuxiu.web.meitu.com/main.html</a></p>
+                                    <div class="upload-file-block">
+                                        {if !empty($read.image)}
+                                        <div class="outer">
+                                            <div class="inner-file-img">
+                                                <input type="hidden" name="row[image]" class="images" value="{if !empty($read.image)}{$read.image}{/if}">
+                                                <img class="c--member-upload-img" src="{if !empty($read.image)}{$read.image}{/if}">
+                                            </div>
+                                            <span class="c--member-remove-btn" onclick="remove(this)"></span>
+                                        </div>
+                                        {else}
+                                        <div class="outer">
+                                            <div class="inner-file-img">
+                                                <i class="iconfont icon-jiahao c--member-icon-jiahao"></i>
+                                                <input type="file" onchange="upload(this)" class="c--member-input-file">
+                                                <input type="hidden" name="row[image]" class="file-hidden">
+                                            </div>
+                                        </div>
+                                        {/if}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row clearfloat">
+                                <div class="form-row-long">
+                                    <p class="row-txt">详情及配置方法:</p>
+                                    <p class="red-star">*</p>
+                                </div>
+                                <div class="c--member-editor" style="height: 450px;">
+                                    <div class="c--member-editor-tips">请发布配方重量比例详情+生产配制方法+使用比例与方法，越详细越好</div>
+                                    <div class="c--member-editort-textarea">
+                                        <textarea class="form-control editor" name="content" datatype="*" nullmsg="请填写详情及配置方法" placeholder="请详细写清楚配方成分、配比参数（百分比）、生产方法！">{$read.content}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">建议售价：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="form-row-input w260">
+                                    <input type="text" name="row[price]" value="{$read.price}" datatype="*,/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/" nullmsg="请填写建议售价" errormsg="售价格式错误，不能为负数，保留两位小数" class="c--member--inner-input">
+                                </div>
+                                <p class="form-row-txt">元 （输入 0 元表示免费）</p>
+                            </div>
+                            <div class="form-row clearfloat">
+                                <div class="c--member-row-tt" style="width: 150px;">
+                                    <span class="row-txt">配方类别：</span>
+                                </div>
+                                <div class="multse-select-wrap" data-placeholder="请选择类别">
+                                    <input type="hidden" id="category" name="row[category]" value="{$read.category}">
+                                    <div class="view">
+                                        <span class="placeholder">请选择类别</span>
+                                        <div class="js-view"></div>
+                                    </div>
+                                    <div class="select-scroller" data-scroller="01" id="scroller01">
+                                        <div class="select-list">
+                                            {volist name='typeList' id='item'}
+                                            <a class="select-item {if strpos($read.category,$item.value) !== false}checked{/if}" data-option="{$item.value}" data-val="{$item.value}">{$item.title}</a>
+                                            {/volist}
+                                        </div>
+                                    </div>
+                                    <i class="iconfont icon-jiantouxia arrow"></i>
+                                </div>
+                            </div>
+                            <div class="form-row clearfloat">
+                                <div class="c--member-row-tt" style="width: 150px;">
+                                    <span class="row-txt">[前处理]工业清洗剂：</span>
+                                </div>
+                                <div class="multse-select-wrap" data-placeholder="请选择类别">
+                                    <input type="hidden" id="industrial_cleaning_agent" name="row[industrial_cleaning_agent]" value="{$read.industrial_cleaning_agent}">
+                                    <div class="view">
+                                        <span class="placeholder">请选择类别</span>
+                                        <div class="js-view"></div>
+                                    </div>
+                                    <div class="select-scroller" data-scroller="02" id="scroller02">
+                                        <div class="select-list">
+                                            {volist name='industrial_cleaning_agent' id='item'}
+                                            <a class="select-item {if strpos($read.industrial_cleaning_agent,$item) !== false}checked{/if}" data-option="{$item}" data-val="{$item}">{$item}</a>
+                                            {/volist}
+                                        </div>
+                                    </div>
+                                    <i class="iconfont icon-jiantouxia arrow"></i>
+                                </div>
+                            </div>
+                            <div class="form-row clearfloat">
+                                <div class="c--member-row-tt" style="width: 150px;">
+                                    <span class="row-txt">[前处理]表面成膜：</span>
+                                </div>
+                                <div class="multse-select-wrap" data-placeholder="请选择类别">
+                                    <input type="hidden" id="the_surface_film" name="row[the_surface_film]" value="{$read.the_surface_film}">
+                                    <div class="view">
+                                        <span class="placeholder">请选择类别</span>
+                                        <div class="js-view"></div>
+                                    </div>
+                                    <div class="select-scroller" data-scroller="03" id="scroller03">
+                                        <div class="select-list">
+                                            {volist name='the_surface_film' id='item'}
+                                            <a class="select-item {if strpos($read.the_surface_film,$item) !== false}checked{/if}" data-option="{$item}" data-val="{$item}">{$item}</a>
+                                            {/volist}
+                                        </div>
+                                    </div>
+                                    <i class="iconfont icon-jiantouxia arrow"></i>
+                                </div>
+                            </div>
+                            <div class="form-row clearfloat">
+                                <div class="c--member-row-tt" style="width: 150px;">
+                                    <span class="row-txt">后处理：</span>
+                                </div>
+                                <div class="multse-select-wrap" data-placeholder="请选择类别">
+                                    <input type="hidden" id="post_processing" name="row[post_processing]" value="{$read.post_processing}">
+                                    <div class="view">
+                                        <span class="placeholder">请选择类别</span>
+                                        <div class="js-view"></div>
+                                    </div>
+                                    <div class="select-scroller" data-scroller="04" id="scroller04">
+                                        <div class="select-list">
+                                            {volist name='post_processing' id='item'}
+                                            <a class="select-item {if strpos($read.post_processing,$item) !== false}checked{/if}" data-option="{$item}" data-val="{$item}">{$item}</a>
+                                            {/volist}
+                                        </div>
+                                    </div>
+                                    <i class="iconfont icon-jiantouxia arrow"></i>
+                                </div>
+                            </div>
+                            <div class="form-row mb0 clearfloat">
+                                <div class="c--member-row-tt label-self">
+                                    <span class="row-txt">自定义标签：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="form-row-input w680">
+                                    <input type="text" name="row[tags]" datatype="*" nullmsg="请填写标签" value="{$read.tags}" class="c--member--inner-input" maxlength="15" onchange="this.value = this.value.substring(0,15)" onkeydown="this.value = this.value.substring(0,15)" onkeyup="this.value = this.value.substring(0,15)" id="text">
+                                </div>
+                                <div class="form-row-txt">
+                                    <span class="js-row-txt"><i>{if $read}{$read.tags|mb_strlen}{else}0{/if}</i>/15个汉字</span>
+                                </div>
+                            </div>
+                            <p class="instr">自定义您产品/配方/知识库类别 ，如：辛酸,十二烷基伯胺</p>
+                            <div class="form-row clearfloat">
+                                <div class="c--member-row-tt">
+                                    <span class="row-txt">验证码：</span>
+                                    <span class="red-star">*</span>
+                                </div>
+                                <div class="c--member-yam-box">
+                                    <div class="yam-inner">
+                                        <input type="text" name="imgcaptcha" datatype="*" nullmsg="请填写验证码" class="c--member--inner-input">
+                                    </div>
+                                    <img src="{:captcha_src()}" onclick="this.src = '{:captcha_src()}?r=' + Math.random();" class="yzm-img" alt="">
+                                </div>
+                            </div>
+                            <div class="form-btn">
+                                <div class="checkbox-block">
+                                    <input type="checkbox" class="ifAgree" id="ifAgree1" value="agree" name="ifAgree1" value="agree" datatype="*" nullmsg="请承诺发布的信息真实有效"{if $read} checked{/if}>
+                                    <label class="mark take-cash-mark" for="ifAgree1"><span class="txt">我承诺发布的信息真实有效</span></label>
+                                </div>
+                                <div class="btn-box">
+                                    <button class="c--member-submit-btn">立即发布</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/static/script/multsel.js"></script>
+    <script>
+        $(function() {
+            // uploadImg();
+            $('#area').on('change keydown keyup', function() {
+                $(".t_h i").html($(this).val().length)
+            })
+            $('#text').on('change keydown keyup', function() {
+                $(".js-row-txt i").html($(this).val().length)
+            })
+
+            var scroller01 = new IScroll('#scroller01', {
+                scrollX: false,
+                scrollY: true,
+                scrollbars: true,
+                interactiveScrollbars: true,
+                preventDefault: false,
+                mouseWheel: true
+            })
+            var scroller02 = new IScroll('#scroller02', {
+                scrollX: false,
+                scrollY: true,
+                scrollbars: true,
+                interactiveScrollbars: true,
+                preventDefault: false,
+                mouseWheel: true
+            })
+            var scroller03 = new IScroll('#scroller03', {
+                scrollX: false,
+                scrollY: true,
+                scrollbars: true,
+                interactiveScrollbars: true,
+                preventDefault: false,
+                mouseWheel: true
+            })
+            var scroller04 = new IScroll('#scroller04', {
+                scrollX: false,
+                scrollY: true,
+                scrollbars: true,
+                interactiveScrollbars: true,
+                preventDefault: false,
+                mouseWheel: true
+            })
+            var scrollerArr = [scroller01, scroller02, scroller03, scroller04]
+            multsel(scrollerArr)
+
+            $.Tipmsg.r = null;
+            $('#form1').Validform({
+                btnSubmit:".c--member-submit-btn",
+                tipSweep: true,
+                ajaxPost:true,
+                tiptype: function (msg, o, cssctl) {
+                    if (!o.obj.is("form")) {
+                        var objtip = o.obj.siblings(".checktip");
+                        cssctl(objtip, o.type);
+                        showmsg(msg);
+                        return false;
+                    }
+                },
+                callback:function(data){
+                    if (data.code == 1) {
+                        showmsg(data.msg, "{:url('user/formula')}")
+                    } else {
+                        showmsg(data.msg);
+                        $('input[name=release_formula_token]').val(data.data.token);
+                        $('.yzm-img').trigger('click');
+                    }
+                }
+            });
+
+        })
+
+        function remove(obj)
+        {
+            $(obj).parent().remove();
+            var html = '<div class="outer">\n' +
+                '                                            <div class="inner-file-img">\n' +
+                '                                                <i class="iconfont icon-jiahao c--member-icon-jiahao"></i>\n' +
+                '                                                <input type="file" onchange="upload(this)" class="c--member-input-file">\n' +
+                '                                                <input type="hidden" name="row[image]"  datatype="*" nullmsg="请上传产品图片" class="file-hidden">\n' +
+                '                                            </div>\n' +
+                '                                        </div>';
+            $('.upload-file-block').html(html);
+        }
+
+        var uploading = false;
+        function upload(file)
+        {
+            var formData = new FormData();
+            formData.append("file", file.files[0]);
+            if(uploading){
+                return false;
+            }
+            $.ajax({
+                url : '/index/ajax/upload',
+                type : 'POST',
+                data : formData,
+                contentType: false,
+                processData: false,
+                dataType : 'json',
+                beforeSend: function(){
+                    uploading = true;
+                },
+                success : function(data){
+                    if (data.code == 1) {
+                        var html = '                                    <div class="outer">\n' +
+                            '                                        <input type="hidden" name="row[image]" class="images" value="'+data.data.url+'">\n' +
+                            '                                        <div class="inner-file-img">\n' +
+                            '                                            <img class="c--member-upload-img" src="'+data.data.url+'">\n' +
+                            '                                        </div>\n' +
+                            '                                        <span class="c--member-remove-btn" onclick="remove(this)"></span>\n' +
+                            '                                    </div>';
+                        $('.upload-file-block').html(html);
+                    } else {
+                        showmsg(data.msg)
+                    }
+                    uploading = false;
+                }
+            });
+        }
+    </script>
+
+{include file="public/footer"  /}
+<script src="https://cdn.bootcss.com/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script type="text/javascript">
+    var require = {
+        config: {$config|json_encode}
+    };
+</script>
+<script src="/assets/js/require.js" data-main="/assets/js/require-frontend.js"></script>

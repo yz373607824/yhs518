@@ -1,0 +1,54 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+<div id="article">
+    <div class="take-cash-lists-wrap">
+        <div class="href-btn"><a href="{:url('/mobile/user/takeCash')}">我要提现</a></div>
+            {volist name="list" id="vo"}
+            <li class="list">
+                <div class="p">
+                    <div class="tt">提现金额：</div>
+                    <div class="info">¥ <span class="red">{$vo.amount}</span></div>
+                </div>
+                <div class="p">
+                    <div class="tt">提交时间：</div>
+                    <div class="info">{$vo.createtime|date='Y-m-d H:i',###}</div>
+                </div>
+                <div class="p">
+                    <div class="tt">当前状态：</div>
+                    <div class="info">{if $vo.status == '1'}已处理{else}处理中{/if}</div>
+                </div>
+                <div class="btn-box">
+                    <a href="{:url('/mobile/user/takeCash', ['id' => $vo['id']])}" class="more-btn">查看详细>></a>
+                </div>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+
+    <script>
+        $(function() {
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+
+        let page = 1;
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let param = {page:page};
+            $.get("{:url('/mobile/user/takeCashList')}", param, function(res){
+                $(".take-cash-lists-wrap").append(res.data);
+            });
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

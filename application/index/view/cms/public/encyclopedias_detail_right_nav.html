@@ -1,0 +1,17 @@
+<div class="supplier-sidebar">
+    <div class="supplier-sidebar-title">相关供应商</div>
+    <ul class="supplier-sidebar-list">
+        <?php $data = getAssociatedSupplier($__ARCHIVES__['name'],$__ARCHIVES__['enname']); ?>
+        {volist name="data" id="v"}
+        <li>
+            <a target="_blank" href="{:url('enterprise/supply', ['id' => $v['id']])}" >
+                <div class="icon">
+                    <img src="/assets/static/images/level/level_{$v.level}.png" alt="">
+                </div>
+                <div class="title">{$v.company}</div>
+                <div class="p">主营：{$v.product}</div>
+            </a>
+        </li>
+        {/volist}
+    </ul>
+</div>

@@ -1,0 +1,46 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="article">
+        <ul class="common-problems-wrap">
+            {volist name='$__PAGELIST__' id='item'}
+            <li>
+                <div class="hd">
+                    <h3 class="title">{$item.title}</h3>
+                    <p class="info">{$item.description}</p>
+                </div>
+                <div class="ft">
+                    <p class="time">{$item.publishtime|date="Y-m-d", ###}</p>
+                    <a href="{:url('/mobile/archives/' . $item['id'])}" class="btn">查看详细>></a>
+                </div>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+    <script>
+        let page = 1;
+
+        $(function() {
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight + 100 >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+        
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let param = {page:page, ajaxTpl:1};
+            $.get("{:url('/mobile/channel/' . $__CHANNEL__['diyname'])}", param, function(res){
+                $(".common-problems-wrap").append(res);
+            });
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

@@ -1,0 +1,92 @@
+{include file="public/head" isMember="0" /}
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <?php $banner = get_banner(33, 1);?>
+        <a href="{$banner.0.url}" target="_blank" class="article-banner-wrap">
+            <img src="{$banner.0.pic}" alt="">
+        </a>
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('enterprise/index')}" class="bread-hover">联盟企业</a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a class="bread-hover">供应产品</a>
+        </div>
+        <div class="tab-filter-wrap">
+            <div class="tab-list">
+
+                {include file="public/enterprise_nav" /}
+
+            </div>
+            <div class="filter-block">
+                <form action="" method="get" id="searchform">
+                    <div class="supply-search-block clearfloat">
+                        <div class="input-box">
+                            <i class="iconfont icon-sousuo1"></i>
+                            <input type="text" name="keyword" placeholder="输入相关关键词" value="{:input('keyword')}">
+                        </div>
+                        <div class="btn"><a href="javascript:$('#searchform').submit()">搜索</a></div>
+                    </div>
+                </form>
+                <div class="filter-list pt20">
+                    <dl class="clearfloat bt1">
+                        <dt>产品类别：</dt>
+                        <dd>
+                            {cms:pagefilter id="filter" exclude=""}
+                            {volist name="$filter.content" id="item"}
+                            <a href="{$item.url}" class="{$item.active?'on':''}">{$item.title}</a>
+                            {/volist}
+                            {/cms:pagefilter}
+                        </dd>
+                    </dl>
+                    <dl class="clearfloat">
+                        <dt>标&nbsp;&nbsp;&nbsp;&nbsp;签：</dt>
+                        <dd>
+                            {volist name='tags' id='item'}
+                            <a href="{$item.url}" class="{$item.active?'on':''}">{$item.title}</a>
+                            {/volist}
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="supply-product-wrap">
+            <ul class="supply-list-box clearfloat">
+                {cms:pagelist id="item" channel="$__CHANNEL__.id" model="$__CHANNEL__.model_id" orderby="id" orderway="desc" addon="true"}
+                <li class="supply-list">
+                    <a target="_blank" href="{:url($item.url)}" class="supply-item">
+                        <div class="img-box"><img src="{$item.image}" alt="{$item.title}"></div>
+                        <div class="h2">{$item.title}</div>
+                        <div class="price-box">价格：<span class="strong">{$item.price}</span> 元/{$item.unit}</div>
+                        <div class="nature-list">
+                            {if $item['tags']}
+                            <?php $tags = explode(',', $item['tags']);?>
+                            {volist name="tags" id="v"}
+                            <div class="nature-item">{$v}</div>
+                            {/volist}
+                            {/if}
+                        </div>
+                        <div class="score">
+                            <img src="/assets/static/images/level/level_p_{$item.level}.png" class="img" alt="">
+                            {if $item.online == 1}
+                            <p class="company-txt active">{$item.company}</p>
+                            <img src="/assets/static/images/service_icon.png" class="online" alt="">
+                            {else}
+                            <p class="company-txt">{$item.company}</p>
+                            {/if}
+                        </div>
+                        <div class="contact-btn">查看详情</div>
+                    </a>
+                </li>
+                {/cms:pagelist}
+            </ul>
+            <div class="paged">
+                {cms:pageinfo type="full" /}
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="public/footer"  /}

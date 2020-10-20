@@ -1,0 +1,77 @@
+{include file="public/head" isMember="0"/}
+
+    <div class="common-page-content">
+        <div class="wp1200">
+            <div class="breadcrumb">
+                <a href="/" class="min-logo">
+                    <img src="/assets/static/images/min_logo.jpg" alt="">
+                </a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/user/index')}" class="bread-hover">底部栏目</a>
+                <i class="iconfont icon-jiantouyou"></i>
+                <a href="{:url('/channel/' . $__CHANNEL__.diyname)}" class="bread-hover">{$__CHANNEL__.name}</a>
+            </div>
+            <div class="common-problem-wrap clearfloat">
+                <div class="common-problem-nav">
+                    <div class="title">底部栏目</div>
+                    <div class="list-box">
+                        {cms:channellist id="channel" type="son" typeid="59" orderway="asc"}
+                        <div class="list">
+                            <div class="item clearfloat">
+                                <a href="{:url($channel.url)}" class="item-txt">{$channel.name}</a>
+                                <i class="iconfont icon-jiantouyou item-icon"></i>
+                            </div>
+                            <ul class="sub-con">
+                            {cms:channellist id="item" type="son" typeid="$channel.id"}
+                            <li {if $item.id == $__CHANNEL__.id}class="active"{/if}><a href="{if $item.type == 'link'}{$item.url}{else}{:url($item.url)}{/if}">{$item.name}</a></li>
+                            {/cms:channellist}
+                            </ul>
+                        </div>
+                        {/cms:channellist}
+                    </div>
+                </div>
+                <div class="common-problem-content">
+                    <h2>{$__CHANNEL__.name}</h2>
+                    <h3>{$__CHANNEL__.description}</h3>
+                    <ul class="problem-list-wrap">
+                        {volist name='$__PAGELIST__' id='item'}
+                        <li class="problem-list">
+                            <a href="{:url('/archives/' . $item.id)}" class="inner-problem clearfloat">
+                                <div class="info-box">
+                                    <h4>{$item.title}</h4>
+                                    <p class="txt">{$item.description}</p>
+                                    <div class="date-txt">{$item.createtime|date='Y-m-d', ###}</div>
+                                </div>
+                                <div class="btn-box">
+                                    <div class="inner-btn">查看详细</div>
+                                </div>
+                            </a>
+                        </li>
+                        {/volist}
+                    </ul>
+                    <div class="paged">
+                        {$__PAGELIST__->render()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            $('.list-box .list').each(function() {
+                $(this).find('.sub-con').children().each(function() {
+                    if ($(this).hasClass('active')) {
+                        $(this).parent().slideDown('linear').end().closest('.list').addClass('on')
+                    }
+                })
+            })
+            $('.list-box').on('click', '.list', function() {
+                if ($(this).hasClass('on')) {
+                    $(this).removeClass('on').find('.sub-con').slideUp('linear')
+                } else {
+                    $(this).addClass('on').find('.sub-con').slideDown('linear').end().siblings().removeClass('on').find('.sub-con').slideUp('linear')
+                }
+            })
+        })
+    </script>
+{include file="public/footer"  /}

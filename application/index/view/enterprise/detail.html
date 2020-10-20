@@ -1,0 +1,99 @@
+<div class="con">
+    {if $info.status == 1}
+
+    <p style="text-align: center;font-size: 20px;">企业审核中...</p>
+
+    {else}
+
+    <div class="inner clearfloat">
+
+    {if $level == 1}
+        <div class="c-logo"><img src="{$info.logo}" alt="{$info.company}"></div>
+        <h3>{$info.company}</h3>
+    {/if}
+
+    {$info.introduce|htmlspecialchars_decode}
+
+    </div>
+
+    <div class="table-wrap clearfloat">
+        <table class="left-table">
+            <tr>
+                <td class="tr-tt">企业类型</td>
+                <td>{$enterprise_type[$info.enterprise_type]}</td>
+                <td class="tr-tt">商家类型</td>
+                <td>{$business_type[$info.business_type]}</td>
+            </tr>
+            <tr>
+                <td class="tr-tt">主要品牌</td>
+                <td>{$info.brand}</td>
+                <td class="tr-tt">主营产品</td>
+                <td>{$info.product}</td>
+            </tr>
+            <tr>
+                <td class="tr-tt">成立时间</td>
+                <td>{$info.establish_time|date='Y-m-d',###}</td>
+                <td class="tr-tt">注册资本</td>
+                <td>{$info.capital}</td>
+            </tr>
+            <tr>
+                <td class="tr-tt">联系人</td>
+                <td>{$info.contact_name}</td>
+                <td class="tr-tt">联系电话</td>
+                <td>{$info.contact_tel}</td>
+            </tr>
+            <tr>
+                <td class="tr-tt">企业名称</td>
+                <td>{$info.company}</td>
+                <td class="tr-tt">企业性质</td>
+                <td>{$info.nature}</td>
+            </tr>
+            <tr>
+                <td class="tr-tt">企业信用统一代码</td>
+                <td>{$info.code}</td>
+                <td class="tr-tt">法人姓名</td>
+                <td>{$info.corporation}</td>
+            </tr>
+            <tr>
+                <td class="tr-tt">单位所属区域</td>
+                <td>{$info.province}{$info.city}{$info.area}</td>
+                <td class="tr-tt">单位通信地址</td>
+                <td>{$info.address}</td>
+            </tr>
+            <tr>
+                <td class="tr-tt">电子邮箱地址</td>
+                <td>{$info.email}</td>
+                <td class="tr-tt">官网网址</td>
+                <td>{$info.website}</td>
+            </tr>
+        </table>
+    </div>
+    {/if}
+</div>
+{if isset($honor)}
+<div class="blod-line"> </div>
+<div class="honor-wrap">
+    <div class="level-article-title">
+        <div class="title">荣 誉 资 质</div>
+        <div class="title-img"><img src="/assets/static/images/level_title_decoration.png" alt=""></div>
+    </div>
+    <div class="honor-swiper">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                {volist name="honor" id="v"}
+                <div class="swiper-slide">
+                    <div class="img"><img src="{$v.image}" alt="{$v.title}"></div>
+                </div>
+                {/volist}
+            </div>
+        </div>
+        <div class="button-prev"><i class="iconfont icon-jiantouzuo"></i></div>
+        <div class="button-next"><i class="iconfont icon-jiantouyou"></i></div>
+    </div>
+</div>
+<script>
+    $(function () {
+        swiperArticleEvent();
+    })
+</script>
+{/if}

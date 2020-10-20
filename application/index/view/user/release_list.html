@@ -1,0 +1,73 @@
+
+{include file="public/head" isMember="1" /}
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+            {include file="public/member_left_nav" /}
+            <div class="c--member-right-wrap">
+                <div class="c--inner release-scare-buying-wrap">
+                    <h2 class="title rsbl-hd clearfloat">
+                        <p class="tt">{$channel.name}列表</p>
+                    </h2>
+                    <div class="fun-btn-wrap clearfloat">
+                        <a href="{:url('index/user/release_' . $action)}" class="js-release-btn c-btn">发布{$channel.name}</a>
+                        {if request()->action() == 'purchase'}
+                        <div class="info-box">
+                            <div class="p">注：已下架的产品可修改后重新审核进行上架</div>
+                        </div>
+                        {elseif request()->action() == 'formula'}
+                        <div class="info-box">
+                            <div class="p">温馨提示：配方要成品浓缩液，按重量百分比计算，有详细配制方法，使用条件等！特殊要求可单独说明，配方越详细越容易受关注！</div>
+                        </div>
+                        {/if}
+                    </div>
+                    <div class="table-hd">
+                        <div class="td-01 w408" style="width: 390px;">{if isset($title)}{$title}{else}标题{/if}</div>
+                        <div class="td-01 w126">时间</div>
+                        <div class="td-01 w50">状态</div>
+                        <div class="td-01 w30" style="width: 60px;">操作</div>
+                    </div>
+                    <ul class="list-block">
+                        {volist name="list" id="vo"}
+                        <li class="js-list">
+                            <div class="td-02 w408" style="width: 390px;">
+                                {if $action == 'formula'}
+                                    <a target="_blank" href="{:url('/archives/' . $vo['id'])}">{$vo.title}</a>
+                                {elseif $action == 'knowledge'}
+                                    <a target="_blank" href="{:url('/archives/' . $vo['id'])}">{$vo.title}</a>
+                                {else}
+                                    {$vo.title}
+                                {/if}
+                            </div>
+                            <div class="td-02 w126">{$vo.createtime|date='Y-m-d H:i',###}</div>
+                            <div class="td-02 w50" style="width: 60px;">{:__($vo.status)}</div>
+                            {if !in_array($action, ['formula', 'knowledge']) || $vo.status != 'normal'}
+                            <div class="td-02 w30" style="width: 63px;">
+                                <a href="{:url('index/user/release_' . $action, ['id' => $vo['id']])}">修改</a><a href="javascript:del({$vo.id})" style="margin-left: 7px">删除</a>
+                            </div>
+                            {/if}
+                        </li>
+                        {/volist}
+                    </ul>
+                    <div class="paged">
+                        {$list->render()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        memberCenterEvent();
+    })
+
+    function del(id) {
+        if (confirm('删除后不可恢复，确定要删除吗？')) {
+            location.href = "/index/user/release_del/id/" + id;
+        }
+    }
+</script>
+{include file="public/footer"  /}

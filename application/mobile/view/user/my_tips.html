@@ -1,0 +1,30 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="member">
+        <ul class="collection-lists-wrap">
+
+        </ul>
+    </div>
+
+    <script>
+        let page = 0;
+        loadData();
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let param = {page:page};
+            $.get("{:url('/mobile/user/my_tips')}", param, function(res){
+                let html = '';
+                for (let i = 0; i < res.data.length; i++) {
+                    html += '<li class="list">\n' +
+                        '                <a href="'+res.data[i].url+'"><div class="title" style="border-bottom:0;padding-bottom:0;">'+res.data[i].msg+'</div></a>\n' +
+                        '            </li>';
+                }
+                $(".collection-lists-wrap").append(html);
+            });
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

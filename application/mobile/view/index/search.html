@@ -1,0 +1,57 @@
+{include file="public/head" isIndex="0" /}
+
+{include file="public/nav_header" /}
+
+    <div id="article">
+        <div class="result-wrap">
+            <div class="result-search-box">
+                <form action="" class="common-search-block">
+                    <div class="common-search-icon"><i class="iconfont icon-sousuo1"></i></div>
+                    <div class="input-box"><input type="text" class="input" id="keywords" value="{$keywords}" placeholder="输入相关关键词"></div>
+                    <a href="javascript:search();" class="common-serach-btn">搜索</a>
+                </form>
+            </div>
+            <ul class="lists-box">
+                {volist name='list' id='item'}
+                <li>
+                    <div class="p">{$item.title}</div>
+                    <div class="more-btn">
+                        <a href="{$item.url}">查看详情</a>
+                    </div>
+                </li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+    <script>
+        let page = 1;
+        function search() {
+            $(".lists-box").html('');
+            page = -1;
+            loadData();
+        }
+
+        $(function() {
+            // 加载更多
+            $(window).on('scroll', function() {
+                var windowHeight = $(window).height(),
+                    scrollTop = $(window).scrollTop(),
+                    docHeight = $(document).height()
+                if (scrollTop + windowHeight >= docHeight) {
+                    loadData()
+                }
+            })
+        })
+
+        // 加载更多事件
+        function loadData() {
+            page++;
+            let keywords = $("#keywords").val();
+            let param = {pagenum:page, keywords:keywords};
+            $.get("{:url('/mobile/index/search')}", param, function(res){
+                $(".lists-box").append(res.data);
+            });
+        }
+    </script>
+
+{include file="public/footer" isIndex="0" footerBar="0"/}

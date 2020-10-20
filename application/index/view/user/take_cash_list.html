@@ -1,0 +1,46 @@
+
+{include file="public/head" isMember="1" /}
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+            {include file="public/member_left_nav" /}
+            <div class="c--member-right-wrap">
+                <div class="c--inner release-scare-buying-wrap">
+                    <h2 class="title rsbl-hd clearfloat">
+                        <p class="tt">提现列表</p>
+                    </h2>
+                    <div class="fun-btn-wrap clearfloat">
+                        <a href="{:url('index/user/takeCash')}" class="js-release-btn c-btn">提现</a>
+                    </div>
+                    <div class="table-hd">
+                        <div class="td-01 w408">提现金额</div>
+                        <div class="td-01 w126">时间</div>
+                        <div class="td-01 w50">状态</div>
+                        <div class="td-01 w30">操作</div>
+                    </div>
+                    <ul class="list-block">
+                        {volist name="list" id="vo"}
+                        <li class="js-list">
+                            <div class="td-02 w408">{$vo.amount}</div>
+                            <div class="td-02 w126">{$vo.createtime|date='Y-m-d H:i',###}</div>
+                            <div class="td-02 w50">{if $vo.status == '1'}已处理{else}处理中{/if}</div>
+                            <div class="td-02 w30"><a href="{:url('index/user/takeCash', ['id' => $vo['id']])}">查看</a></div>
+                        </li>
+                        {/volist}
+                    </ul>
+                    <div class="paged">
+                        {$list->render()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        memberCenterEvent();
+    })
+</script>
+{include file="public/footer"  /}

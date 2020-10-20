@@ -1,0 +1,322 @@
+{include file="public/head" isMember="0" /}
+
+<div class="common-page-content">
+    <div class="wp1200">
+        <div class="breadcrumb">
+            <a href="/" class="min-logo">
+                <img src="/assets/static/images/min_logo.jpg" alt="">
+            </a>
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('/channel/encyclopedias')}" class="bread-hover">化工百科</a>
+            <?php $tagsArray = explode(",", $__ARCHIVES__['tags']); ?>
+            {volist name="tagsArray" id="tag"}
+            <i class="iconfont icon-jiantouyou"></i>
+            <a href="{:url('/channel/encyclopedias')}?tag={$tag}" class="bread-hover">{$tag}</a>
+            {/volist}
+        </div>
+        <div class="industry-headline-wrap clearfloat">
+            <div class="common-left-block">
+                <div class="dict-search">
+                    <form action="{:url('/channel/encyclopedias')}" method="get" class="dict-search-form">
+                        <div class="input">
+                            <input type="text" name="encyclopediasKeyword" value="" placeholder="请输入CAS号、化合物名称、中文别名等">
+                        </div>
+                        <button>搜索</button>
+                    </form>
+                    <div class="dict-search-hot">
+                        <span class="title">热门搜索词:</span>
+                        <div class="list">
+                            {cms:arclist id="row" channel="133" orderby="views" orderway="desc" limit="27"}
+                            <a href="{$row.url}" title="{$row.title}">{$row.title}</a>
+                            {/cms:arclist}
+                        </div>
+                    </div>
+                </div>
+                <div class="dict-detail">
+                    <div class="dict-detail-top">
+                        <div class="img">
+                            <img src="{$__ARCHIVES__.image}" alt="{$__ARCHIVES__.title}">
+                        </div>
+                        <div class="info">
+                            <h2 class="info-title">{$__ARCHIVES__.title}</h2>
+                            <div class="info-box">
+                                {$__ARCHIVES__.role|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dict-detail-params">
+                       <div class="item">
+                           <div class="title">产品名称</div>
+                           <ul class="keyval-list">
+                               <li>
+                                   <div class="name">中文名</div>
+                                   <div class="p">{$__ARCHIVES__.name}</div>
+                               </li>
+                               <li>
+                                   <div class="name">英文名</div>
+                                   <div class="p">{$__ARCHIVES__.enname}</div>
+                               </li>
+                               <li>
+                                   <div class="name">中文别名</div>
+                                   <div class="p">{$__ARCHIVES__.alias_name|htmlspecialchars_decode}</div>
+                               </li>
+                               <li>
+                                   <div class="name">英文别名</div>
+                                   <div class="p">{$__ARCHIVES__.alias_enname|htmlspecialchars_decode}</div>
+                               </li>
+                               <li>
+                                   <div class="name">常用名</div>
+                                   <div class="p">{$__ARCHIVES__.common_name}</div>
+                               </li>
+                               <li>
+                                   <div class="name">C A S号</div>
+                                   <div class="p">{$__ARCHIVES__.cas_code}</div>
+                               </li>
+                           </ul>
+                       </div>
+                        <div class="item">
+                            <div class="title">物理性质</div>
+                            <ul class="keyval-list physical">
+                                <li>
+                                    <div class="name">密度</div>
+                                    <div class="p">{$__ARCHIVES__.density}</div>
+                                </li>
+                                <li>
+                                    <div class="name">沸点</div>
+                                    <div class="p">{$__ARCHIVES__.boiling_point}</div>
+                                </li>
+                                <li>
+                                    <div class="name">熔点</div>
+                                    <div class="p">{$__ARCHIVES__.melting_point}</div>
+                                </li>
+                                <li>
+                                    <div class="name">化学式</div>
+                                    <div class="p">{$__ARCHIVES__.chemical_formula|htmlspecialchars_decode}</div>
+                                </li>
+                                <li>
+                                    <div class="name">结构式</div>
+                                    <div class="p">{$__ARCHIVES__.structural_formula|htmlspecialchars_decode}</div>
+                                </li>
+                                <li>
+                                    <div class="name">闪点</div>
+                                    <div class="p">{$__ARCHIVES__.flash_point}</div>
+                                </li>
+                                <li>
+                                    <div class="name">分子量</div>
+                                    <div class="p">{$__ARCHIVES__.molecular_weight}</div>
+                                </li>
+                                <li>
+                                    <div class="name">精确质量</div>
+                                    <div class="p">{$__ARCHIVES__.precise_quality}</div>
+                                </li>
+                                <li>
+                                    <div class="name">P S A</div>
+                                    <div class="p">{$__ARCHIVES__.psa}</div>
+                                </li>
+                                <li>
+                                    <div class="name">外观形状</div>
+                                    <div class="p">{$__ARCHIVES__.exterior}</div>
+                                </li>
+                                <li>
+                                    <div class="name">储存条件</div>
+                                    <div class="p">
+                                        {$__ARCHIVES__.stockpile|htmlspecialchars_decode}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="name">稳定性</div>
+                                    <div class="p">{$__ARCHIVES__.stability}</div>
+                                </li>
+                                <li>
+                                    <div class="name">水溶解性</div>
+                                    <div class="p">{$__ARCHIVES__.water_solubility}</div>
+                                </li>
+                                <li>
+                                    <div class="name">形态</div>
+                                    <div class="p">{$__ARCHIVES__.shape}</div>
+                                </li>
+                                <li>
+                                    <div class="name">H L B值</div>
+                                    <div class="p">{$__ARCHIVES__.hlb}</div>
+                                </li>
+                                <li>
+                                    <div class="name">粘度</div>
+                                    <div class="p">{$__ARCHIVES__.viscosity}</div>
+                                </li>
+                                <li>
+                                    <div class="name">PH值</div>
+                                    <div class="p">{$__ARCHIVES__.ph}</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <script>
+                            $(function () {
+                                $(".physical").each(function () {
+                                    var tmp;
+                                    $(this).find('li').each(function() {
+                                        tmp = $(this).find('.p').text();
+                                        if (tmp == '') {
+                                            $(this).remove()
+                                        }
+                                    });
+                                });
+                            })
+                        </script>
+                        <div class="item otherData">
+                            <div class="title">作用/用途</div>
+                            <div class="content">
+                                {$__ARCHIVES__.role|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">制备方法</div>
+                            <div class="content">
+                                {$__ARCHIVES__.preparation|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">安全提醒</div>
+                            <div class="content">
+                                {$__ARCHIVES__.safety_reminder|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">MSDS</div>
+                            <div class="content">
+                                {$__ARCHIVES__.msds|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">原料简介</div>
+                            <div class="content">
+                                {$__ARCHIVES__.material|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">应用范围</div>
+                            <div class="content">
+                                {$__ARCHIVES__.application|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">毒性和生态</div>
+                            <div class="content">
+                                {$__ARCHIVES__.toxicity_ecology|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">安全信息</div>
+                            <div class="content">
+                                {$__ARCHIVES__.security_Information|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">是否危险品</div>
+                            <div class="content">
+                                {$__ARCHIVES__.is_dangerous|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">危险性</div>
+                            <div class="content">
+                                {$__ARCHIVES__.dangerous|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">危险类别码</div>
+                            <div class="content">
+                                {$__ARCHIVES__.hazard_code|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">危险等级</div>
+                            <div class="content">
+                                {$__ARCHIVES__.danger_levels|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">触发危险方式</div>
+                            <div class="content">
+                                {$__ARCHIVES__.trigger_way|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">安全技术说明书</div>
+                            <div class="content">
+                                {$__ARCHIVES__.manual|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">环境影响程度</div>
+                            <div class="content">
+                                {$__ARCHIVES__.impact|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <div class="item otherData">
+                            <div class="title">包装与储运</div>
+                            <div class="content">
+                                {$__ARCHIVES__.packaging|htmlspecialchars_decode}
+                            </div>
+                        </div>
+                        <script>
+                            $(function () {
+                                $(".otherData").each(function () {
+                                    var other;
+                                    other = $(this).find('.content').html().trim();
+                                    if (other == '') {
+                                        $(this).remove()
+                                    }
+                                })
+                            })
+                        </script>
+                    </div>
+                </div>
+            </div>
+            {include file="../application/index/view/cms/public/encyclopedias_detail_right_nav.html" /}
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("img.lazy").lazyload({
+            effect: "fadeIn"
+        });
+        let lastIndex = 0,
+            boxWidth = $('.dict-search-hot .list').width(),
+            countWidth = 0,
+            lastWidth = 0,
+            lastText = '';
+
+        for (let i = 0;i < $('.dict-search-hot .list a').length;i++) {
+            countWidth += $('.dict-search-hot .list a').eq(i).outerWidth(true)
+
+            if (countWidth - 16 >= boxWidth) {
+                countWidth -= $('.dict-search-hot .list a').eq(i).outerWidth(true)
+                lastIndex = i
+                lastText = $('.dict-search-hot .list a').eq(i).text()
+                break;
+            }
+        }
+
+        let lastA = $('.dict-search-hot .list a').eq(lastIndex);
+
+        for (let i = lastText.length;i > 0;i--) {
+            lastText = lastText.substring(0, i - 1);
+            lastA.text(lastText);
+            lastWidth = lastA.width()
+            if (lastWidth <= (boxWidth - countWidth)) {
+                if (i === 1) {
+                    let newnode = document.createElement('span');
+                    newnode.appendChild(document.createTextNode('...'));
+                    $('.dict-search-hot .list')[0].replaceChild(newnode, lastA[0])
+                } else {
+                    lastText = lastText.substring(0, i - 1) + '...';
+                    lastA.text(lastText);
+                }
+                break;
+            }
+        }
+    })
+</script>
+
+{include file="public/footer"  /}

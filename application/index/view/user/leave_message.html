@@ -1,0 +1,61 @@
+{include file="public/head" isMember="1" /}
+
+<div class="common-member-wrap">
+    <div class="wp1200">
+        <div class="c--wrap clearfloat">
+
+            {include file="public/member_left_nav" /}
+            
+            <div class="c--member-right-wrap">
+                <div class="c--inner leave-message-wrap">
+                    <h2 class="title">我收到的留言</h2>
+                    <ul class="leave-message-list">
+                        {volist name="list" id="v"}
+                        <li>
+                            <a class="leave-message-item">
+                                <div class="title-box clearfloat">
+                                    <h2></h2>
+                                    <p class="date-txt">时间：{$v.createtime|date='Y-m-d H:i',###}</p>
+                                </div>
+                                <div class="con-box">
+                                    <div class="con-hd clearfloat">
+                                        <div class="username">
+                                            <img src="/assets/static/images/member_icon5.png" alt="">
+                                            <p>姓名：{$v.uname}</p>
+                                        </div>
+                                        <div class="mobile">
+                                            <img src="/assets/static/images/member_icon6.png" alt="">
+                                            <p>手机：{$v.tel}</p>
+                                        </div>
+                                        <div class="address">
+                                            <img src="/assets/static/images/member_icon7.png" alt="">
+                                            <p>联系地址：{$v.location}</p>
+                                        </div>
+                                    </div>
+                                    <p class="con-bd">{$v.message}</p>
+                                    <div class="con-ft">
+                                        <div class="btn" onclick="del({$v.id})">删除留言</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        {/volist}
+                    </ul>
+                    <div class="paged">
+                        {$list->render()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function del(id) {
+        if (confirm('删除后不可恢复，确定要删除吗？')) {
+            location.href = "/index/user/leave_del/id/" + id;
+        }
+    }
+</script>
+
+{include file="public/footer"  /}

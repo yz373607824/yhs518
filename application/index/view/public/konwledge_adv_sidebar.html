@@ -1,0 +1,70 @@
+<div class="common-adv-sidebar">
+    <?php $banner = get_banner(14, 1);?>
+    {volist name="banner" id="v"}
+    <a href="{$v.url}" target="_blank" class="special-adv-wrap">
+        <img src="{$v.pic}" alt="{$v.name}">
+    </a>
+    {/volist}
+    <div class="usual-adv-wrap">
+        <div class="usual-adv-banner clearfloat">
+            <div class="h2">读者文章需求</div>
+            <a href="{:url('/channel/user_konwledge')}" target="_blank" class="ahref">从这里了解更多常见问题</a>
+        </div>
+        <ul class="reader-list-box">
+            <?php $alist = get_list(23, 130, 2);?>
+            {volist name="alist" id="item"}
+            <li class="list">
+                <a href="{:url('/archives/' . $item.id)}" target="_blank" class="item">
+                    <h2><span class="h2-txt">{$item.title|mb_substr=0,20}{if mb_strlen($item.title) > 20}...{/if}</span></h2>
+                    <p class="t-p">{$item.description|mb_substr=0,48}{if mb_strlen($item.description) > 48}...{/if}</p>
+                </a>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+<!--    <div class="usual-adv-wrap">-->
+<!--        <div class="usual-adv-banner clearfloat">-->
+<!--            <div class="h2">读者推荐</div>-->
+<!--            <a href="{:url('/channel/konwledge')}" target="_blank" class="ahref">我们都喜欢的文章</a>-->
+<!--        </div>-->
+<!--        <ul class="reader-list-box">-->
+<!--            <?php $alist = get_list(15, 74, 10, 0, 'reader_recommended');?>-->
+<!--            {volist name="alist" id="item"}-->
+<!--            <li class="list">-->
+<!--                <a href="{:url('/archives/' . $item.id)}" target="_blank" class="item">-->
+<!--                    <h2>{if $item.price != '0'}<img src="/assets/static/images/industry_2.png" alt="">{/if}<span class="h2-txt">{$item.title|mb_substr=0,20}{if mb_strlen($item.title) > 20}...{/if}</span></h2>-->
+<!--                    <p class="t-p">{$item.description|mb_substr=0,25}{if mb_strlen($item.description) > 25}...{/if}</p>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            {/volist}-->
+<!--        </ul>-->
+<!--    </div>-->
+    <div class="usual-adv-wrap">
+        <div class="usual-adv-banner clearfloat">
+            <div class="h2">读者推荐</div>
+            <a href="{:url('/channel/konwledge')}" target="_blank" class="ahref">我们都喜欢的文章</a>
+        </div>
+        <ul class="hot-recipe-box">
+            <?php $alist = get_list(15, 74, 10, 0, 'reader_recommended');?>
+            {volist name="alist" id="item"}
+            <li class="list">
+                <a href="{:url('/archives/' . $item.id)}" target="_blank" class="item clearfloat">
+                    {if !empty($item.image)}
+                    <div class="img"><img src="{$item.image}" alt="{$item.image}"></div>
+                    {/if}
+                    <div class="info-box">
+                        <h4>{if $item.price != 0}<img src="/assets/static/images/industry_2.png" alt="">{/if} {$item.title}</h4>
+                        <p>{$item.description}</p>
+                    </div>
+                </a>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+    <div class="adv-banner-box">
+        <?php $banner = get_banner(15, 5);?>
+        {volist name="banner" id="v"}
+        <a href="{$v.url}" target="_blank"><img src="{$v.pic}" alt="{$v.name}"></a>
+        {/volist}
+    </div>
+</div>
