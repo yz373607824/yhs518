@@ -39,7 +39,9 @@
                                     <dd>
                                         {cms:pagefilter id="filter" exclude=""}
                                             {volist name="$filter.content" id="item"}
+                                            <div>
                                                 <a href="{$item.url}" class="{$item.active?'on type-on':''}">{$item.title}</a>
+                                            </div>
                                             {/volist}
                                         {/cms:pagefilter}
                                     </dd>

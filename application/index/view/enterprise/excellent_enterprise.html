@@ -46,9 +46,13 @@
                         <dl class="filter-list clearfloat">
                             <dt>经营类别：</dt>
                             <dd>
-                                <a href="{:url('enterprise/index')}"{if !input('supplierType')} class="on"{/if}>全部</a>
+                                <div>
+                                    <a href="{:url('enterprise/index')}"{if !input('supplierType')} class="on"{/if}>全部</a>
+                                </div>
                                 {volist name="supplierType" key="k" id="v"}
-                                <a href="{:url('enterprise/' . request()->action(), ['supplierType' => $v])}"{if input('supplierType') == $v} class="on"{/if}>{$v}</a>
+                                <div>
+                                    <a href="{:url('enterprise/' . request()->action(), ['supplierType' => $v])}"{if input('supplierType') == $v} class="on"{/if}>{$v}</a>
+                                </div>
                                 {/volist}
                             </dd>
                         </dl>
