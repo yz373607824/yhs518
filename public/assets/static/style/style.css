@@ -8954,17 +8954,20 @@ html {
         color: #666; }
       .settled-enterprise-wrap .settled-tap-box .filter-list dd {
         margin-left: 80px; }
-        .settled-enterprise-wrap .settled-tap-box .filter-list dd a {
+        .settled-enterprise-wrap .settled-tap-box .filter-list dd div{
           display: inline-block;
           margin-bottom: 5px;
           padding-right: 24px;
+        }
+        .settled-enterprise-wrap .settled-tap-box .filter-list dd div a {
+
           font-size: 14px;
           color: #555;
           vertical-align: top;
           -webkit-transition: 0.2s ease all;
           -moz-transition: 0.2s ease all;
           transition: 0.2s ease all; }
-          .settled-enterprise-wrap .settled-tap-box .filter-list dd a:hover, .settled-enterprise-wrap .settled-tap-box .filter-list dd a.on {
+          .settled-enterprise-wrap .settled-tap-box .filter-list dd div a:hover, .settled-enterprise-wrap .settled-tap-box .filter-list dd a.on {
             color: #5387e2; }
   .settled-enterprise-wrap .settled-enterprise-list {
     width: 100%;
@@ -12184,17 +12187,19 @@ html {
   .tab-filter-wrap .filter-list dd {
     margin-left: 75px;
     font-size: 0; }
-    .tab-filter-wrap .filter-list dd a {
+    .tab-filter-wrap .filter-list dd div{
       display: inline-block;
-      vertical-align: middle;
       padding: 0 13px;
       margin-bottom: 5px;
+    }
+    .tab-filter-wrap .filter-list dd div a {
+      vertical-align: middle;
       font-size: 14px;
       color: #666;
       -webkit-transition: 0.2s ease all;
       -moz-transition: 0.2s ease all;
       transition: 0.2s ease all; }
-      .tab-filter-wrap .filter-list dd a:hover, .tab-filter-wrap .filter-list dd a.on {
+      .tab-filter-wrap .filter-list dd div a:hover, .tab-filter-wrap .filter-list dd a.on {
         color: #5387e2; }
   .tab-filter-wrap.mt-20 {
     margin-top: 20px; }
