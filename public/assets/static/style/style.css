@@ -11865,8 +11865,9 @@ html {
       padding-bottom: 15px;
       border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
     .common-adv-sidebar .need-list-box .item {
+      font-size: 14px;
       width: 100%; }
-      .common-adv-sidebar .need-list-box .item:hover h3 {
+      .common-adv-sidebar .need-list-box .item:hover{
         color: #5387e2; }
     .common-adv-sidebar .need-list-box h3 {
       width: 100%;
@@ -11899,14 +11900,14 @@ html {
       padding: 20px 0;
       border-bottom: 1px solid #eef2f9; }
     .common-adv-sidebar .reader-list-box .item {
-      display: block;
+      font-size: 14px;
       width: 100%; }
-      .common-adv-sidebar .reader-list-box .item:hover .h2-txt {
+      .common-adv-sidebar .reader-list-box .item:hover{
         color: #5387e2; }
     .common-adv-sidebar .reader-list-box h2 {
       line-height: 24px;
       font-size: 0;
-      margin-bottom: 15px; }
+      margin-bottom: 5px; }
     .common-adv-sidebar .reader-list-box img {
       display: inline-block;
       vertical-align: middle;

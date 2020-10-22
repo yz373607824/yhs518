@@ -14,10 +14,11 @@
             <?php $alist = get_list(23, 130, 2);?>
             {volist name="alist" id="item"}
             <li class="list">
-                <a href="{:url('/archives/' . $item.id)}" target="_blank" class="item">
-                    <h2><span class="h2-txt">{$item.title|mb_substr=0,20}{if mb_strlen($item.title) > 20}...{/if}</span></h2>
+                
+                    <h2>
+                        <a href="{:url('/archives/' . $item.id)}" target="_blank" class="item">{$item.title|mb_substr=0,20}{if mb_strlen($item.title) > 20}...{/if}</a>
+                    </h2>
                     <p class="t-p">{$item.description|mb_substr=0,48}{if mb_strlen($item.description) > 48}...{/if}</p>
-                </a>
             </li>
             {/volist}
         </ul>
